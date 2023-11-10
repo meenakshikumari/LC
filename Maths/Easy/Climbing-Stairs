@@ -1,10 +1,21 @@
 func climbStairs(n int) int {
-  // create an array with the a[n] = number of steps
-  a := []int{1,2}
-  for i:=2; i<n; i++{
-    n := a[i-1] + a[i-2]
-    a = append(a,n)
+  // App 1 create an array with the a[n] = number of steps
+  // a := []int{1,2}
+  // for i:=2; i<n; i++{
+  //   n := a[i-1] + a[i-2]
+  //   a = append(a,n)
+  // }
+  // // fmt.Println(a)
+  // return a[n-1]
+
+  // App 2, use 3 vars
+  var prev, current, temp int
+  current = 1
+
+  for i:= 1; i<=n; i++ {
+    temp = prev + current
+    prev = current
+    current = temp
   }
-  // fmt.Println(a)
-  return a[n-1]
+  return current
 }
