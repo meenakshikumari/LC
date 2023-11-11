@@ -1,0 +1,52 @@
+func uniquePaths(m int, n int) int {
+    // // 1 way to iterate when on first row and one first column
+    // if m == 1 || n == 1 {
+    //     return 1
+    // }
+    // // no of paths to reach to left and up block of m,n
+    // return uniquePaths(m, n-1) + uniquePaths(m-1, n)
+
+    // iterate over the arr and keep on storing uniq path num
+    // a := make([][]int,m) // initialise rows
+    // for i:= range a{ // initialise columns
+    //     a[i] = make([]int, n)
+    // }
+    // for i:=0; i<m; i++{
+    //     a[i][0] = 1
+    // }
+
+    // for j :=0; j<n; j++{
+    //     a[0][j] = 1
+    // }
+    // for i := 1; i<m; i++{
+    //     for j:=1; j<n; j++{
+    //         a[i][j] = a[i-1][j] + a[i][j-1]
+    //     }
+    // }
+    // return a[m-1][n-1]
+    // // Abv time O(m*n) space O(m*n) 
+
+    // using 2 1d arr
+    curr := make([]int, n)
+    prev := make([]int, n)
+
+    for j :=0; j<n; j++{
+        curr[j] = 1
+        prev[j] = 1
+
+    }
+    for i:=1; i<m;i++{
+
+        for j:=1; j<n; j++{
+
+            curr[j] = curr[j-1] + prev[j]
+        }
+        curr, prev = prev, curr
+
+        // fmt.Println("prev: ", prev, " i: ", i)
+        // fmt.Println("curr: ", curr, " i: ", i)
+    }
+    return prev[n-1]
+    // // Abv time O(m*n) space O(n) 
+
+}
