@@ -1,0 +1,63 @@
+func rotate(a [][]int)  {
+    // having another double matrix O(n*n) time, space O(n*n)
+    // a[i][j] => a[j][n-1-i]
+    // eg: a[0][0] => a[0][2]
+
+    n := len(a[0])
+    // a:= matrix
+
+    // a := make([][]int, n)
+    // for i:=0;i<n;i++{
+    //     a[i] = make([]int, n)
+    // }
+
+    // for i:=0;i<n;i++{
+    //     for j:=0;j<n;j++{
+    //         a[j][n-1-i] = matrix[i][j]
+    //     }
+    // }
+    // fmt.Println(a)
+
+    // for i:=0;i<n;i++{
+    //     for j:=0;j<n;j++{
+    //         matrix[i][j] = a[i][j]
+    //     }
+    // }
+
+    // inplace with swaping val 0(n*n/2) = O(n^2) time. space = 0(1) 
+//     for i:=0; i<n/2; i++{
+//         for j:=0; j<(n+1)/2;j++{
+//             tmp:= a[i][j]
+//             a[i][j] = a[n-1-j][i]
+//             a[n-1-j][i] = a[n-1-i][n-1-j]
+//             a[n-1-i][n-1-j] = a[j][n-1-i]
+//             a[j][n-1-i] = tmp   
+//         }
+//     }
+
+    //   Transpose matrix and then reverse the rows
+    // a = a^T // col become rows and vice versa for transpose matrix
+
+    // time: O(n*n)
+    for i:=0;i<n-1;i++{
+        for j:=i+1;j<n;j++{
+            tmp:=a[i][j]
+            a[i][j] = a[j][i]
+            a[j][i] = tmp
+        }
+    }
+    // fmt.Println(a)
+
+    // reverse the rows to get the rotated matrix
+    //time: O(n*n/2) = O(n^2)
+    for i:=0;i<n;i++{
+    // we can have two pointers to iterate over the columns
+        for j:=0;j<n/2;j++{
+            tmp := a[i][j]
+            a[i][j] = a[i][nac-1-j]
+            a[i][n-1-j] = tmp
+        }
+    }
+    //space = O(1)
+
+}
