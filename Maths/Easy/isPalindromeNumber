@@ -1,0 +1,53 @@
+func isPalindrome(x int) bool {
+    // comapre the half reverted num with actual num
+    // O(N) and space O(1)
+    if (x < 0) || (x%10 == 0 && x!=0){
+        return false
+    }
+
+    rev := 0
+    for x > rev {
+        rev = rev*10 + x%10
+        x = x/10
+    }
+    // fmt.Println(rev, x)
+
+    if x == rev || rev/10 == x {
+        return true
+    }
+    return false
+}
+
+// find length and keep matcing first and last digit 
+// time: O(n) and space O(1)
+    // negative num will not be palindrome, also single digit will always be 
+//     if x < 0 {
+//         return false
+//     }else if x < 10 {
+//         return true
+//     }
+//     l := length(x)
+    
+//     for i:=l; i>0; i -= 2 {
+//         if x/power(10,i) != x%10{
+//             return false
+//         }
+//         x = x%power(10,i)
+//         x = x/10
+//     }
+//             return true
+    
+// }
+
+// func power(a,b int)int{
+//     return int(math.Pow(float64(a), float64(b)))
+// }
+
+// func length(n int) int { /// return len(n)-1
+//     l := 0
+//     for n > 9 {
+//         l++
+//         n = n/10
+//     }
+//     return l
+// }
