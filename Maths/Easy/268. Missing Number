@@ -1,0 +1,23 @@
+func missingNumber(nums []int) int {
+// let's xor arr to 0 to n numbers are we will get missing val
+    miss := len(nums)
+    for i, v := range nums{
+        miss ^= i^v
+        // fmt.Println(i,v,miss)
+    }
+    return miss
+     // above time: O(n) with O(1) space
+
+    // sum of n digit = 1+2+3..n = n(n+1)/2
+    // if n digits are there the difference of summation of 
+
+    // n := len(nums)
+    // actual := n*(n+1)/2
+    // reality := 0
+    // for _, v := range nums{
+    //     reality += v
+    // }
+    // return actual - reality
+    // above time: O(n) with O(1) space
+
+}
