@@ -1,0 +1,12 @@
+func reverse(x int) int {
+    var y int
+    for x != 0 {
+        y = y*10 + x %10
+        x = x / 10
+
+        if y > math.MaxInt32 || y < math.MinInt32 { // to check if reverse in 32 bit
+            return 0
+        }
+    }
+    return y
+}
