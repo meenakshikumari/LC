@@ -1,0 +1,55 @@
+type RandomizedSet struct {
+    h map[int]int
+}
+
+func Constructor() RandomizedSet {
+    h := make(map[int]int)
+    return RandomizedSet{h}
+}
+
+
+func (this *RandomizedSet) Insert(val int) bool {
+    if _, ok := this.h[val]; !ok {
+      this.h[val] = 0
+      return true
+    }
+    return false
+}
+
+
+func (this *RandomizedSet) Remove(val int) bool {
+  if _, ok := this.h[val]; ok {
+    delete(this.h, val)
+    return true
+  }
+  return false
+}
+
+
+func (this *RandomizedSet) GetRandom() int {
+  // l := len(this.h)
+  randomNum := rand.Intn(len(this.h)) // gets randome number from the n
+  counter := 0
+  for k := range this.h{
+    if counter == randomNum {
+      return k
+    }
+    counter++
+    // defer this.fixRandom(k)
+  }
+  return -1
+}
+
+// func (this *RandomizedSet) fixRandom(k int){
+//   delete(this.h, k)
+//     this.h[k] = 0
+// }
+
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * obj := Constructor();
+ * param_1 := obj.Insert(val);
+ * param_2 := obj.Remove(val);
+ * param_3 := obj.GetRandom();
+ */
