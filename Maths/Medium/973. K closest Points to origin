@@ -1,0 +1,38 @@
+import "sort"
+func kClosest(points [][]int, k int) [][]int {
+  a := make(map[float64][][]int) // O(n)
+
+  for _ , v := range points{
+    val := euclidenDistanceFromOrigin(v)
+      a[val] = append(a[val], v)
+    // fmt.Println(i,v,a)
+  }
+  
+  // hash with keys a distance and val as points
+  // sort keys 
+  var ar []float64 // O(n)
+  for k := range a {
+    ar = append(ar, k)
+  }
+  sort.Float64s(ar)
+  // fmt.Println(ar, a)
+  var result [][]int // O(k)
+  i:=0
+  for i<k{
+    // fmt.Println(a[ar[i]])
+    v := a[ar[i]]
+    // fmt.Println(v)
+    result = append(result, v...)
+    i = len(result)
+  }
+
+  return result
+  // space: O(n)+O(n)+O(k) = O(n) 
+  // time: O(nlogn)
+}
+
+func euclidenDistanceFromOrigin(pts []int) float64 {
+  d := pts[0]*pts[0]
+  d += pts[1]*pts[1]
+  return math.Sqrt(float64(d))
+}
