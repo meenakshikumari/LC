@@ -1,0 +1,53 @@
+// // import "strconv"
+// func isHappy(n int) bool {
+//     h := make(map[int]int)
+//     return checkIsHappy(n,h)
+// }
+
+// func checkIsHappy(n int, h map[int]int) bool{
+//     x :=  0
+//     for n != 0 {
+//         x += (n%10) * (n%10)
+//         n = n/10
+//     }
+//     // a := strings.Split(strconv.Itoa(n),"")
+//     // for _, v := range a {
+//     //     val,_ := strconv.Atoi(v)
+//     //     x += val*val
+//     // }
+//     // fmt.Println(x, h)
+//     if x == 1 {
+//         return true // happy num
+//     }
+    
+//     if _, ok := h[x]; ok {   
+//         return false                                                       
+//     }
+//     h[x] = 0
+//     return checkIsHappy(x,h)
+// }
+// time: O(logn) space: O(logn)
+
+
+func getNext(n int)int{
+    x := 0
+    for n > 0 {
+        x += (n%10) * (n%10)
+        n = n/10 
+    }
+    return x
+}
+
+func isHappy(n int)bool {
+    slowRunner := n
+    fastRunner := getNext(n)
+
+    for fastRunner != 0 && slowRunner != fastRunner {
+        // fmt.Println(slowRunner, fastRunner)
+        slowRunner = getNext(slowRunner)
+        fastRunner = getNext(getNext(fastRunner))
+    }
+    return fastRunner == 1
+}
+
+// time: O(logn) space: O(1)
