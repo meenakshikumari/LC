@@ -1,0 +1,24 @@
+func twoSum(nums []int, target int) []int {
+  // n := target
+  // for i, v := range nums{
+  //   // check if n-v is present in the rest nums
+  //   for j:=i+1; j<len(nums);j++{
+  //     if nums[j] == n-v{
+  //       return []int{i,j}
+  //     }
+  //   }
+  // }
+  // var ans []int
+  // return ans
+  // abv one is space = O(1) and time O(n*n)
+
+  h := make(map[int]int)
+  for i, v := range nums{
+    if val,ok:=h[target-v];ok{
+      return []int{i,val}
+    }
+    h[v] = i
+  }
+    var ans []int
+  return ans
+}
