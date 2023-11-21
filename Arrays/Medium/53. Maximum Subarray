@@ -1,0 +1,17 @@
+func maxSubArray(nums []int) int {
+  //kadane's algo (greedy algo)
+  s := 0
+  max := math.MinInt32
+
+  for _, v := range nums {
+    s += v 
+    if max < s {
+        max = s
+    }
+  // we reset sum to 0 since calculating over negative numbers will be anyway decrease the sum
+    if s <=0 { 
+      s = 0
+    }    
+  }
+  return max
+}
