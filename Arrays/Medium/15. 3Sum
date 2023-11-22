@@ -1,0 +1,109 @@
+// import (
+//   "sort"
+//   // "reflect"
+// )
+// func threeSum(nums []int) [][]int {
+//   var res [][]int
+//   l := len(nums)
+  
+//   // sort.Slice(nums, func(i,j int) bool {return nums[i]<nums[j]}) //sort nums
+
+//   // for i:=0; i<l-2;i++{
+//   //   if nums[i] > 0 {
+//   //     break // after crossing 0 it will sum will be more than 0
+//   //   }else if i != 0 && nums[i-1] == nums[i]{
+//   //     continue // if previous was same digit go to next since we hv already iterated
+//   //   }
+
+//   //   h := make(map[int]int)
+//   //   for j:= i+1; j<l;j++{
+//   //     if nums[i] == 0 && nums[j] > 0 {
+//   //       break
+//   //     }
+
+//   //     if _, ok:= h[-(nums[i]+nums[j])]; ok{
+//   //       a := []int{nums[i],nums[j],-(nums[i]+nums[j])}
+//   //       res = append(res, a)
+//   //     }else{
+//   //       h[nums[j]] = 1
+//   //     }
+//   //     if len(res) > 1 && reflect.DeepEqual(res[len(res)-1],res[len(res)-2]){
+//   //         res = res[0:len(res)-1]
+        
+//   //     }
+//   //   }
+//   // }
+//   // abv sol time: O(nlogn+n2) => O(n2)
+//   // space = O(n) // hash
+
+//   // solution without sorting the arr
+//   m := make(map[[3]int]bool)
+//   for i:=0; i<l-2;i++{
+//     if i == 0 || nums[i-1] != nums[i]{
+//     h := make(map[int]int)
+//       for j:= i+1; j<l;j++{
+//         if _, ok:= h[-(nums[i]+nums[j])]; ok{
+//           a := []int{nums[i],nums[j],-(nums[i]+nums[j])}
+//           sort.Slice(a, func(i,j int) bool {return a[i]<a[j]}) //sort nums
+//           ar := [3]int{0,0,0}
+//           for i, v := range a {
+//             ar[i] = v
+//           }
+//           if _, ok := m[ar]; !ok{
+//             m[ar] = true
+//           } 
+//         }else{
+//           h[nums[j]] = 1
+//         }
+//       }
+//     }
+//   }
+//   // fmt.Println(m)
+//   for k := range m{
+//     a := make([]int, 3)
+//     for i, v := range k {
+//       a[i] = v
+//     }
+//     res = append(res, a)
+//   }
+//   return res
+// }
+func threeSum(nums []int) [][]int {
+	n := len(nums)
+
+	// Sort the given array
+	sort.Ints(nums)
+
+	var result [][]int
+	for num1Idx := 0; num1Idx < n-2; num1Idx++ {
+		// Skip all duplicates from left
+		// num1Idx>0 ensures this check is made only from 2nd element onwards
+		if num1Idx > 0 && nums[num1Idx] == nums[num1Idx-1] {
+			continue
+		}
+
+		num2Idx := num1Idx + 1
+		num3Idx := n - 1
+		for num2Idx < num3Idx {
+			sum := nums[num2Idx] + nums[num3Idx] + nums[num1Idx]
+			if sum == 0 {
+				// Add triplet to result
+				result = append(result, []int{nums[num1Idx], nums[num2Idx], nums[num3Idx]})
+
+				num3Idx--
+
+				// Skip all duplicates from right
+				for num2Idx < num3Idx && nums[num3Idx] == nums[num3Idx+1] {
+					num3Idx--
+				}
+			} else if sum > 0 {
+				// Decrement num3Idx to reduce sum value
+				num3Idx--
+			} else {
+				// Increment num2Idx to increase sum value
+				num2Idx++
+			}
+		}
+	}
+	return result
+}
