@@ -1,0 +1,52 @@
+import "sort"
+func fourSum(nums []int, target int) [][]int {
+  n := len(nums)
+  var res [][]int
+  if n<4{
+    return res
+  }
+  sort.Ints(nums) // O(NlogN)
+  for i:=0;i<n-3;i++{
+    for i!=0 && i<n-3 && nums[i]==nums[i-1]{ // check for duplicates for the 1ptr
+      i++
+    }
+    for j:=i+1;j<n-2;j++{
+      for j != i+1 && j<n-2 && nums[j]==nums[j-1]{ // check for duplicates for the 2ptr
+        j+=1
+      }
+      k := j+1
+      l := n-1
+      for k<l{
+        s := nums[i]+nums[j]+nums[k]+nums[l]
+
+        if s == target{
+          res = append(res, []int{nums[i],nums[j],nums[k],nums[l]})
+          k++
+          l--
+          for k<l && nums[k] == nums[k-1]{
+            k++
+          }
+          for k<l && nums[l] == nums[l+1]{
+            l--
+          }
+        }else if s < target {
+          k++
+          for k<l && nums[k] == nums[k-1]{
+            k++
+          }
+        }else{
+          l--
+          for k<l && nums[l] == nums[l+1]{
+            l--
+          }
+        }
+
+      }
+
+    }
+  }
+  return res
+
+  //time: O(n^3)+O(NlogN) = O(n^3)
+  // space: O(number of quads)
+}
