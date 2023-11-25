@@ -1,0 +1,134 @@
+func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+  // Binary search with partiotioning
+  // https://youtu.be/NTop3VTjmxk?t=1663
+
+  //time: O(log(min(m,n))
+  // space: O(1)
+
+  var low, high, mid int
+
+  n1 := len(nums1)
+  n2 := len(nums2)
+  // do binary search for the smaller size arr
+  if n2 < n1 {return findMedianSortedArrays(nums2, nums1)} // for case like [1], []
+  mid = (n1+n2+1)/2
+
+  high = n1
+
+  // var l1,l2,r1,r2 int
+  for low <= high{
+    cut1 := (low+high)/2 // num of elements from the first arr
+    cut2 := mid - cut1
+
+    l1,l2 := math.MinInt64, math.MinInt64
+    if cut1 > 0 {
+      l1 = nums1[cut1-1]
+    }
+    if cut2 >0{
+      l2 = nums2[cut2-1]
+    }
+
+    r1,r2 := math.MaxInt64, math.MaxInt64
+    if cut1 < n1 {
+      r1 = nums1[cut1]
+    }
+    if cut2 < n2 {
+      r2 = nums2[cut2]
+    }
+
+    if l1 <= r2 && l2 <= r1 {
+      if (n1+n2)%2==0{//even arr
+        return (math.Max(float64(l1), float64(l2))+math.Min(float64(r1), float64(r2)))/2
+      }else{
+        return math.Max(float64(l1), float64(l2))
+      }
+    }else if l1 > r2 {
+      high = cut1-1
+    }else{
+      low = cut1+1
+    }
+
+  }
+
+  return float64(0)
+}
+  // Using Merge sort technique below is to pick the needed median value 
+//     // media is the middle val of an array
+
+//     var i,j, smallest,mid int
+//     var isEven, foundFirst bool
+//     if (len(nums1)+len(nums2)) % 2 == 0{ // even arr
+//       isEven = true
+//       mid = ((len(nums1)+len(nums2))/2)-1
+//     }else{
+//     mid = (len(nums1)+len(nums2))/2
+//     }
+
+//     // fmt.Println(isEven, mid)
+//     var median float64
+//     counter := 0
+
+//     for i<len(nums1) && j<len(nums2){
+//       i,j, smallest = findSmallest(nums1[i],nums2[j],i,j)
+//       // fmt.Println(i,j,smallest,counter)
+//       if counter >= mid{
+//         if isEven{
+//           median += float64(smallest)/float64(2)
+//           if foundFirst {
+//             return median
+//           }
+//           foundFirst = true
+//           // fmt.Println("isEven:",i,j,smallest, median, counter)
+//         }else{
+//            return float64(smallest)
+//         }
+//       }
+//       counter++
+//     }
+
+//     for j<len(nums2) {
+//       smallest = nums2[j]
+//       if counter >= mid{
+//         if isEven{
+//           median += float64(smallest)/float64(2)
+//           if foundFirst {
+//             return median
+//           }
+//           foundFirst = true
+//           // fmt.Println("isEven:",i,j,smallest, median, counter)
+//         }else{
+//            return float64(smallest)
+//         }
+//       }
+//       j++
+//       counter++
+//     }
+
+//     for i<len(nums1) {
+//       smallest = nums1[i]
+//       if counter >= mid{
+//         if isEven{
+//           median += float64(smallest)/float64(2)
+//           if foundFirst {
+//             return median
+//           }
+//           foundFirst = true
+//           // fmt.Println("isEven:",i,j,smallest, median, counter)
+//         }else{
+//            return float64(smallest)
+//         }
+//       }
+//       i++
+//       counter++
+//     }
+//     return median
+// }
+
+// func findSmallest(a,b,i,j int) (int,int,int){
+//   if a <= b {
+//     i+=1
+//     return i, j,a 
+//   }
+//   j+=1
+//   return i, j, b
+// }
