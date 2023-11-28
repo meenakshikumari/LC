@@ -1,0 +1,28 @@
+func merge(intervals [][]int) [][]int {
+  res := make([][]int,0) // this req less time then var res [][]int but more space then it
+  //time: O(nlogn)+O(n) = O(nlogn)
+  // space: O(n)
+
+  // sort the intervals on the basis of first element 
+  // y first element becz each array is sorted wqithin itself 
+  sort.Slice(intervals, func(i, j int) bool { 
+    return (intervals[i][0] < intervals[j][0]) || 
+    (intervals[i][0] == intervals[j][0] && intervals[i][1] < intervals[j][1])
+  })
+  
+  for _, val := range intervals {
+    if len(res) == 0 || res[len(res)-1][1] < val[0]{
+      res = append(res,val) // no overlapping
+    }else{
+      res[len(res)-1][1] = max(res[len(res)-1][1],val[1])
+    }
+  }
+  return res
+}
+
+func max(a,b int)int{
+  if a>=b{
+    return a
+  }
+  return b
+}
