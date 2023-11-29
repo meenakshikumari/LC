@@ -1,0 +1,143 @@
+func sortColors(nums []int)  {
+  QS(nums,0,len(nums)-1)
+}
+
+func QS(nums []int,l,h int){
+  if l<h{
+    partiotionIdx := quicksort(nums,l,h)
+    QS(nums, l, partiotionIdx-1)
+    QS(nums, partiotionIdx+1,h)
+  }
+}
+
+func quicksort(nums []int,l,h int) int{
+    pivot := l
+    // place num smaller to left of pivot
+    i := l
+    j := h
+    for i<=j{
+      for i<=h && nums[i] <= nums[pivot]{
+        i++
+      }
+      for j>=l && nums[j] > nums[pivot]{
+        j--
+      }
+      if i<j{
+        temp := nums[i]
+        nums[i] = nums[j]
+        nums[j] = temp
+      }
+    }
+    temp := nums[pivot]
+    nums[pivot] = nums[j]
+    nums[j] = temp
+    return j
+}
+
+  // merge sort time: (nlogn) space: O(n)
+  // divide and conquer
+  // divide the arr till single element left and then keep on merging
+//   mergeSort(nums, 0, len(nums)-1)
+// }
+
+// func mergeSort(nums []int, l, h int){
+//   if l >=h{
+//     return 
+//   }
+//   m := (l+h)/2
+//   mergeSort(nums, l, m)//left side
+//   mergeSort(nums, m+1, h)
+//   merge(nums, l, m, h)
+// }
+
+// func merge(nums []int, l, m,h int){
+//   left := l
+//   right := m+1
+//   var temp []int
+//   for left<=m && right <= h{
+//     // append the min val to the temp
+//     if nums[left] <= nums[right]{
+//       temp = append(temp, nums[left])
+//       left++
+//     }else{
+//       temp = append(temp, nums[right])
+//       right++
+//     }
+//   }
+
+//   for left<=m{
+//     temp = append(temp, nums[left])
+//     left++
+//   }
+//   for right <= h{
+//     temp = append(temp, nums[right])
+//     right++
+//   }
+
+//   for i:= l; i<=h;i++{
+//     nums[i] = temp[i-l]
+//   }
+// }
+
+
+  // BUBBLE SORT
+  // arr end is sorted : compare and swap
+  // time: O(n2) space: O(1)
+  // iterative
+  // for i:=0;i<len(nums)-1;i++{
+  //   for j:=0;j<len(nums)-1-i;j++{
+  //     if nums[j]>nums[j+1]{
+  //       temp := nums[j]
+  //       nums[j]=nums[j+1]
+  //       nums[j+1]=temp
+  //     }
+  //     // fmt.Println(i,j,nums)
+  //   }
+  // }
+
+  //recursive
+  // if len(nums)<2{
+  //   return 
+  // }
+  // for i:=0;i<len(nums)-1;i++{
+  //   if nums[i]>nums[i+1]{
+  //     temp:=nums[i]
+  //     nums[i]=nums[i+1]
+  //     nums[i+1]=temp
+  //   }
+  //   fmt.Println(nums)
+  //   sortColors(nums[:len(nums)-1])
+  // }
+
+    // // we will be using selection sort
+    // // the arr start is sorted
+    // // time: O(n2)
+    // // space: O(1)
+    // for i:=0;i<len(nums)-1;i++{
+    //   min := math.MaxInt64
+    //   var idx int
+    //   for j:=i;j<len(nums);j++{
+    //     if min > nums[j]{
+    //       min=nums[j]
+    //       idx = j
+    //     }
+    //   }
+    //   // swap the min with the ith idx
+    //   temp := nums[i]
+    //   nums[i] = nums[idx]
+    //   nums[idx] = temp
+    // }
+
+    // insertion sort
+    // the portion should be sorted
+    // for i:=1;i<len(nums);i++{
+    //   for j:=i;j>0;j--{
+    //     if nums[j]<nums[j-1]{
+    //       temp := nums[j]
+    //       nums[j]=nums[j-1]
+    //       nums[j-1]=temp
+    //     }
+    //     fmt.Println(i,j,nums)
+    //   }
+    // }
+// }
