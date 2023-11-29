@@ -1,0 +1,51 @@
+// import "sort"
+func firstMissingPositive(nums []int) int {
+  // time: O(nLogn)+O(n) space: O(n)
+    // sort.Ints(nums)
+    // var counter int
+    // for i, v := range nums{
+    //   if (v > 0) { // only positive 
+    //     if (i > 0 && v == nums[i-1]){ // if duplicates return
+    //       continue
+    //     }
+    //     counter++
+    //     if counter == v {
+    //       continue
+    //     }else{
+    //       return counter
+    //     }
+    //   }
+    // }
+    // return counter+1
+
+    // in place, no need to consider negative and number > n
+    /* [3,4,-1,1] correctPos = num[0] => if not 1<=val<=n and 
+    val h usko uske correct index p rakhna h which will be val-1 as arr start from 0
+    for(arr[i] >= 1 && arr[i] <= n && arr[i] != arr[arr[i] - 1])
+    i = 0 arr[i] = 3,  3 != -1 [-1,4,3,1]
+    i = 1 arr[i] = 4, 4 != 1 [-1,1,3,4]
+    i = 1 arr[i] = 1, 1 != -1 [1,-1,3,4]
+    i = 2 arr[i] = 3, 3 == 3  no need
+    i = 3 arr[i] = 4, 4 == 4 no need 
+
+    then again iterate the array and check if arr[idx] == idx+1 if not then idx+1 is missing
+    */
+
+    n := len(nums)
+    for i,_ := range nums{
+      for (nums[i] >= 1 && nums[i] <= n && nums[i] != nums[nums[i]-1]){
+        // keep on iterating till the ith elements are settled at correct positions
+        temp := nums[nums[i]-1]
+        nums[nums[i]-1] = nums[i]
+        nums[i] = temp
+      }
+    }
+
+    for i, v := range nums{
+      if v != i+1{
+        return i+1
+      }
+    }
+  return n+1
+  // time: O(2n) ~ O(n) spce: O(1)
+}
