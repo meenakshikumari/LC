@@ -1,5 +1,6 @@
 func findDuplicate(nums []int) int {
   // Linked List cycle detection method
+//https://takeuforward.org/data-structure/find-the-duplicate-in-an-array-of-n1-integers/
 // time: O(n) space: O(n)
   sPtr := nums[0]
   fPtr := nums[0]
