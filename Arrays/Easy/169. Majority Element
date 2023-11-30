@@ -1,0 +1,47 @@
+// import "sort"
+func majorityElement(nums []int) int {
+  // Brute force maitain the hash of occurance and counter
+  // time: O(n) space: O(n)
+
+  // time: O(nlogn) space: O(1)
+    // sort.Ints(nums)
+    // maxCounter := 0
+    // majorityElement := math.MinInt64
+    // for i, _ := range nums{
+    //   counter := 1
+    //   for  i<len(nums)-1 && nums[i]==nums[i+1]{
+    //     i++
+    //     counter++
+    //   }
+
+    //   if maxCounter < counter{
+    //     maxCounter = counter
+    //     majorityElement = nums[i]
+    //   }
+    // }
+    // return majorityElement
+
+
+  // More's voting algorithm
+  count := 0
+  element := 0
+  for _, v := range nums{
+    if count == 0{
+      element = v
+      count++
+    }else if v == element{
+      count++
+    }else if v != element{
+      count--
+    }
+  }
+  /*
+  to cehck if the element is actually the majority element
+  c := 0
+  for _, v := range nums{
+    if v == element{c++}
+  }
+  if c >= len(nums)/2 {return element}
+  */
+  return element
+}
