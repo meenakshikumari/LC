@@ -1,0 +1,17 @@
+func subarraySum(nums []int, k int) int {
+    // prefix sum
+    // we will keep on iterating the prefixSum and will keep track of the rem = sum-k count if present then ans += count
+    // time: O(n) space: O(n)
+    var ans, sum int
+    h := make(map[int]int)
+    h[0] = 1
+    for i:=0;i<len(nums);i++{
+      sum += nums[i]
+      rem := sum - k
+      ans += h[rem] // add the occurance first then add the hash
+      h[sum]++ // incremenmt the num of occurance for the given sum
+    }
+    return ans
+
+    // https://youtu.be/xvNwoz-ufXA?t=1353
+}
