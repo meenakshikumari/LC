@@ -1,0 +1,35 @@
+func productExceptSelf(nums []int) []int {
+  n := len(nums)
+  ans := make([]int, n)
+  // time: O(n) space: O(n)
+  // leftP := make([]int, n) // left[i] will hv prodcut for elem till 0 -> i-1
+  // rightP := make([]int, n) // right[i] will hv prodcut for elem till i+1 -> n-1
+  // leftP[0] = 1
+  // for l := 1; l<n;l++{
+  //   leftP[l] = leftP[l-1]*nums[l-1]
+  // }
+
+  // rightP[n-1] = 1
+  // for r:=n-2;r>-1;r--{
+  //   rightP[r] = rightP[r+1]*nums[r+1]
+  // }
+
+  // for i:=0;i<n;i++{
+  //   ans[i] = leftP[i] * rightP[i]
+  // }
+
+  // this method is extending abv one and reusing left as ans and R on the go
+  // time: O(n) space: O(1) we will be using ans itself
+  ans[0] = 1
+  for l := 1; l<n;l++{
+    ans[l] = ans[l-1]*nums[l-1] // evaluated left product till i-1
+  }
+
+  // now eval right on the go
+  R := 1
+  for r := n-1;r>-1;r--{
+    ans[r] = ans[r]*R
+    R *= nums[r]
+  }
+  return ans
+}
