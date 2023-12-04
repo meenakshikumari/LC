@@ -1,0 +1,43 @@
+func longestConsecutive(nums []int) int {
+  h := make(map[int]int, len(nums))
+  for _, v:=range nums{
+    h[v] = 0
+  }
+
+  maxl := 0
+  for k := range h{
+    if _, ok := h[k-1]; !ok { // this means this is not starting the seq
+    // we need to start from the val which is starting the seq
+      l := 1
+      for _, ok := h[k+l]; ok; _, ok = h[k+l] {
+        l++
+      }
+      maxl = max(maxl, l)
+    }
+  }
+  return maxl
+
+//   if n < 2 {
+//     return n
+//   }
+//   sort.Ints(nums)
+//   maxl := 0
+//   for i:=0;i<n;i++{
+//     l := 1
+//     for i < n-1 && (nums[i]+1 == nums[i+1] || nums[i] == nums[i+1]){
+//       if nums[i]+1 == nums[i+1]{
+//         l++
+//       }
+//       i++
+//     }
+//     maxl = max(maxl, l)
+//   }
+//   return maxl
+// }
+
+// func max(a,b int)int{
+//   if a < b {
+//     return b
+//   }
+//   return a
+}
