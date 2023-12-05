@@ -1,0 +1,81 @@
+func setZeroes(matrix [][]int)  {
+    m := len(matrix)
+    n := len(matrix[0])
+
+    //we can track the rows 0's in first col 
+    // and we can track col o's at first row
+    // but for the first element signify for both the row and col
+    // therefore for the row 0 to be have 0 will be signified by another var
+
+    col0 := 1
+    for i:=0;i<m;i++{
+      for j:=0;j<n;j++{
+        if matrix[i][j] == 0{
+          matrix[i][0] = 0
+          // marking col
+          if j == 0 {
+            col0 = 0
+          }else{
+            matrix[0][j]=0
+          }
+        }
+      }
+    }
+    
+
+    // now mark the inner mat as per the first row and col vals
+    for i:=1;i<m;i++{ // mark all rows as 0 as per first col
+      for j:=1;j<n;j++{
+        // if 0th row or 0th col is marked 0 then make a[i][j] = 0
+        if matrix[0][j] == 0 || matrix[i][0] == 0 {
+          matrix[i][j] = 0
+        }
+      } 
+    }
+
+    if matrix[0][0] == 0{
+      for j:=0;j<n;j++{
+        matrix[0][j] = 0
+      }
+    }
+    if col0 == 0 {
+      for i:=0;i<m;i++{
+        matrix[i][0] = 0
+      }
+    }
+    // fmt.Println(matrix)
+    // for i:=0;i<n;i++{ // mark all cols as 0 as per first col
+    //   if matrix[0][i] == 0 {
+    //     for j:=0;j<m;j++{
+    //       matrix[j][i]=0
+    //     }
+    //   }
+    // }
+
+
+    // h := make(map[int][]int, (m+n))
+    // k := 1
+
+    // // time complexty is O(n2)+O(2n) ~O(n2)
+    // // spce O(m+n) // worst space if all element hv 0
+    // for i, _ := range matrix {
+    //     for j, v := range matrix[i]{
+    //         if v == 0 {
+    //             val := []int{i,j}
+    //             h[k] = val
+    //             k++
+    //         }
+    //     }
+    // }
+
+    // for _,v := range h {
+    //     // make row 0 
+    //     for j:=0; j<n;j++{
+    //         matrix[v[0]][j] = 0
+    //     }
+    //     // make column 0
+    //     for i:=0;i<m;i++{
+    //         matrix[i][v[1]] = 0
+    //     }
+    // }
+}
