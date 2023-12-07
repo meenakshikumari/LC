@@ -1,0 +1,21 @@
+func check(nums []int) bool {
+    n := len(nums)
+    for i:=1;i<n;i++{
+      if nums[i] < nums[i-1]{
+        if  nums[i] > nums[0]{
+          return false
+        }
+        i++
+        for i<n  {
+          if !(nums[i] <= nums[0] && nums[i] >= nums[i-1]) {
+            return false
+          }
+          i++
+        }
+      }
+      // else {
+      //   return false
+      // }
+    }
+    return true
+}
