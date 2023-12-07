@@ -1,0 +1,12 @@
+func removeDuplicates(nums []int) int {
+  cnt := 1
+  idx := 1
+  for i:=1;i<len(nums);i++{
+    if nums[i] != nums[i-1]{
+      nums[idx] = nums[i]
+      idx++
+      cnt++
+    }
+  }
+  return cnt
+}
