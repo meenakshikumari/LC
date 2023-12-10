@@ -1,0 +1,40 @@
+func spiralOrder(matrix [][]int) []int {
+    m := len(matrix)
+    n := len(matrix[0]) // col
+    ans := make([]int, m*n)
+    cnt :=0
+    for i := 0;i<m;i++{
+        //move left
+        j:=i
+        for cnt < m*n && j<n-i{
+            ans[cnt]=matrix[i][j]
+            cnt++
+            j++
+        }
+        //move down
+        j = j-1
+        k := i+1
+        for cnt < m*n && k<m-i{ // one less from start
+            ans[cnt]=matrix[k][j]
+            cnt++
+            k++
+        }
+        //move right
+        k = k-1
+        j = j-1
+        for cnt < m*n && j>=i{
+            ans[cnt]=matrix[k][j]
+            cnt++
+            j--
+        }
+        //move up
+        k = k-1
+        j = j + 1
+        for cnt < m*n && k>i{
+            ans[cnt]=matrix[k][j]
+            cnt++
+            k--
+        }
+    }
+    return ans
+}
