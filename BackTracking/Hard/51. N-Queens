@@ -1,0 +1,70 @@
+import "fmt"
+func solveNQueens(n int) [][]string {
+    mat := make([][]rune, n)
+    for i:=0;i<n;i++{
+        mat[i] = make([]rune, n)
+        for j:=0;j<n;j++{
+            mat[i][j]='.'
+        }
+    }
+    res := [][]string{}
+    NQueen(mat, 0, n, &res)
+    return res
+}
+
+func NQueen(mat [][]rune, i, n int, res *[][]string){
+    if i == n {
+        // fmt.Println(mat)
+        addMatToRes(mat, res, n)
+        return 
+    }
+    for j:=0;j<n;j++{
+        if validPlace(mat,i,j,n){
+            mat[i][j] = 'Q'
+            NQueen(mat, i+1, n, res)
+            mat[i][j] = '.'
+        }
+    }
+    return 
+}
+
+func validPlace(mat [][]rune, r,c, n int) bool{
+    // no need to check for row
+    // check for previous cols
+    for i:=0;i<r;i++{
+        if mat[i][c] == 'Q'{
+            return false
+        }
+    }
+
+    // check for left diagonal upper ones
+    i:=r-1
+    j := c-1
+    for i >= 0 && j >= 0{
+        if mat[i][j]=='Q'{
+            return false
+        }
+        i--
+        j--
+    }
+    // check for right diagonal upper ones
+    i=r-1
+    j = c+1
+    for i >= 0 && j <n{
+        if mat[i][j]=='Q'{
+            return false
+        }
+        i--
+        j++
+    }
+
+    return true
+}
+
+func addMatToRes(mat [][]rune, res *[][]string, n int){
+    r := []string{}
+    for i:=0;i<n;i++{
+        r = append(r,string(mat[i]))
+    }
+    *res = append(*res, r)
+}
