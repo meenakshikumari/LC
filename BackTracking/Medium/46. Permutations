@@ -1,0 +1,28 @@
+func permute(nums []int) [][]int {
+    n := len(nums)
+    a := make([]int, n)
+    var res [][]int
+    permut(nums, a,0,n,&res)
+    return res
+}
+
+func permut(arr, a []int, cnt, n int, res *[][]int){
+    if cnt == n {
+        temp := make([]int, n)
+        copy(temp, a)
+        *res = append(*res, temp)
+        return 
+    }
+    for i:=0;i<n;i++{
+        if arr[i] < 11 {
+            a[cnt] = arr[i]
+            temp := arr[i]
+            arr[i] = 11
+            cnt++
+            permut(arr,a,cnt,n,res)
+            arr[i] = temp
+            cnt--
+        }
+    }
+    return
+}
