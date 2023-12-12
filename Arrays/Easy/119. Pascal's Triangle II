@@ -11,3 +11,5 @@ func getRow(rowIndex int) []int {
     }
     return ans
 }
+// Time: O(rowIndex)
+// space: O(1)
