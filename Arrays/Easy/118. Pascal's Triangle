@@ -1,3 +1,5 @@
+//time: O(numRows*numRows!)
+// space: O(1)
 func generate(numRows int) [][]int {
     res := make([][]int, numRows)
     for i:= 0;i<numRows;i++{
