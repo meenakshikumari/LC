@@ -1,0 +1,59 @@
+//backtracking time: O(2^n) space: O(n)
+
+// func generateParenthesis(n int) []string {
+//     var res []string
+//     var a []rune
+//     backTrack(n, 0,0,&res,a)
+//     return res
+// }
+
+// func backTrack(n, cntO, cntC int, res *[]string, a []rune){
+//     if len(a) == 2*n {  
+//         *res = append(*res, string(a))
+//         return
+//     }
+
+//     if cntO < n{
+//         a = append(a,'(')
+//         backTrack(n, cntO+1, cntC,res,a)
+//         a = a[:len(a)-1]
+//     }
+
+//     if cntO > cntC{
+//         a = append(a,')')
+//         backTrack(n, cntO, cntC+1,res,a)
+//         a = a[:len(a)-1]
+//     }
+//     return 
+// }
+
+// Catalan Numbers variation: https://www.youtube.com/watch?v=3L_hgnFY47Q
+func generateParenthesis(n int) []string {
+    return catalanNumVariation(n)
+}
+
+func catalanNumVariation(n int) []string{
+    dp := make([][]string,n+1)
+    dp[0] = []string{""}
+    dp[1] = []string{"()"}
+
+    for i:=2;i<=n;i++{
+        inner := i-1
+        outer := 0
+
+        for inner >=0 && outer < i{
+        // dp[2] = c0c1 + c1c0
+        // dp[3] = c2c0 + c1c1 + c0c2
+            for _,in := range dp[inner]{
+                for _,out := range dp[outer]{
+                    a := "("+in+")"+out
+                     dp[i] = append(dp[i], a)
+                }
+            }
+
+            inner--
+            outer++
+        }
+    }
+    return dp[n]
+}
