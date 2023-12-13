@@ -1,0 +1,70 @@
+func merge(nums1 []int, m int, nums2 []int, n int)  {
+    // merge & sort method
+    // var i, temp int
+    // time: O(m*nlogn)+O(n)
+    // space: O(1)
+    // if n > 0{
+    //     for i<m {
+    //     if nums1[i] > nums2[0]{
+    //         // swap nums1[i] & nums2[j]
+    //         temp = nums1[i]
+    //         nums1[i] = nums2[0]
+    //         nums2[0] = temp
+
+    //         sort.Ints(nums2)
+    //     }
+    //     i++
+    // }
+    // nums1 = nums1[:m]
+    // nums1 = append(nums1, nums2...)
+    // } 
+
+    // space O(m)
+    // time O(m+n)
+    // var i,j,k int
+    // nums1Copy := make([]int, m)
+    // copy(nums1Copy, nums1[:m])
+    // for i<m && j<n{
+    //     if nums1Copy[i] > nums2[j]{
+    //         nums1[k] = nums2[j]
+    //         j++
+    //     }else{
+    //         nums1[k] = nums1Copy[i]
+    //         i++
+    //     }
+    //     k++
+    // }
+    // for i< m {
+    //     nums1[k] = nums1Copy[i]
+    //     i++
+    //     k++
+    // }
+    
+    // for j<n{
+    //     nums1[k] = nums2[j]
+    //         j++
+    //         k++
+    // }
+
+    // time O(m+n)
+    // space O(n)
+    // 3ptr from backside
+    i := m-1
+    j:=n-1
+    k := m+n-1
+
+    for k>=0{
+        //check the max value
+        if j < 0 {
+            break
+        }
+        if i>=0 && nums1[i] > nums2[j]{
+            nums1[k]=nums1[i]
+            i--
+        }else {
+            nums1[k] = nums2[j]
+            j--
+        }
+        k--
+    }
+}
