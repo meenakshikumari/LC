@@ -1,0 +1,58 @@
+//https://www.youtube.com/watch?v=uqDUcE9XSfo
+// time: O(nlogn)
+//space: O(n)
+func merge(nums [][]int, c []int, l,m,h int){
+    i:=l
+    j:=m+1
+    var temp [][]int
+    for i<=m && j<=h{
+        if nums[i][0]<=nums[j][0]{ // right array is greater 
+            temp = append(temp, nums[j])
+            j++
+        }else{ // left array is greater
+            c[nums[i][1]] += h-j+1
+            temp = append(temp, nums[i])
+            i++
+        }
+    }
+
+    for i<=m {
+        temp = append(temp, nums[i])
+        i++
+    }
+
+    for j<=h{
+        temp = append(temp, nums[j])
+        j++
+    }
+
+    for k:=l;k<=h;k++{
+        nums[k]=temp[k-l]
+    }
+}
+
+func countSmaller(nums []int) []int {
+    count := make([]int, len(nums))
+    numsCopy := make([][]int, len(nums))
+    for i, v := range nums{
+        numsCopy[i] = append(numsCopy[i],v)
+        numsCopy[i] = append(numsCopy[i],i)
+    }
+
+    // using merge sort and its distorting the array by sorting nums // NOTE for the interviwerer 
+    // and in case there is any issue we can keep the copy of nums
+    // TIME: O(2nlogn) space: O(n)
+    mergeSort(numsCopy,count,0,len(nums)-1)
+    fmt.Println(nums)
+    return count
+}
+func mergeSort(nums [][]int, c []int, l,h int){
+    if l>=h{
+        return
+    }
+    mid := (l+h)/2
+    mergeSort(nums,c,l,mid) // O(logn)
+    mergeSort(nums,c,mid+1,h) // O(logn)
+    merge(nums,c,l,mid,h) // O(n)
+}
+
