@@ -1,0 +1,69 @@
+func reversePairs(nums []int) int {
+    count := 0
+    
+    // O(n^2) TLE for larger o/p
+    // for i:=0;i<len(nums)-1;i++{
+    //     for j:=i+1;j<len(nums);j++{
+    //         if nums[i]>2*nums[j]{
+    //             count++
+    //         }
+    //     }
+    // }
+
+    // using merge sort and its distorting the array by sorting nums
+    // and in case there is any issue we can keep the copy of nums
+    // TIME: O(2nlogn) space: O(n)
+    mergeSort(nums,0,len(nums)-1,&count)
+    return count
+}
+func mergeSort(nums []int, l,h int, c *int){
+    if l>=h{
+        return
+    }
+    mid := (l+h)/2
+    mergeSort(nums,l,mid,c) // O(logn)
+    mergeSort(nums,mid+1,h,c) // O(logn)
+    merge(nums,l,mid,h, c) // O(n)
+}
+
+func merge(nums []int, l,m,h int, c *int){
+    i:=l
+    j:=m+1
+    for i<=m && j<=h{ // O(m+n) ~O(n)
+        if nums[i] > 2*nums[j]{
+            *c += (m-i+1)
+            j++
+        }else{
+            i++
+        }
+    }
+
+    i=l
+    j=m+1
+
+    // O(n)
+    var temp []int
+    for i<=m && j<=h{
+        if nums[i]<=nums[j]{
+            temp = append(temp, nums[i])
+            i++
+        }else{
+            temp = append(temp, nums[j])
+            j++
+        }
+    }
+
+    for i<=m {
+        temp = append(temp, nums[i])
+        i++
+    }
+
+    for j<=h{
+        temp = append(temp, nums[j])
+        j++
+    }
+
+    for k:=l;k<=h;k++{
+        nums[k]=temp[k-l]
+    }
+}
