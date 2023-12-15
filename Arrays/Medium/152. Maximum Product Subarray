@@ -1,0 +1,26 @@
+func maxProduct(nums []int) int { //https://youtu.be/hnswaLJvr6g?t=1192
+// time: O(n) space: O(1)
+/* obersvation:
+1. if all +ve then max will be product of all the elements
+2. if -ve elements are in even numbers, max= product of all the elements
+3. if -ve elements are in odd num, then max=max(prefix, suffix of all the elemtns for each -ve elements)
+4. if there is 0 then eval max product of left and right side of the 0 element
+*/
+
+    n := len(nums)
+    mp := -11 // max product
+    prefix := 1
+    suffix := 1
+    for i, _ := range nums {
+        if prefix == 0 {
+            prefix = 1
+        }
+        if suffix == 0 {
+            suffix = 1
+        }
+        prefix *= nums[i]
+        suffix *= nums[n-i-1]
+        mp = max(mp, max(prefix, suffix))
+    }
+    return mp
+}
