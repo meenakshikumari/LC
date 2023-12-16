@@ -1,0 +1,35 @@
+func search(nums []int, target int) int {
+    return BinarySearch(nums,0,len(nums)-1, target)
+}
+
+func BinarySearch(nums []int, l,h,target int) int{
+    // time: O(logn)
+    // space: O(1)
+    //recursive manner
+    // if l<=h{
+    //     m := (l+h)/2
+    //     if target == nums[m]{
+    //         return m
+    //     }else if target < nums[m]{ // target smaller then middle element move left
+    //         return BinarySearch(nums,l,m-1, target)
+    //     }else{
+    //         return BinarySearch(nums,m+1,h, target)
+    //     }
+    // }
+    // return -1
+    
+    // iterative sol
+    i := l
+    j := h
+    for i<=j{
+        m := (i+j)/2
+        if target == nums[m]{
+            return m
+        }else if target < nums[m]{ // target smaller then middle element move left
+          j = m-1
+        }else{
+            i = m+1
+        }
+    }
+    return -1
+}
