@@ -2,27 +2,37 @@ func findMin(nums []int) int {
     l := 0
     h := len(nums) -1
     mIN := 5001 // since max allowed is 5000
+    lMin := 0
     for l <= h{
         m := (l+h)/2
         // pick the sorted half n it's min val
-        // if nums[l] <= nums[m]{
-        //     mIN = min(mIN, nums[l])
-        //     l = m+1
-        // }else{
-        //     mIN = min(mIN, nums[m])
-        //     h = m-1
-        // }
-        if nums[m] < mIN{
-            mIN = nums[m]
-        }
-
-        if nums[l] <= nums[m] && nums[m] <= nums[h]{ // not rotated
-            return min(mIN, nums[l])
-        }else if nums[m] > nums[h]{ // smaller is in right side
+        if nums[l] <= nums[m]{
+            // mIN = min(mIN, nums[l])
+            if mIN > nums[l]{
+                mIN = nums[l]
+                lMin = l
+            }
             l = m+1
-        }else if nums[l] > nums[m]{ // smaller is in left side
+        }else{
+            // mIN = min(mIN, nums[m])
+            if mIN > nums[m]{
+                mIN = nums[m]
+                lMin = m
+            }
             h = m-1
         }
+        // if nums[m] < mIN{
+        //     mIN = nums[m]
+        // }
+
+        // if nums[l] <= nums[m] && nums[m] <= nums[h]{ // not rotated
+        //     return min(mIN, nums[l])
+        // }else if nums[m] > nums[h]{ // smaller is in right side
+        //     l = m+1
+        // }else if nums[l] > nums[m]{ // smaller is in left side
+        //     h = m-1
+        // }
     }
+    fmt.Println("lmin: ", lMin) // this is getting the k val that is roatedt k val
     return mIN
 }
