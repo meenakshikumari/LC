@@ -1,6 +1,6 @@
 func mySqrt(x int) int {
     // brute force O(n) time
-    sqrt := 1
+    // sqrt := 1
     // for i:=1;i<x;i++{
     //     if i*i<=x{
     //       sqrt = i  
@@ -13,12 +13,13 @@ func mySqrt(x int) int {
 
     for l<=h{
         m := (l+h)/2
-        if m*m <= x {
-            sqrt = m
+        if m*m <= x { // floor of sqrt(n) 
+            // sqrt = m
             l = m+1
         }else{
             h = m-1
         }
     }
-    return sqrt
+    return h
+    // max integrers where i*i <= x or floor of sqrt(n)
 }
