@@ -1,0 +1,24 @@
+func mySqrt(x int) int {
+    // brute force O(n) time
+    sqrt := 1
+    // for i:=1;i<x;i++{
+    //     if i*i<=x{
+    //       sqrt = i  
+    //     }
+    // }
+
+    // using Binary Search
+    l := 0
+    h := x
+
+    for l<=h{
+        m := (l+h)/2
+        if m*m <= x {
+            sqrt = m
+            l = m+1
+        }else{
+            h = m-1
+        }
+    }
+    return sqrt
+}
