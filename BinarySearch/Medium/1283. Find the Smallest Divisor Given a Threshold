@@ -1,0 +1,40 @@
+func smallestDivisor(nums []int, threshold int) int {
+    h := findMax(nums)
+    // brite force -> TLE -> O(h)*O(N)
+    // for i:=1;i<=h;i++{ 
+    //     if divisorSumIsPossible(nums, threshold, i) {
+    //         return i
+    //     }
+    // }
+
+    // BS on answer O(log h)*O(N)
+    l := 1
+    for l<=h{
+        m := (l+h)/2
+        if divisorSumIsPossible(nums, threshold, m) {
+            h = m-1
+        }else{
+            l = m+1
+        }
+    }
+    return l
+}
+
+func divisorSumIsPossible(arr []int, t, n int)bool{ // O(N)
+    sum := 0
+    for _, v := range arr{
+        sum += int(math.Ceil(float64(v)/float64(n)))
+    }
+    if sum <= t {
+        return true
+    }
+    return false
+}
+
+func findMax(arr []int) int{ // O(n)
+    h := 0
+    for _, v := range arr{
+        h = max(h, v)
+    }
+    return h
+}
