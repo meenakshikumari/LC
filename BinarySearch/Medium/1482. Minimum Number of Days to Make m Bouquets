@@ -13,7 +13,7 @@ func minDays(bloomDay []int, m int, k int) int {
     //     }
     // }
 
-    // Binary Search on answers
+    // Binary Search on answers O(N)*O(log(max-min+1))
     for l<=h{
         mid := (l+h)/2
         if countNumOfBouquetsIsPossible(bloomDay, mid,k,m) {
