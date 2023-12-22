@@ -1,0 +1,62 @@
+func minDays(bloomDay []int, m int, k int) int {
+    // if n < m*k then it's not possible
+    if len(bloomDay) < m*k{
+        return -1
+    }
+
+    l := findMinDay(bloomDay)
+    h := findMaxDay(bloomDay)
+    // Brute force -> caused TLE // O(max-min+1)*O(n)
+    // for i:=l;i<=h;i++{
+    //     if countNumOfBouquetsIsPossible(bloomDay, i,k,m) {
+    //         return i
+    //     }
+    // }
+
+    // Binary Search on answers
+    for l<=h{
+        mid := (l+h)/2
+        if countNumOfBouquetsIsPossible(bloomDay, mid,k,m) {
+            h = mid-1
+        }else{
+            l = mid+1
+        }
+    }
+    return l
+}
+
+func countNumOfBouquetsIsPossible(arr []int, n, k,m int)bool{ // O(n)
+    counter := 0
+    numOfBouquets := 0
+    for _, v := range arr {
+        if v <= n { // flower hv bloomed
+            counter++
+            continue
+        }
+        // not bloomed
+        numOfBouquets += counter/k // num of consequtive flowers/num of adjacent flowers from the garden.
+        counter = 0
+        
+    }
+    numOfBouquets += counter/k
+    if numOfBouquets >=m{
+        return true
+    }
+    return false
+}
+
+func findMaxDay(arr []int) int{ // O(n)
+    h := math.MinInt32
+    for _, v := range arr{
+        h = max(h, v)
+    }
+    return h
+}
+
+func findMinDay(arr []int) int{ // O(n)
+    l := math.MaxInt32
+    for _, v := range arr{
+        l = min(l, v)
+    }
+    return l
+}
