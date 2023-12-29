@@ -1,0 +1,15 @@
+func isIsomorphic(s string, t string) bool {
+    h1 := make(map[byte]byte)
+    h2 := make(map[byte]byte)
+    for i:=0;i<len(s);i++{
+        _, ok1 := h1[s[i]]
+        _, ok2 := h2[t[i]]
+        if !ok1 && !ok2 {
+            h1[s[i]] = t[i]
+            h2[t[i]] = s[i]
+        }else if h1[s[i]] != t[i] || h2[t[i]] != s[i]{
+            return false
+        }
+    }
+    return true
+}
