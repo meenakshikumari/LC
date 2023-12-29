@@ -1,0 +1,19 @@
+func isAnagram(s string, t string) bool {
+    if len(s) != len(t){
+        return false
+    }
+
+    h := make(map[rune]int)
+    for _, v := range s {
+        h[v] += 1
+    }
+
+    for _, v := range t{
+        val, ok := h[v] 
+        if !ok || val < 1{
+            return false
+        }
+        h[v] -= 1 
+    }
+    return true
+}
