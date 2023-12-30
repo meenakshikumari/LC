@@ -1,0 +1,20 @@
+func rotateString(s string, goal string) bool {
+    return len(s) == len(goal) &&  strings.Contains(s+s, goal)
+    // if goal == s {
+    //     return true
+    // }
+    // s = reverse(s)
+    // for i:=len(s)-1;i>=0;i--{
+    //     if reverse(s[:i])+reverse(s[i:]) == goal{
+    //         return true
+    //     }
+    // }
+    // return false
+}
+
+// func reverse(str string) (result string) { 
+//     for _, v := range str { 
+//         result = string(v) + result 
+//     } 
+//     return
+// } 
