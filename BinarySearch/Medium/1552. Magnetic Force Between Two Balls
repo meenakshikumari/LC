@@ -1,0 +1,51 @@
+func maxDistance(position []int, m int) int {
+    sort.Ints(position)
+    l := minDist(position) // minDis in b/w stalls
+    h := position[len(position)-1]-position[0] // maxRng
+    // maxDistance := 0
+
+    // TLE for BruteForce sol
+    // for i:= l; i<= h;i++{
+    //     if canWePlace(position,m,i){
+    //         maxDistance = max(maxDistance, i)
+    //     }else{
+    //         return maxDistance
+    //     }
+    // }
+
+    // Binary search from minDis to maxRng O(nLogn)+O(log(maxRng-minDist))+O(n)
+    for l<=h{
+        mid := (l+h)/2
+        if canWePlace(position,m,mid){
+            l = mid + 1
+        }else{
+            h = mid-1
+        }
+    }
+    return h
+}
+
+func canWePlace(pos []int, k, dist int)bool{
+    last := pos[0]
+    cntBall := 1
+    for i:=1;i<len(pos);i++{
+        if pos[i]-last >= dist{
+            last = pos[i]
+            cntBall += 1
+        }
+        if cntBall >= k {
+            return true
+        }
+    }
+    return false
+}
+
+func minDist(pos []int)int{
+    min := math.MaxInt32
+    for i:=1;i<len(pos);i++{
+        if min > pos[i]-pos[i-1]{
+            min = pos[i]-pos[i-1]
+        }
+    }
+    return min
+}
