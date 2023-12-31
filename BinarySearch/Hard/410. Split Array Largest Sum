@@ -1,0 +1,44 @@
+func splitArray(nums []int, k int) int {
+    // if k==len(nums){
+    //     return slices.Max(nums)
+    // }
+    l := slices.Max(nums)//if k == n
+    h := 0 // if k = 1 then sumation of all arr
+    for _, v := range nums{
+        h += v
+    }
+
+    // if k == 1{
+    //     return h
+    // }
+    // m := l // max will be the max element in the arr
+    // for i:= l; i<=h;i++{
+    //     if checkIfPossible(i,nums) == k {
+    //         m = max(m, i)
+    //     }
+    // }
+    // return m
+    
+    for l<=h{
+        mid := (l+h)/2
+        if checkIfPossible(mid,nums) >= k {
+            l = mid + 1
+        }else{
+            h = mid-1
+        }
+    }
+    return l
+}
+
+func checkIfPossible(val int, quant []int)int{
+    sum := 0
+    cnt := 0
+    for _, v := range quant{
+        sum += v
+        if sum > val {
+            cnt +=1
+            sum = v
+        }
+    }
+    return cnt
+}
