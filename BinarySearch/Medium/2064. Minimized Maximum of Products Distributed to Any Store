@@ -1,0 +1,43 @@
+func minimizedMaximum(n int, quantities []int) int {
+    // if n 
+    l := 1 // if n == sum of quantities i->0 to n-1
+    h := slices.Max(quantities)
+    // h := findMax(quantities)// max of quantities when n == len(quantities)
+    // for i:= l; i<=h;i++{
+    //     if checkIfPossible(i,quantities) <= n {
+    //         return i
+    //     }
+    // }
+    //BinarySearch O(N) + O(log(max(quant)))
+    for l<=h{
+        mid := (l+h)/2
+        if checkIfPossible(mid,quantities) > n {
+            l = mid + 1
+        }else{
+            h = mid - 1
+        }
+    }
+    return l
+}
+
+func findMax(quantities []int)int{
+    m := 0 
+    for _,v := range quantities{
+        if m < v {
+            m= v
+        }
+    }
+    return m
+}
+
+func checkIfPossible(val int, quant []int)int{
+    sum := 0
+    for _, v := range quant{
+        sum += int(math.Ceil(float64(v)/float64(val)))
+        // sum += v/val
+        // if v%val > 0 {
+        //     sum += 1
+        // }
+    }
+    return sum
+}
