@@ -1,0 +1,48 @@
+func searchMatrix(matrix [][]int, target int) bool {
+    // bs over rows since they are already sorted O(n)+O(logm)
+    // for i:=0;i<len(matrix);i++{
+    //     l := 0
+    //     h:=len(matrix[i])-1
+    //     if matrix[i][l] <= target && matrix[i][h] >= target{
+    //         for (l<=h){
+    //             mid := (l+h)/2
+    //             if matrix[i][mid] >= target{
+    //                 h = mid -1
+    //             }else{
+    //                 l = mid +1
+    //             }
+    //         }
+    //         if l<len(matrix[i]) && matrix[i][l]==target{
+    //             return true
+    //         }
+    //     }
+    // }
+    // return false
+
+
+    // BS over the 2d O(log(m*n))
+    // imagine this 2d arr to be flatten
+    // l = 0 & h = n*m-1 and 
+    // at 0th idx no of element will be 0,n,2n, (n is len of column)
+    // therefore row = no of element/n
+    // for col = no of element%n
+    // therefore (no of element/n, no of element%n)
+    // m := len(matrix)
+    // n := len(matrix[0])
+    l := 0
+    h := len(matrix)*len(matrix[0])-1
+    for l<=h{
+        mid := (l+h)/2
+        row := mid/len(matrix[0])
+        col := mid%len(matrix[0])
+        if matrix[row][col]==target{
+            return true
+        }
+        if matrix[row][col]<target{//move right
+            l = mid+1
+        }else{
+            h = mid-1
+        }
+    }
+    return false
+}
