@@ -1,0 +1,47 @@
+func findPeakGrid(mat [][]int) []int {
+    //O(m log(n))
+    l := 0
+    h := len(mat[0])-1
+    if h == 0 {
+        return []int{0,0}
+    }
+
+    for l<=h{
+        m := (l+h)/2
+        r := findMaxElemRow(mat, m)
+
+        var left, right int
+        if m > 0 && m < len(mat[0])-1{
+            left = mat[r][m-1]
+            right = mat[r][m+1]
+        }else if m >=len(mat[0])-1{
+            left = mat[r][m-1]
+            right = -1
+        }else{
+            left = -1
+            right = mat[r][m+1]
+        }
+
+        // need to check left and right
+        if left < mat[r][m] && right < mat[r][m]{
+            return []int{r,m}
+        }else if left > mat[r][m]{ // move left
+            h = m-1
+        }else if right > mat[r][m]{
+            l = m + 1
+        }
+    }
+    return []int{-1,-1}
+}
+
+func findMaxElemRow(arr [][]int, col int)int{
+    m := 0
+    idx := -1
+    for i:=0;i<len(arr);i++{
+        if arr[i][col] > m {
+            m = arr[i][col]
+            idx = i
+        }
+    }
+    return idx
+}
