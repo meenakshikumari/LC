@@ -1,0 +1,27 @@
+func frequencySort(s string) string {
+    //time: O(2n) // space: O(n)
+    h := make(map[rune]int)
+    for _, v := range s { //O(n)
+        h[v] += 1
+    }
+
+    i:=len(h) 
+    var res strings.Builder
+    for i>0{ //O(n)
+        max := 0
+        var val rune
+        for k, v := range h{
+            if max < v {
+                max = v
+                val = k
+            }
+        }
+        // we hv go the max, now add to resultant string
+        for i:=0;i<max; i++{
+            res.WriteString(string(val))
+        }
+        delete(h, val)
+        i=len(h)
+    }
+    return res.String()
+}
