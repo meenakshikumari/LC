@@ -24,4 +24,38 @@ func frequencySort(s string) string {
         i=len(h)
     }
     return res.String()
+
+    //another solution
+    h := make(map[rune]int)
+    for _, v := range s { //O(n)
+        h[v] += 1
+    }
+
+    // r := make([]rune, len(s))
+    sortedH := make(map[int][]rune) 
+    for k, v := range h{
+        if val, ok := sortedH[v]; ok {
+            sortedH[v] = append(val, k)
+        }else{
+            sortedH[v] = []rune{k}
+        }
+    }
+
+    keys := make([]int, 0, len(sortedH))
+ 
+    for k := range sortedH{
+        keys = append(keys, k)
+    } 
+    sort.Ints(keys)
+    var res strings.Builder
+    for i:=len(keys)-1; i>=0;i--{ // iterate from back for max val
+        val := sortedH[keys[i]]
+        v := keys[i]
+        for j:=0;j<len(val);j++{
+            for i:=0;i<v;i++{
+                res.WriteString(string(val[j]))
+            }
+        }
+    }
+    return res.String()
 }
