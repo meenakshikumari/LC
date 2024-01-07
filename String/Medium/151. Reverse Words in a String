@@ -1,5 +1,13 @@
 func reverseWords(s string) string {
-   func reverseWords(s string) string {
+    alt := strings.Fields(s)
+    for i:=0;i<len(alt)/2;i++{
+        temp := alt[i]
+        alt[i] = alt[len(alt)-i-1]
+        alt[len(alt)-i-1] = temp
+    }
+    return strings.Join(alt, " ")
+    // arr := strings.Split(alt, "")
+    sort.Strings(alt)
     var start, end int
     var ans strings.Builder
     for i:=len(s)-1; i>=0;i--{
@@ -8,8 +16,7 @@ func reverseWords(s string) string {
                 if ans.String() != ""{
                     ans.WriteString(string(" "))
                 }
-                ans.WriteString(string(s[0:1]))
-                return ans.String()
+                ans.WriteString(string(s[0]))
             }
             end = i
             continue
