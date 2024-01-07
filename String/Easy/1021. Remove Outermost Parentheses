@@ -1,0 +1,19 @@
+func removeOuterParentheses(s string) string {
+    var ans strings.Builder //O(n) time // O(n) space
+    counterOpen := 1
+    for i:=1;i<len(s)-1; i++{
+        if s[i] == '(' {       
+            if counterOpen > 0{
+                ans.WriteString(string(s[i]))
+            }
+            counterOpen += 1
+        }else{
+            counterOpen -= 1
+            if counterOpen > 0{
+                ans.WriteString(string(s[i]))
+            }
+        }
+    }
+    
+    return ans.String()
+}
