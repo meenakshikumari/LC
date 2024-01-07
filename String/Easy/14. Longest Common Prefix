@@ -1,0 +1,31 @@
+func longestCommonPrefix(strs []string) string {
+    var common string
+    // if len(strs) < 2 || len(strs[0])==0{return strs[0]}
+    common = strs[0]
+    
+    // // we hv got the common from first two words
+    // for i:=0;i<len(strs[0]);i++{
+    //     if i == len(strs[1]) || strs[0][i] != strs[1][i]{break}
+        
+    //     if strs[0][i] == strs[1][i]{
+    //         common += string(strs[0][i])
+    //     }
+    //  }
+    // we need to get the common from rest
+    for _,v := range strs[1:]{
+        if len(v) == 0 {return ""}
+        for j:=0; j<len(common);j++{
+            if j == len(v) {
+                common=common[:j]
+                break
+            }
+            if v[j] != common[j]{
+                common = common[:j]
+          }
+            
+         }
+    }
+    
+    return common
+    
+}
