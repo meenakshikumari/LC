@@ -1,0 +1,32 @@
+func myAtoi(s string) int { // O(n) time O(1)space
+    res := 0
+    isNeg := false
+    s = strings.TrimSpace(s)
+    for i, v := range s{
+        if i == 0{
+            if v == '-'{
+                isNeg = true
+                continue
+            }else if v == '+'{
+                continue
+            }
+        }
+        val := int(v - '0')
+        if val >=0 && val <= 9{
+            res = res * 10 + val
+        }else{
+            break
+        }
+        
+        if res > math.MaxInt32{
+            if isNeg {
+                return math.MinInt32
+            }
+            return math.MaxInt32
+        }
+    }
+    if isNeg {
+        res = 0 - res
+    }
+    return res
+}
