@@ -1,0 +1,70 @@
+func longestPalindrome(s string) string {
+    // using axis orbit algo: https://www.youtube.com/watch?v=vTlVtLvPQo4&t=1695s
+    var res string
+    n := len(s)
+
+    // for odd length
+    for ax:=0;ax<n;ax++{
+        orb := 1
+        l := 1
+        for ax-orb >=0 && ax+orb<n {
+            if s[ax-orb] == s[ax+orb]{
+                orb++
+                l +=2
+            }else{
+                break
+            }
+        }
+        if l > len(res){
+            start := ax-(l/2)
+            res = s[start:start+l]
+        }
+    }
+
+    // for even length
+    for ax:=0;ax<n-1;ax++{
+        orb := 1
+        l := 0
+        for ax-orb+1 >=0 && ax+orb<n {
+            if s[ax-orb+1] == s[ax+orb]{
+                orb++
+                l +=2
+            }else{
+                break
+            }
+        }
+        if l > len(res){
+            start := ax-(l/2)+1
+            res = s[start:start+l]
+        }
+    }
+    //O(n^2)
+    return res
+
+
+    // time: O(n^3)
+    // res := string(s[0])
+    // for i:=0; i< len(s);i++{
+    //     start := i
+    //     for j:= len(s)-1;j>i;j--{
+    //         if s[start] == s[j]{
+    //             last := j
+    //             k := i
+    //             l := j
+    //             for k<l{
+    //                 if s[k]!=s[l]{
+    //                     break
+    //                 }
+    //                 k++
+    //                 l--
+    //             }
+    //             if k >= l{
+    //                 if len(res) < last-start+1{
+    //                     res = s[start:last+1]
+    //                 } 
+    //             }
+    //         }
+    //     }
+    // }
+    // return res
+}
