@@ -1,0 +1,19 @@
+func lengthOfLongestSubstring(s string) int {
+  // using hash O(n2) time, space: O(n)
+    max := 0
+    n := len(s)
+    for i:=0;i<n;i++{
+        h := make(map[byte]int)
+        h[s[i]] = 1
+        for j:=i+1;j<n;j++{
+            if _, ok := h[s[j]]; ok{  
+                break
+            }
+            h[s[j]] = 1
+        } 
+        if max < len(h){
+            max = len(h)
+        }
+    }
+    return max
+}
