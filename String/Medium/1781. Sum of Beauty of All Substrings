@@ -1,0 +1,38 @@
+func beautySum(s string) int {
+    var sum int
+    n := len(s)
+    for i:=0;i<n-1;i++{
+        freq := make([]int, 27) // 27 chars in english
+        freq[s[i]-'a'] =  1
+        for j:=i+1;j<n;j++{
+            freq[s[j]-'a'] +=  1
+            max := getMaxFreq(freq)
+            min := getMinFreq(freq)
+            if min > 0{
+                sum += max-min
+                // fmt.Println(s[i:j+1], sum)
+            }
+        }
+    }
+    return sum
+}
+
+func getMinFreq(freq []int)int{ // O(27)
+    min := math.MaxInt32
+    for _, v := range freq{
+        if v > 0 && min > v {
+            min = v
+        }
+    }
+    return min
+}
+
+func getMaxFreq(freq []int)int{ // O(27)
+    max := math.MinInt32
+    for _, v := range freq{
+        if max < v {
+            max = v
+        }
+    }
+    return max
+}
