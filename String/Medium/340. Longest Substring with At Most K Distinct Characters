@@ -1,0 +1,53 @@
+func lengthOfLongestSubstringKDistinct(s string, k int) int {
+    // using two ptrs O(2n) space O(k)
+    mx := 0
+    var l, r int
+    h := make(map[byte]int)
+    
+    for (r < len(s)){
+        h[s[r]]++
+        for len(h) > k {
+            h[s[l]] -= 1
+            if h[s[l]] == 0{
+                delete(h, s[l])
+            }
+            l++
+        }
+        mx = max(mx, r-l+1)
+        r++
+    }
+    return mx
+
+    // Time O(n^2) Space O(n)
+    // if k < 1 {
+    //     return 0
+    // }
+    // max := 1
+    // // var sum int
+    // n := len(s)
+    // for i:=0;i<n-k;i++{
+    //     h := make(map[byte]int)
+    //     h[s[i]] = 1
+    //     for j:=i+1;j<n;j++{
+    //         h[s[j]] += 1
+    //         if len(h) ==k{
+    //             // sum++
+    //             freq := 0
+    //             for _, v := range h{
+    //                 freq += v
+    //             }
+    //             if max < freq{
+    //                 max = freq
+    //             }
+    //         }else if len(h) > k{
+    //             break
+    //         }
+    //     } 
+    // }
+    // if max < k{
+    //     return len(s)    
+    // }
+    
+    // fmt.Println(sum) // count of substring with k chars
+    // return max
+}
