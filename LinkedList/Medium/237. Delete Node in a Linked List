@@ -1,0 +1,25 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func deleteNode(node *ListNode) {
+    // copy elements and remove tail
+    // curr := node
+    // var prev *ListNode
+    // // val := node.Val
+    // for curr.Next != nil{
+    //     curr.Val = curr.Next.Val
+    //     prev = curr
+    //     curr = curr.Next
+    // }
+    // prev.Next = nil
+
+    // copy next val to curr and delete next Time: O(1)
+    node.Val = node.Next.Val
+    node.Next = node.Next.Next
+    
+}
+
