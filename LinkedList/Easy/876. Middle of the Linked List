@@ -1,0 +1,35 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+// func middleNode(head *ListNode) *ListNode {
+//     l := getLen(head)
+//     i := 1
+//     for i< l/2+1{
+//         head = head.Next
+//         i++
+//     }
+//     return head
+// }
+
+// func getLen(head *ListNode) int{
+//     var cnt int
+//     for head != nil{
+//         cnt++
+//         head = head.Next
+//     }
+//     return cnt
+// }
+
+// Tortoise-Hare approach
+func middleNode(head *ListNode) *ListNode {
+    slow, fast := head, head
+    for (fast != nil) && (fast.Next != nil){
+        slow = slow.Next
+        fast=fast.Next.Next
+    }
+    return slow
+}
