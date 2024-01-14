@@ -1,0 +1,29 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func hasCycle(head *ListNode) bool {
+    // using tortoise hare approach time:O(n) space: O(1)
+    slow, fast := head, head
+    for (fast != nil) && (fast.Next != nil){
+        slow=slow.Next
+        fast=fast.Next.Next
+        if slow == fast{
+            return true
+        }
+    }
+
+    // using hash time O(n) space: O(n)
+    // h := make(map[*ListNode]int)
+    // for head != nil {
+    //     if _, ok:=h[head]; ok {
+    //         return true
+    //     }
+    //     h[head] = 1
+    //     head = head.Next
+    // }
+    return false
+}
