@@ -12,6 +12,8 @@ func hasCycle(head *ListNode) bool {
         slow=slow.Next
         fast=fast.Next.Next
         if slow == fast{
+            // Detect and remove loop: https://takeuforward.org/data-structure/detect-and-remove-loop-in-a-linked-list/
+            // slow.Next = nil
             return true
         }
     }
