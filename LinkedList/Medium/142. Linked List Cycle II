@@ -1,0 +1,33 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func detectCycle(head *ListNode) *ListNode {
+    slow, fast := head, head
+    for (fast != nil) && (fast.Next != nil){
+        slow=slow.Next
+        fast=fast.Next.Next
+        if slow == fast{
+            fast = head
+            for fast != slow{
+                slow = slow.Next
+                fast = fast.Next
+            }
+            return slow
+        }
+    }
+    return nil
+    
+    // h := make(map[*ListNode]int)
+    // for head != nil {
+    //     if _, ok:=h[head]; ok {
+    //         return head
+    //     }
+    //     h[head] = 1
+    //     head = head.Next
+    // }
+    // return head
+}
