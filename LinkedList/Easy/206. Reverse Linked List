@@ -1,0 +1,46 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func reverseList(head *ListNode) *ListNode {
+    //  using additional ds for storing elements time: O(2n) space: O(n)
+    // var arr []int
+    // curr := head
+    // for curr != nil {
+    //     arr = append(arr, curr.Val)
+    //     curr = curr.Next
+    // }
+
+    // curr = head
+    // for i:= len(arr)-1;i>=0;i--{
+    //     curr.Val = arr[i]
+    //     curr = curr.Next
+    // }
+
+    // Iterative time O(n) space: O(3)
+    // var prev, next *ListNode
+    // temp := head
+    // for temp != nil{
+    //     next = temp.Next
+    //     temp.Next = prev
+    //     prev = temp
+    //     temp = next
+    // }
+    // head = prev
+
+    // Recursive time O(n) space: O(n) for stack
+    if head == nil{
+        return nil
+    }
+    if head.Next == nil {
+        return head
+    }
+    newHead := reverseList(head.Next)
+    next := head.Next
+    head.Next = nil
+    next.Next = head
+    return newHead
+}
