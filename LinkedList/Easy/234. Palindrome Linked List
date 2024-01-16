@@ -1,0 +1,55 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func isPalindrome(head *ListNode) bool {
+    // USing additional space Time: O(2n) space: O(n)
+    // var arr []int
+    // curr := head
+    // for curr != nil{
+    //     arr = append(arr, curr.Val)
+    //     curr = curr.Next
+    // }
+    // curr = head
+    // for i:=len(arr)-1;i>=0;i--{
+    //     if curr.Val != arr[i]{
+    //         return false
+    //     }
+    //     curr = curr.Next
+    // }
+    // return true
+
+    // Optimised 
+    // find middle node of LL
+    slow, fast := head, head 
+    for fast.Next != nil && fast.Next.Next != nil { // O(n/2)
+        slow = slow.Next
+        fast = fast.Next.Next
+    }
+    slow.Next = reverseLL(slow.Next)
+    // slow is at middle
+    slow = slow.Next
+    fast = head
+    for slow != nil{
+        if fast.Val != slow.Val{
+            return false
+        }
+        slow = slow.Next
+        fast = fast.Next
+    }
+    return true
+}
+
+func reverseLL(curr *ListNode)*ListNode{
+    var prev, next *ListNode
+    for curr != nil{
+        next = curr.Next
+        curr.Next = prev
+        prev = curr
+        curr = next
+    }
+    return prev
+}
