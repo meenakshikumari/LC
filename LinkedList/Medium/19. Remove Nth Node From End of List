@@ -1,0 +1,49 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+    // Time: O(2n) space: O(1)
+    // curr := head
+    // var cnt int
+    // for curr != nil{
+    //     cnt++
+    //     curr = curr.Next
+    // }
+    // if n==cnt{ // delete head
+    //     return head.Next
+    // }
+    // cnt -= (n)// 3
+    // curr = head
+    // for cnt > 0 {
+    //     cnt -=1
+    //     if cnt == 0{ //delete tail
+    //         break
+    //     }
+    //     curr = curr.Next
+    // }
+    // curr.Next = curr.Next.Next
+
+    // O(n) time
+    fast, slow := head, head
+    for n > 0{
+        fast = fast.Next
+        if fast == nil{ // if deleteing fist node
+            return slow.Next
+        }
+        n--
+    }// fast is at Nth node
+
+    for fast != nil && fast.Next != nil{ // fast will go till end and slow= len-n
+        fast = fast.Next
+        if fast == nil{ // if deleteing last node
+            break
+        }
+        slow = slow.Next
+    }
+    slow.Next = slow.Next.Next
+    return head
+}
