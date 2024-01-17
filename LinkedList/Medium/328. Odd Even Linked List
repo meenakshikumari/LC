@@ -1,0 +1,51 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func oddEvenList(head *ListNode) *ListNode {
+    if  head != nil && head.Next != nil{
+    // using extra space O(n) time O(2n)
+    //     var arr []int
+    //     o := head
+    //     for o != nil && o.Next != nil{ // adding odd vals
+    //         arr = append(arr, o.Val)
+    //         o = o.Next.Next
+    //     }
+    //     if o!= nil{
+    //         arr = append(arr, o.Val)
+    //     }
+        
+    //     e := head.Next
+        
+    //     for e != nil && e.Next != nil{ // adding odd vals
+    //         arr = append(arr, e.Val)
+    //         e = e.Next.Next
+    //     }
+    //     if e!= nil{
+    //         arr = append(arr, e.Val)
+    //     }
+    //     o = head
+    //     for i:=0;i<len(arr);i++{
+    //         o.Val = arr[i]
+    //         o = o.Next
+    //     }
+
+    // without any extra space
+        odd := head
+        even := head.Next
+        evenHead := head.Next
+
+        for even != nil && even.Next != nil{// since even will always be ahead
+            odd.Next = odd.Next.Next
+            even.Next = even.Next.Next
+            odd = odd.Next
+            even = even.Next
+        }
+        odd.Next = evenHead
+    }
+
+    return head
+}
