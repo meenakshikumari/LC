@@ -1,0 +1,93 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+// func sortList(head *ListNode) *ListNode {
+    // using extra arr O(n) and O(2n) time
+    // curr := head
+    // var arr []int
+    // for curr != nil{
+    //     arr = append(arr, curr.Val)
+    //     curr = curr.Next
+    // }
+
+    // sort.Ints(arr)
+    // curr = head
+    // for i:=0;i<len(arr);i++{
+    //     curr.Val = arr[i]
+    //     curr = curr.Next
+    // }
+    // return head
+// }
+
+
+// using mrge sort top to bottom split and merge
+func sortList(head *ListNode) *ListNode { //O(nlogn) time space O(n)
+    if head != nil && head.Next != nil {
+        mid := getMid(head)
+        left := sortList(head)
+        right := sortList(mid)
+        head = merge(left, right)
+    }
+    return head
+}
+
+func getMid(head *ListNode) *ListNode{
+    slow, fast := head, head
+    var prev *ListNode
+    for fast != nil && fast.Next != nil {
+        prev = slow
+        slow=slow.Next
+        fast = fast.Next.Next
+    }
+    prev.Next = nil
+    return slow
+}
+
+func merge(left, right *ListNode) *ListNode{ // space O(n)
+    var temp, h *ListNode
+    for left != nil && right != nil{
+        if left.Val < right.Val {
+            if temp == nil{
+                temp = left
+                h = temp
+            }else{
+                temp.Next = left
+                temp = temp.Next
+            }
+            left = left.Next
+        }else{
+            if temp == nil{
+                temp = right
+                h = temp
+            }else{
+                temp.Next = right
+                temp = temp.Next
+            }
+            right = right.Next
+        }
+    }
+
+    if left != nil{
+        if temp == nil{
+            temp = left
+            h = temp
+        }else{
+            temp.Next = left
+            temp = temp.Next
+        }
+    }
+    if right != nil {
+        if temp == nil{
+            temp = right
+            h = temp
+        }else{
+            temp.Next = right
+            temp = temp.Next
+        }
+    }
+    return h
+}
