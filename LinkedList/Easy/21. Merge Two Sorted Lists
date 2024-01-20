@@ -1,0 +1,31 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+    dummyNode := &ListNode{-111, nil}
+    head := dummyNode
+    for list1 != nil && list2 != nil{
+        if list1.Val <= list2.Val{
+            dummyNode.Next = list1
+            list1 = list1.Next
+        }else{
+            dummyNode.Next = list2
+            list2 = list2.Next
+        }
+        dummyNode = dummyNode.Next
+    }
+
+    if list1 != nil{
+        dummyNode.Next = list1
+    }
+
+    if list2 != nil{
+        dummyNode.Next = list2
+    }
+    return head.Next
+}
+// time:O(list1)+O(list2) sp: O(1)
