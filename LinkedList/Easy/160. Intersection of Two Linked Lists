@@ -1,0 +1,86 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
+    // using hash for checking time: O(headA+headB) space O(headA)
+    // hash := make(map[*ListNode]int)
+    // currA := headA
+    // for currA != nil{
+    //     hash[currA] = 1
+    //     currA = currA.Next
+    // }
+    // currB := headB
+    // for currB != nil{
+    //     if _, ok := hash[currB]; ok {
+    //         return currB
+    //     }
+    //     currB = currB.Next
+    // }
+    // return nil
+
+    // using two ptrs we will trverse the difference
+    // https://youtu.be/u4FWXfgS8jw?t=749
+    // time: O (2(headA+headB)) space: O(1)
+    currA, currB := headA, headB
+    for currA != nil && currB != nil{
+        if currA == currB{
+            return currA
+        }
+        currA = currA.Next
+        currB = currB.Next
+        // smallest one is now nil
+        if currA == nil{
+            currA = headB  
+        }else if currB == nil{
+            currB = headA
+        }else if currA == nil && currB == nil{
+            return nil
+        }
+    }
+    return nil
+
+
+    // get len for both the hashes 
+    // lenA := getLen(headA)
+    // lenB := getLen(headB)
+
+    // currA, currB := headA, headB
+    
+    // got to lenA-lenB which is max go to that diff
+    // time: O(headA+headB)+O(mx(lenA, lenB)) space O(1)
+    // if lenA > lenB{
+    //     diff := lenA-lenB
+    //     for diff > 0{
+    //         currA = currA.Next
+    //         diff--
+    //     }
+    // }else{
+    //     diff := lenB-lenA
+    //     for diff > 0{
+    //         currB = currB.Next
+    //         diff--
+    //     }
+    // }
+
+    // for currA != nil {
+    //     if currA == currB{
+    //         return currA
+    //     }
+    //     currA = currA.Next
+    //     currB = currB.Next
+    // }
+    // return nil
+}
+
+// func getLen(node *ListNode)int{
+//     l := 0
+//     for node != nil{
+//         l++
+//         node = node.Next
+//     }
+//     return l
+// }
