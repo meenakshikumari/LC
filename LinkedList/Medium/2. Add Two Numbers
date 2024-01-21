@@ -1,0 +1,53 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func addTwoNumbers(listA *ListNode, listB *ListNode) *ListNode {
+    head := listA
+    var prev *ListNode
+    var c int
+
+    for listA != nil && listB != nil{
+        listA.Val += listB.Val + c
+        c= 0
+        if listA.Val > 9{
+            c = 1
+            listA.Val %= 10
+        }
+        prev = listA
+        listA = listA.Next
+        listB = listB.Next
+    }
+
+    for listA != nil{
+        listA.Val += c
+        c= 0
+        if listA.Val > 9{
+            c = 1
+            listA.Val %= 10
+        }
+        prev = listA
+        listA = listA.Next
+    }
+
+    for listB != nil{ // if listB is longer
+        listB.Val += c
+        c= 0
+        if listB.Val > 9{
+            c = 1
+            listB.Val %= 10
+        }
+        prev.Next = listB
+        prev = listB
+        listB = listB.Next
+    }
+
+    if c > 0 {
+        node := &ListNode{c, nil}
+        prev.Next = node
+    }
+    return head
+}
