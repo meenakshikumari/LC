@@ -1,0 +1,126 @@
+// https://www.youtube.com/watch?v=0PSB9y8ehbk&pp=ygUSbGZ1IGNhY2hlIGxlZXRjb2Rl
+type Node struct {
+	Key  int
+	Val  int
+	Prev *Node
+	Next *Node
+}
+
+type LFUCache struct {
+	MinF     int
+	Capacity int
+	MapFreq  map[int]*Node
+	MapNode  map[int]*Node
+}
+
+func Constructor(capacity int) LFUCache {
+	return LFUCache{
+		MinF:     math.MaxInt32,
+		Capacity: capacity,
+		MapFreq:  make(map[int]*Node, capacity),
+		MapNode:  make(map[int]*Node, capacity),
+	}
+}
+
+func (this *LFUCache) Get(key int) int {
+    if val, ok := this.MapNode[key]; ok {
+        f := this.getCurrentFreq(val)
+        this.deleteNodeFromFreq(f, val)
+        node := &Node{Key: key, Val: val.Val,}
+        this.insertIntoMapFreq(f+1, node)
+        return val.Val
+	}
+	return -1
+}
+
+func (this *LFUCache) Put(key int, value int) {
+	if val, ok := this.MapNode[key]; ok {
+        f := this.getCurrentFreq(val)
+        this.deleteNodeFromFreq(f, val)
+        node := &Node{Key: key, Val: value,}
+        this.insertIntoMapFreq(f+1, node)
+        return
+	}
+
+	if len(this.MapNode) == this.Capacity {
+		this.deleteLeastFreqNode()
+	}
+    
+    node := &Node{Key: key, Val: value,}
+    this.insertIntoMapFreq(1, node)
+    this.MapNode[key] = node
+    this.MinF = 1
+}
+
+func (this *LFUCache) getCurrentFreq(node *Node) int {
+    for k, v := range this.MapFreq{
+        for v != nil{
+            if v == node{
+                return k
+            }
+            v = v.Next
+        }
+    }
+    return 0
+}
+
+func (this *LFUCache) deleteNodeFromFreq(freq int, node *Node){
+    if this.MapFreq[freq] == node{ // its head
+        if node.Next == nil{
+            delete(this.MapFreq, freq)
+            if this.MinF == freq{
+                this.MinF = math.MaxInt32
+            }
+        }else{
+            node.Next.Prev = nil
+            this.MapFreq[freq] = node.Next
+            node.Next = nil
+        }
+        delete(this.MapNode, node.Key)
+        return
+    }
+    if node.Next != nil{
+        node.Next.Prev = node.Prev
+    }
+    node.Prev.Next = node.Next
+    node.Next = nil
+    node.Prev = nil
+    delete(this.MapNode, node.Key)
+}
+
+func (this *LFUCache) insertIntoMapFreq(freq int, node *Node){
+    // insert to the head of the freq DLL
+    if val, ok := this.MapFreq[freq]; ok { // freq will always have the head
+        node.Next = val
+        val.Prev = node
+    }
+    this.MapFreq[freq] = node
+
+    if this.MinF > freq{
+        this.MinF = freq
+    }
+    this.MapNode[node.Key] = node
+}
+
+func (this *LFUCache) deleteLeastFreqNode(){
+    // delete the min freq tail
+    tail := this.MapFreq[this.MinF]
+    for tail.Next != nil{
+        tail = tail.Next
+    }
+    if tail.Prev == nil{
+        delete(this.MapFreq, this.MinF)
+        this.MinF = math.MaxInt32
+    }else{
+        tail.Prev.Next = nil
+        tail.Prev = nil
+    }
+
+    delete(this.MapNode, tail.Key)
+}
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * obj := Constructor(capacity);
+ * param_1 := obj.Get(key);
+ * obj.Put(key,value);
+ */
