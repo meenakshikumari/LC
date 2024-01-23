@@ -59,19 +59,6 @@ func (this *LRUCache) Put(key int, value int)  {
 }
 
 func (this *LRUCache) DeleteTail() {
-    // if this.Head.Next == nil {
-    //     delete(this.MapNode, this.Head.Key)
-    //     this.Head = &Node{}
-    //     return 
-    // }
-    // tail := this.Head.Next
-    
-    // for tail.Next != nil{
-    //     tail = tail.Next
-    // }
-    
-    // tail.Prev.Next = nil
-    // tail.Prev = nil
     tail := this.DTail.Prev
     delete(this.MapNode, tail.Key)
     tail.Prev.Next = tail.Next
@@ -88,11 +75,3 @@ func (this *LRUCache) MoveToHead(curr *Node){
     this.DHead.Next.Prev = curr
     this.DHead.Next = curr
 }
-
-
-/**
- * Your LRUCache object will be instantiated and called as such:
- * obj := Constructor(capacity);
- * param_1 := obj.Get(key);
- * obj.Put(key,value);
- */
