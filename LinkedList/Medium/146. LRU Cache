@@ -1,3 +1,4 @@
+//https://www.youtube.com/watch?v=xDEuM5qa0zg&pp=ygUSbHJ1IGNhY2hlIGxlZXRjb2Rl
 type Node struct {
     Key int
     Val int
@@ -6,7 +7,6 @@ type Node struct {
 }
 
 type LRUCache struct {
-    Len int
     Capacity int
     MapNode map[int]*Node // key will be key here
     DHead *Node
@@ -27,7 +27,8 @@ func Constructor(capacity int) LRUCache {
 
 func (this *LRUCache) Get(key int) int {
     if val, ok := this.MapNode[key]; ok{
-        this.MoveToHead(val)
+        this.delete(val)
+        this.insert(key, val.Val)
         return val.Val
     }
     return -1
@@ -36,42 +37,28 @@ func (this *LRUCache) Get(key int) int {
 func (this *LRUCache) Put(key int, value int)  {
     if val, ok := this.MapNode[key]; ok{
         val.Val = value
-        this.MoveToHead(val)
+        this.delete(val)
+        this.insert(key, value)
         return
     }
 
-    // if key not present
-    if this.Len == this.Capacity{
-        this.DeleteTail()
-        this.Len -= 1
+    if len(this.MapNode) == this.Capacity{
+        this.delete(this.DTail.Prev)
     }
-    node := &Node{
-        Key: key,
-        Val: value,
-    }
+    this.insert(key,value)
+}
 
-    this.MapNode[key]=node
-    node.Prev = this.DHead
+func (this *LRUCache) insert(key int, value int) { // at head
+    node := &Node{Key:key,Val:value,}
     node.Next = this.DHead.Next
+    node.Prev = this.DHead
     this.DHead.Next.Prev = node
     this.DHead.Next = node
-    this.Len += 1
+    this.MapNode[key] = node
 }
 
-func (this *LRUCache) DeleteTail() {
-    tail := this.DTail.Prev
-    delete(this.MapNode, tail.Key)
-    tail.Prev.Next = tail.Next
-    tail.Next.Prev = tail.Prev
-    tail.Next = nil
-    tail.Prev = nil
-}
-
-func (this *LRUCache) MoveToHead(curr *Node){
-    curr.Prev.Next = curr.Next
-    curr.Next.Prev = curr.Prev
-    curr.Prev = this.DHead
-    curr.Next = this.DHead.Next
-    this.DHead.Next.Prev = curr
-    this.DHead.Next = curr
+func (this *LRUCache) delete(node *Node){
+    node.Next.Prev = node.Prev
+    node.Prev.Next = node.Next
+    delete(this.MapNode, node.Key)
 }
