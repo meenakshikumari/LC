@@ -1,0 +1,98 @@
+type Node struct {
+    Key int
+    Val int
+    Prev *Node
+    Next *Node
+}
+
+type LRUCache struct {
+    Len int
+    Capacity int
+    MapNode map[int]*Node // key will be key here
+    DHead *Node
+    DTail *Node
+}
+
+func Constructor(capacity int) LRUCache {
+    cache := &LRUCache{
+        Capacity: capacity,
+        MapNode: make(map[int]*Node, capacity),
+        DTail: &Node{-2,0,nil,nil},
+        DHead: &Node{-1,0,nil,nil},
+    }
+    cache.DHead.Next = cache.DTail
+    cache.DTail.Prev = cache.DHead
+    return *cache
+}
+
+func (this *LRUCache) Get(key int) int {
+    if val, ok := this.MapNode[key]; ok{
+        this.MoveToHead(val)
+        return val.Val
+    }
+    return -1
+}
+
+func (this *LRUCache) Put(key int, value int)  {
+    if val, ok := this.MapNode[key]; ok{
+        val.Val = value
+        this.MoveToHead(val)
+        return
+    }
+
+    // if key not present
+    if this.Len == this.Capacity{
+        this.DeleteTail()
+        this.Len -= 1
+    }
+    node := &Node{
+        Key: key,
+        Val: value,
+    }
+
+    this.MapNode[key]=node
+    node.Prev = this.DHead
+    node.Next = this.DHead.Next
+    this.DHead.Next.Prev = node
+    this.DHead.Next = node
+    this.Len += 1
+}
+
+func (this *LRUCache) DeleteTail() {
+    // if this.Head.Next == nil {
+    //     delete(this.MapNode, this.Head.Key)
+    //     this.Head = &Node{}
+    //     return 
+    // }
+    // tail := this.Head.Next
+    
+    // for tail.Next != nil{
+    //     tail = tail.Next
+    // }
+    
+    // tail.Prev.Next = nil
+    // tail.Prev = nil
+    tail := this.DTail.Prev
+    delete(this.MapNode, tail.Key)
+    tail.Prev.Next = tail.Next
+    tail.Next.Prev = tail.Prev
+    tail.Next = nil
+    tail.Prev = nil
+}
+
+func (this *LRUCache) MoveToHead(curr *Node){
+    curr.Prev.Next = curr.Next
+    curr.Next.Prev = curr.Prev
+    curr.Prev = this.DHead
+    curr.Next = this.DHead.Next
+    this.DHead.Next.Prev = curr
+    this.DHead.Next = curr
+}
+
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * obj := Constructor(capacity);
+ * param_1 := obj.Get(key);
+ * obj.Put(key,value);
+ */
