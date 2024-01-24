@@ -1,0 +1,70 @@
+type Node struct{
+    URL string
+    Prev *Node
+    Next *Node
+}
+
+type BrowserHistory struct {
+    Curr *Node
+    DHead *Node
+    DTail *Node
+}
+
+func Constructor(homepage string) BrowserHistory {
+    h := &Node{}
+    t := &Node{}
+
+    node := &Node{
+        URL: homepage,
+        Prev: h,
+        Next: t,
+    }
+
+    h.Next = node
+    t.Prev = node
+    return BrowserHistory{
+        Curr: node,
+        DHead: h,
+        DTail: t,
+    }
+}
+
+
+func (this *BrowserHistory) Visit(url string)  {
+    node := &Node{
+        URL: url,
+        Prev: this.Curr,
+        Next: this.DTail,
+    }
+
+    // it will clear the forward history
+    this.Curr.Next = node
+    this.Curr = node
+}
+
+
+func (this *BrowserHistory) Back(steps int) string {
+    for this.Curr.Prev != this.DHead && steps > 0{
+        steps -= 1
+        this.Curr = this.Curr.Prev
+    }
+    return this.Curr.URL
+}
+
+
+func (this *BrowserHistory) Forward(steps int) string {
+     for this.Curr.Next != this.DTail && steps > 0{
+        steps -= 1
+        this.Curr = this.Curr.Next
+    }
+    return this.Curr.URL
+}
+
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * obj := Constructor(homepage);
+ * obj.Visit(url);
+ * param_2 := obj.Back(steps);
+ * param_3 := obj.Forward(steps);
+ */
