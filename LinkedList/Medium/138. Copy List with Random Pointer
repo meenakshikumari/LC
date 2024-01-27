@@ -1,0 +1,72 @@
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ *     Random *Node
+ * }
+ */
+
+func copyRandomList(head *Node) *Node {
+    //  time: O(3n) space: O(!)
+    // store temp in original not using additional space
+    temp := head
+    // made new copied the new node
+    for temp != nil{
+        node := &Node{Val: temp.Val,Next: temp.Next,}
+        temp.Next = node
+        temp = temp.Next.Next
+    }
+
+    // mark random ptr
+    temp = head
+    for temp != nil{
+        if temp.Random != nil{
+            temp.Next.Random = temp.Random.Next
+        }
+        temp = temp.Next.Next
+    }
+
+    // now seperate out the original and copied list
+    dummyHead := &Node{Val: -1,}
+    res := dummyHead
+    temp = head
+    for temp != nil{
+        res.Next = temp.Next
+        res = res.Next
+        temp.Next = res.Next
+        temp = temp.Next
+    }
+    return dummyHead.Next
+
+    // time : O(2n) space: O(n)
+    // temp := head
+    // var newHead, prev *Node
+    // h := make(map[*Node]*Node) // using extra space
+    // for temp != nil{
+    //     node := &Node{Val: temp.Val,}
+    //     if temp == head{
+    //         newHead = node
+    //     }else{
+    //         prev.Next = node
+    //     }
+    //     prev = node
+    //     h[temp] = node
+    //     temp = temp.Next
+    // }
+    // // abv created a copied list
+
+    // // not iterate over the new head and check 
+    // curr := newHead
+    // temp = head
+    // for temp != nil{
+    //     if temp.Random != nil {
+    //         if v, ok := h[temp.Random]; ok {
+    //             curr.Random = v
+    //         }
+    //     }
+    //     curr = curr.Next
+    //     temp = temp.Next
+    // }
+    // return newHead
+}
