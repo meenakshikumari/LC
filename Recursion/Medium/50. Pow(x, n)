@@ -1,7 +1,6 @@
-/*
+
 func myPow(x float64, n int) float64 {
     if n < 0{
-        n = -1 * n
         return 1/pow(x, -n)
     }
     return pow(x, n)
@@ -11,11 +10,13 @@ func pow(x float64, n int) float64 {
     if n == 0 {
         return float64(1)
     }
-    res := x * myPow(x,n-1)
+    res := pow(x, n/2)
+    res *= res
+    if n % 2 == 1 { res *= x}
     return res
 }
-*/
 
+/*
 func myPow(x float64, n int) float64 {
     ans := 1.0
     var isN bool
@@ -38,3 +39,4 @@ func myPow(x float64, n int) float64 {
     }
     return ans
 }
+*/
