@@ -1,0 +1,38 @@
+func countGoodNumbers(n int64) int {
+    odd := n /2
+    even := (n/2) + (n%2)
+    mod:=int(1e9+7)
+    e := pow(5, even)
+    o := pow(4, odd)
+    return (e*o)%mod
+}
+func pow(x int, n int64) int{
+    if n==0{
+        return 1
+    }
+    mod:=int(1e9+7)
+    xn := pow(x, n/2) % mod
+    xn = xn * xn %mod
+    if n % 2 == 1 {
+        xn = xn * x % mod
+    }
+    return xn
+}
+
+// pow iterative
+// func pow(x int, n int64) int{
+//     res := 1
+//     mod:=int(1e9+7)
+//     for n > 0 {
+//         if n%2 == 0{
+//             x = x * x % mod
+//             n = n/2
+//         }else{
+//             res = res * x % mod
+//             n = n-1
+//         }
+//     }
+    
+//     return res
+// }
+
