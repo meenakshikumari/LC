@@ -1,0 +1,14 @@
+func isPowerOfTwo(n int) bool {
+    if n < 1 {
+        return false
+    }
+
+    // convert to binary O(logN)
+    for n > 1{
+        if n % 2 == 1 {
+            return false
+        }
+        n = n / 2
+    }
+    return true
+}
