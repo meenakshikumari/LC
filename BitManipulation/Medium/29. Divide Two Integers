@@ -1,0 +1,42 @@
+func divide(dividend int, divisor int) int {
+    q := 0;
+    // for dividend > divisor{ // can work for positive
+    //     dividend -= divisor
+    //     q++
+    // }
+
+    isNeg := 0
+    if dividend < 0 {
+        isNeg ^= 1
+        dividend = -dividend
+    }
+
+    if divisor < 0 {
+        isNeg ^= 1
+        divisor = -divisor
+    }
+
+    for dividend >= divisor{
+        cnt := 0
+        d := divisor<<1
+        for dividend > d{
+            cnt++
+            d = d<<cnt
+        }
+        q += 1<<cnt
+        dividend -= divisor<<cnt
+    }
+
+    if isNeg==1{
+        q = -q
+        if q < math.MinInt32{
+            return math.MinInt32
+        }
+        return q
+    }
+
+    if q > math.MaxInt32{
+        return math.MaxInt32
+    }
+    return q
+}
