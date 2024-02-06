@@ -1,0 +1,18 @@
+func countBits(n int) []int {
+    res := make([]int, n+1)
+    for i:=0;i<=n;i++{ // O(N*logN)
+        // res[i] = bits.OnesCount(uint(i))
+        res[i] = numOfBits(i)
+    }
+    return res
+}
+
+// get num of set bits
+func numOfBits(n int)int{ // O(logn)
+    res := 0
+    for n>0{
+        res += n & 1
+        n = n >> 1
+    }
+    return res
+}
