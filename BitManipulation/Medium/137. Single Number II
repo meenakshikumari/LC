@@ -1,0 +1,38 @@
+func singleNumber(nums []int) int {
+    var ans int
+    for i:=0; i<32;i++{
+        countBits := 0
+        for i, v := range nums{
+            countBits += v & 1
+            nums[i] = v >> 1
+        }
+
+        ans += (countBits % 3)* (1<<i)
+        if ans >= (1<<31){
+            ans = ans - (1<<32)
+        }
+    }
+    return ans
+    // keep count for every bit and 
+
+    // tn := -1
+    // var tnp1, tnp2 int
+
+    // for _, v := range nums{
+    //     //complement element with 
+    //     cw3n := tn & v
+    //     cw3np1 := tnp1 & v
+    //     cw3np2 := tnp2 & v
+
+    //     //unset bits for tn for every set bots in cw3n
+    //     tn = tn & (^cw3n)
+    //     tnp1 = tnp1 | cw3n
+
+    //     tnp1 = tnp1 & (^cw3np1)
+    //     tnp2 = tnp2 | cw3np1
+
+    //     tnp2 = tnp2 & (^cw3np2)
+    //     tn = tn | cw3np2
+    // }
+    // return tnp1
+}
