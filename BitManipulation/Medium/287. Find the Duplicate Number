@@ -1,0 +1,27 @@
+func findDuplicate(nums []int) int {
+  // Linked List cycle detection method
+  sPtr := nums[0]
+  fPtr := nums[0]
+  for  {
+    sPtr = nums[sPtr]
+    fPtr = nums[nums[fPtr]]
+    if sPtr == fPtr {
+      break
+    }
+  }
+  // fmt.Println(sPtr, fPtr)
+
+  fPtr = nums[0] // or entry
+  for sPtr != fPtr{
+    sPtr = nums[sPtr]
+    fPtr = nums[fPtr]
+  }
+  // fmt.Println(sPtr, fPtr)
+  return sPtr
+}
+/*
+ brute force method maintaining the countr:
+ 1. start iterating over the nums, maintian the hash with element as key and val as num of occurancere
+ 2. if hash key ias already present for the num then it's duplicate num
+ but time: O(n) with space O(n) without modifying arr
+*/
