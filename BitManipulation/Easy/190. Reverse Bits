@@ -1,0 +1,14 @@
+func reverseBits(num uint32) uint32 {
+    // reverse bits
+
+    n := 0
+    var x uint32
+    for n<32 {
+        if num & (1<<n) != 0{ // nth bit is 1
+            x += (1<<(31-n))
+        }
+        n++
+    }
+
+    return x
+}
