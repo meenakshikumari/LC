@@ -1,0 +1,20 @@
+func singleNumber(nums []int) []int {
+    ans := 0
+    for _, v := range nums{
+        ans ^= v
+    }
+    // ans = x ^ b
+    // we need to get which is the rightmost set bit
+    diff := ans & (-ans)
+
+    // diff will have rightmost bit set and rest will be 0
+    // so x will have it's rightmost bit set 
+    // therefore we will check which num have that bit set 
+    x := 0
+    for _, v := range nums{
+        if (diff & v) != 0{
+            x ^= v // repeated num will conclude with 0 only single num will be x
+        }
+    }
+    return []int{x,ans^x}
+}
