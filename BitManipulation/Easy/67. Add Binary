@@ -1,0 +1,64 @@
+// // import "strconv"
+// func addBinary(a string, b string) string {
+//     if len(a) < len(b){
+//       addBinary(b,a)
+//     }
+
+//   result := make([]byte, len(a))
+//   i := len(a)-1
+//   j := len(b)-1
+
+//   var c, s byte
+//   for j > -1 && i >= j{
+//     s = a[i]+b[j]+c
+//     result[i] = s%2
+//     c = s/2
+//     j--
+//     i--
+//   }
+
+//   if i > -1 {
+//     s = a[i]+c
+//     result[i] = s%2
+//     c = s/2
+//     i--
+//   }
+
+//   var re []byte
+//   re = append(re, c)
+//   re = append(re, result...)
+//   fmt.Println(string(re))
+//   return a
+// }
+// import "reflect"
+func addBinary(a string, b string) string {
+  if len(a) < len(b){
+    addBinary(b,a)
+  }
+
+  var ans []byte
+  var c,i,j int
+  i = len(a)-1
+  j = len(b)-1
+
+  for i >=0 || j >= 0 || c > 0 {
+    if i >= 0 {
+      c += int(a[i] - '0')
+      i-=1
+    }
+    if j >= 0 {
+      c += int(b[j]-'0')
+      j-=1
+    }
+    // fmt.Println(c,i,j)
+    ans = append(ans, byte(c%2+'0'))
+    c = (c/2)
+
+  }
+  r := make([]byte, len(ans))
+    for i:=len(ans)-1;i>=0;i--{
+      r[len(ans)-1-i]=ans[i]
+    }
+
+  return string(r)
+}
