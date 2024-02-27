@@ -1,0 +1,53 @@
+func getSum(a int, b int) int {
+    x ,y := int(math.Abs(float64(a))), int(math.Abs(float64(b)))
+    if x < y{
+        return getSum(b, a)
+    }
+    sign := 1
+    if a <= 0{ // if bigger number is negative
+        sign = -1
+    }
+
+    if a*b >= 0{ // for same sign find sum
+        for y > 0{
+            ans := x ^ y
+            carry := (x&y) << 1
+            x, y = ans, carry
+        }
+    }else{ // for neg num find diff
+        for y > 0{
+            ans := x ^ y
+            borrow := (^x&y) << 1
+            x, y = ans, borrow
+        }
+    }
+    return x*sign
+
+    // this addition of two num with like signs 
+    // eg 10, 3 or -1, -9
+    // x := a ^ b // this is number without carry
+    // y := (a & b) << 1 // this is to get the carry
+
+    // return (x^y)^((x&y)<<1)
+
+    // sum of two positive integers
+//     c := 0
+//     i := 0
+//     ans := 0
+//    for a>0 || b > 0||c>0{
+//        if a>0{
+//            c += a&1
+//            a = a >> 1
+//        }
+
+//        if b>0{
+//            c += b&1
+//            b = b >> 1
+//        }
+
+//        ans += c%2 << i
+//        i++
+//        c /= 2
+//    } 
+//    return ans
+}
