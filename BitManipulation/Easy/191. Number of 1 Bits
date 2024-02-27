@@ -1,0 +1,10 @@
+func hammingWeight(num uint32) int {
+    cnt := 0
+    for num > 0 { // take out the right most set bit
+        if num & 1 != 0{
+            cnt++
+        }
+        num = num >> 1
+    }
+    return cnt
+}
