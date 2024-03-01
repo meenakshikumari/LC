@@ -1,0 +1,56 @@
+func findMaximumXOR(nums []int) int {
+    maxN := 0
+    for _, v := range nums{
+        maxN = max(maxN, v)
+    }
+    l := len(strconv.FormatInt(int64(maxN), 2))
+
+    // insert trie
+    t := &Trie{root: &Node{}}
+    for _, v := range nums{
+        t.createTrie(v, l)
+    }
+
+    // get the maxXor for each element
+    maxXor := 0
+    for _, v := range nums{
+        maxXor = max(maxXor,t.getXor(v,l))
+    }
+    return maxXor
+}
+
+// Using Trie
+type Node struct{
+    links [2]*Node
+}
+
+type Trie struct{
+    root *Node
+}
+
+func (t *Trie)createTrie(val, l int){ 
+    node := t.root
+    for i:= l-1; i>=0;i--{
+        bit := val >> i & 1 // will get the corresponding bits 
+        if node.links[bit] == nil{
+            node.links[bit] = &Node{}
+        }
+        node = node.links[bit]
+    }
+}
+
+func (t *Trie)getXor(val int, l int)int{
+    node := t.root
+    xor := 0
+    for i:= l-1; i>=0;i--{
+        bit := val >> i & 1
+        toggledBit := bit ^ 1
+        if node.links[toggledBit] != nil{
+            xor += (1<<i)
+            node = node.links[toggledBit]
+        }else{
+            node = node.links[bit]
+        }
+    }
+    return xor
+}
