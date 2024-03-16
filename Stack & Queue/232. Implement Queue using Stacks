@@ -1,0 +1,97 @@
+type MyQueue struct {
+    s1 *Stack
+    s2 *Stack
+}
+
+
+func Constructor() MyQueue {
+    return MyQueue{
+        s1: &Stack{
+            top: -1,
+            start: -1,
+            arr: make([]int, 10),
+        },
+        s2: &Stack{
+            top: -1,
+            start: -1,
+            arr: make([]int, 10),
+        },
+    }
+}
+
+
+func (this *MyQueue) Push(x int)  {
+    this.s1.Push(x)
+    return
+}
+
+
+func (this *MyQueue) Pop() int {
+    if this.Empty(){
+        return 0
+    }
+    i := this.s1.top
+    for i > 0{
+        this.s2.Push(this.s1.Pop())
+        i -=1
+    }
+
+    // this.s1.top -= 1
+    x := this.s1.Pop()
+
+    if this.s2.top != -1{
+        i = this.s2.top
+        for i >= 0{
+            this.s1.Push(this.s2.Pop())
+            i -=1
+        }
+    }
+    return x
+}
+
+
+func (this *MyQueue) Peek() int {
+    return this.s1.arr[this.s1.start]
+}
+
+
+func (this *MyQueue) Empty() bool {
+    return this.s1.top == -1
+}
+
+type Stack struct{
+    top int
+    start int
+    arr []int
+}
+
+func(s *Stack)Push(val int){
+    if s.top == -1{
+        s.start = 0
+    }else if s.top == len(s.arr)-1{
+        return
+    }
+    s.top++
+    s.arr[s.top]=val
+    return
+}
+
+func(s *Stack)Pop() int{
+    if s.top == -1{
+        return 0
+    }
+    x := s.arr[s.top]
+    s.top -= 1
+    if s.top == -1{ // last element pop
+        s.start = -1
+    }
+    return x
+}
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Push(x);
+ * param_2 := obj.Pop();
+ * param_3 := obj.Peek();
+ * param_4 := obj.Empty();
+ */
