@@ -1,0 +1,62 @@
+func isValid(s string) bool {
+    
+    stack := &stack{}
+    st := stack.NewStack(len(s))
+    for _, v := range s {
+        if strings.ContainsRune("{ ( [", v) == true{
+            st.Push(v)
+        }else{
+            if st.top == -1{
+                return false
+            }
+            switch v{
+                case '}': 
+                    if st.arr[st.top] == '{' {
+                        st.Pop()
+                    }else{
+                        return false
+                    }
+                case ')':
+                    if st.arr[st.top] == '(' {
+                        st.Pop()
+                    }else{
+                        return false
+                    }
+                case ']':
+                    if st.arr[st.top] == '[' {
+                        st.Pop()
+                    }else{
+                        return false
+                    }
+                default: return false
+            }
+        }
+    }
+    if st.top != -1 {
+        return false
+    }
+    return true
+}
+
+type stack struct{
+    top int
+    arr []rune    
+}
+
+func(s *stack)NewStack(size int)*stack{
+    return &stack{
+        top: -1,
+        arr: make([]rune, size),
+    }
+}
+
+func(s *stack)Push(val rune){
+    s.top++
+    s.arr[s.top] = val
+}
+
+func(s *stack)Pop(){
+    if s.top != -1{
+        s.top -= 1
+    }
+}
