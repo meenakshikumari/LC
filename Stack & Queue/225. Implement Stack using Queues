@@ -1,0 +1,105 @@
+type MyStack struct {
+    q *Queue
+}
+
+
+func Constructor() MyStack {
+    return MyStack{
+        q: &Queue{
+            Top: -1,
+            Start: -1,
+            Arr: make([]int, 10),
+            CurrSize: 0,
+        },
+    }
+}
+
+
+func (this *MyStack) Push(x int)  {
+    this.q.Push(x)
+}
+
+
+func (this *MyStack) Pop() int {
+    n := this.q.Size()
+    for i:=0; i<n-1;i++{
+        this.q.Push(this.q.Pop())
+    }
+    return this.q.Pop()
+}
+
+
+func (this *MyStack) Top() int {
+    if this.q.IsEmpty() == true{
+        return 0
+    }
+    return this.q.Arr[this.q.Top]
+}
+
+
+func (this *MyStack) Empty() bool {
+    return this.q.IsEmpty()
+}
+
+// Queue 
+type Queue struct{
+    Top int
+    Start int
+    Arr []int
+    CurrSize int
+}
+
+func(q *Queue)Push(val int){
+    if q.CurrSize < 1{ // if queue is empty
+        q.Start = 0
+        q.Top = 0
+    }else if q.CurrSize == len(q.Arr) { // if queue is full
+        return
+    }else {
+        q.Top = (q.Top+1)%len(q.Arr)
+    }
+    q.Arr[q.Top] = val
+    q.CurrSize++
+    return
+}
+
+func(q *Queue)Pop()int{
+    if q.CurrSize < 1{ // if queue is empty
+        return 0
+    }
+    x := q.Arr[q.Start]
+    if q.CurrSize == 1 { // if queue has only 1 item
+        q.Start = -1
+        q.Top = -1
+    }else {
+        q.Start = (q.Start+1)%len(q.Arr)
+    }
+    q.CurrSize--
+    return x
+}
+
+func(q *Queue)Front()int{ // FIFO
+    if q.Start == -1 {
+        return 0
+    }
+    return q.Arr[q.Start]
+}
+
+func(q *Queue)Size()int{
+    return q.CurrSize
+}
+
+func(q *Queue)IsEmpty()bool{
+    if q.CurrSize != 0 {
+        return false
+    }
+    return true
+}
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Push(x);
+ * param_2 := obj.Pop();
+ * param_3 := obj.Top();
+ * param_4 := obj.Empty();
+ */
