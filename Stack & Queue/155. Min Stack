@@ -1,0 +1,173 @@
+type MinStack struct {
+    top int
+    arr [10000]int
+    m int
+}
+
+func Constructor() MinStack{
+    return MinStack{
+        top: -1,
+        m: math.MaxInt32,
+    }
+}
+
+func (this *MinStack)Push(val int){
+    // modified val
+    this.top++
+    if this.top == 0{
+        this.m = val
+    }else if val < this.m{
+        this.arr[this.top] = 2*val - this.m
+        this.m = val
+        return
+    }
+    this.arr[this.top] = val
+}
+
+func (this *MinStack)Pop() {
+    if this.top == -1{
+        this.m= math.MaxInt32
+        return
+    }
+    val := this.arr[this.top]
+    if val < this.GetMin(){
+        this.m = 2*this.m - val
+    }
+    this.top -= 1
+}
+
+func (this *MinStack)Top() int{
+    t := this.arr[this.top]
+    if t < this.GetMin(){
+        return this.GetMin()
+    }
+    return t
+}
+
+func (this *MinStack)GetMin() int{
+    return this.m
+}
+
+// below is time: O(1) but space: O(2n)
+// type MinStack struct {
+//     top int
+//     arr [10000][2]int
+// }
+
+// func Constructor() MinStack{
+//     return MinStack{
+//         top: -1,
+//     }
+// }
+
+// func (this *MinStack)Push(val int){
+//     if this.top == -1{
+//         this.top++
+//         this.arr[this.top][0] = val
+//         this.arr[this.top][1] = val
+//     }else{
+//         m := min(val, this.GetMin())
+//         this.top++
+//         this.arr[this.top][0] = val
+//         this.arr[this.top][1] = m
+//     }
+// }
+
+// func (this *MinStack)Pop() {
+//     if this.top == -1{
+//         return
+//     }
+//     this.top -= 1
+// }
+
+// func (this *MinStack)Top() int{
+//     return this.getTop()[0]
+// }
+
+// func (this *MinStack)GetMin() int{
+//     return this.getTop()[1]
+// }
+
+// func (this *MinStack)getTop() [2]int{
+//     return this.arr[this.top]
+// }
+
+// below is time: O(1) but space: O(n)
+// type MinStack struct {
+//     mStack *stack
+//     temp *stack // trace the index of minV
+// }
+
+
+// func Constructor() MinStack {
+//     return MinStack{
+//         mStack: &stack{
+//             top: -1,
+//             arr: make([]int, 1000),
+//         },
+//         temp: &stack{
+//             top: -1,
+//             arr: make([]int, 1000),
+//         },
+//     }
+// }
+
+
+// func (this *MinStack) Push(val int)  {
+//     //push in minstack
+//     if this.mStack.top == len(this.mStack.arr)-1{
+//         return
+//     }
+    
+//     this.mStack.top++
+//     this.mStack.arr[this.mStack.top] = val
+
+//     if this.temp.top == -1 || this.GetMin() > val{
+//         this.temp.top++
+//         this.temp.arr[this.temp.top] = this.mStack.top // tracing minVal idx
+//     }
+//     return
+// }
+
+
+// func (this *MinStack) Pop()  {
+//     if this.mStack.top == -1{
+//         return
+//     }
+
+//     if this.mStack.top == this.temp.arr[this.temp.top]{
+//        this.temp.top -= 1
+//     }
+//     this.mStack.top -= 1
+
+//     if this.mStack.top == -1 && this.temp.top > -1{
+//         this.temp.top -= 1
+//     }
+
+//     return 
+// }
+
+
+// func (this *MinStack) Top() int {
+//     return this.mStack.arr[this.mStack.top]
+// }
+
+
+// func (this *MinStack) GetMin() int {
+//     return this.mStack.arr[this.temp.arr[this.temp.top]]
+// }
+
+// type stack struct{
+//     top int
+//     arr []int
+// } 
+
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Push(val);
+ * obj.Pop();
+ * param_3 := obj.Top();
+ * param_4 := obj.GetMin();
+ */
