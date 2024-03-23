@@ -1,0 +1,97 @@
+func sumSubarrayMins(arr []int) int {
+    mod := int(math.Pow(10,9))+7
+    n := len(arr)
+    var res int
+    s := &Stack{
+        top: -1,
+        arr:  make([]int, n),
+    }
+
+    // find first left smallest number idx
+    lMin := make([]int, n)
+    for i, v := range arr{
+        for !s.IsEmpty() && arr[s.Top()] >= v{
+            s.Pop()
+        }
+        if s.IsEmpty(){
+            lMin[i] = -1
+        }else{
+            lMin[i] = s.Top()
+        }
+        s.Push(i)
+    }
+
+    for !s.IsEmpty(){
+        s.Pop()
+    }
+    // find first right smallest number idx
+    rMin := make([]int, n)
+    for i:=n-1; i>=0;i--{
+        for !s.IsEmpty() && arr[s.Top()] > arr[i]{
+            s.Pop()
+        }
+        if s.IsEmpty(){
+            rMin[i] = -1
+        }else {
+            rMin[i] = s.Top()
+        }
+        s.Push(i)
+    }
+
+    for i, v := range arr{
+        var g1, g2 int // g1 for left g2 for right
+        if lMin[i] == -1{
+            g1 = i+1
+        }else{
+            g1 = i-lMin[i]
+        }
+
+        if rMin[i] == -1{
+            g2 = n-i
+        }else{
+            g2 = rMin[i]-i
+        }
+
+        if i == 0{
+            res += g2*v
+        }else if i == n-1{
+            if lMin[i] == -1{
+                res += n*v
+            }else{
+                res += g1*v
+            }
+        }else{
+            res += g1 * g2 * v
+        }
+    }
+
+    return (res)%mod
+}
+
+type Stack struct {
+    top int
+    arr []int
+}
+
+func(s *Stack)Push(val int){
+    s.top++
+    s.arr[s.top] = val
+}
+
+func(s *Stack)Pop(){
+    if s.IsEmpty(){
+        return
+    }
+    s.top -=1
+}
+
+func(s *Stack)Top() int{
+    if s.IsEmpty(){
+        return -1
+    }
+    return s.arr[s.top]
+}
+
+func(s *Stack)IsEmpty() bool{
+    return s.top == -1
+}
