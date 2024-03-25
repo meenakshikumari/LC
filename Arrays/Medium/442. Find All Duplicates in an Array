@@ -1,0 +1,38 @@
+func findDuplicates(nums []int) []int {
+    n := len(nums)
+    var res []int
+
+    i := 0
+    for i < n{
+        correctIdx := nums[i] -1
+        if nums[i] != nums[correctIdx]{
+            //swap it to correct pos
+            temp := nums[correctIdx]
+            nums[correctIdx] = nums[i]
+            nums[i] = temp
+        } else{
+            i++
+        }
+    }
+
+    for i,v := range nums{
+        if v != i+1{
+            res = append(res, v)
+        }
+    }
+    // sort.Ints(nums)
+    // for i:=1;i<n;i++{
+    //     if nums[i] == nums[i-1]{
+    //         res = append(res, nums[i])
+    //     }
+    // }
+    // arr := make([]int, n+1)
+
+    // for _,v := range nums{
+    //     arr[v]++
+    //     if arr[v] > 1{
+    //         res = append(res, v)
+    //     }
+    // }
+    return res
+}
