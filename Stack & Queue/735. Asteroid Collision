@@ -1,0 +1,75 @@
+// neg moves left, pos moves right
+// neg will cancel out the values left to it with value less then that
+// we will be storing neg in the stack
+// add the positive num idx if stack empty to res
+// if positive -> and abs val is > abs(s.top()) then keep pop()
+// -> if equal then only pop() n continue
+// add stack elem to res
+// sort res
+// add abs val
+func asteroidCollision(asteroids []int) []int {
+    var res []int
+    n := len(asteroids)
+
+    s := &Stack{
+        top: -1,
+        arr: make([]int, n),
+    }
+
+    for i:=n-1;i>=0;i--{
+        if asteroids[i] < 0{
+            s.Push(i)
+        }else{
+            for !s.IsEmpty() && (asteroids[i] > int(math.Abs(float64(asteroids[s.Top()])))){
+                s.Pop()
+            }
+
+            if s.IsEmpty(){
+                res = append(res,i)
+            }else if asteroids[i] == int(math.Abs(float64(asteroids[s.Top()]))){
+                s.Pop()
+                continue
+            }
+        }
+    }
+
+    for !s.IsEmpty(){
+        res = append(res,s.Top())
+        s.Pop()
+    }
+
+    sort.Ints(res)
+    
+    for i, v := range res{
+        res[i] = asteroids[v]
+    }
+    return res
+}
+
+type Stack struct {
+    top int
+    arr []int
+}
+
+func(s *Stack)Push(val int){
+    s.top++
+    s.arr[s.top] = val
+}
+
+func(s *Stack)Pop(){
+    if s.IsEmpty(){
+        return
+    }
+    s.top -=1
+}
+
+func(s *Stack)Top() int{
+    if s.IsEmpty(){
+        return -1
+    }
+    return s.arr[s.top]
+}
+
+func(s *Stack)IsEmpty() bool{
+    return s.top == -1
+}
