@@ -1,0 +1,77 @@
+func maximalRectangle(matrix [][]byte) int { //https://www.youtube.com/watch?v=tOylVCugy9k
+    dp := make([]int, len(matrix[0]))
+    area := 0
+
+    for _, v := range matrix{
+        for j, val := range v{
+            if val == '0'{
+                dp[j] = 0
+            }else{
+                dp[j] += 1
+            }
+        }
+        area = max(area, largestRectangleArea(dp))
+    }
+    return area
+}
+
+func largestRectangleArea(heights []int) int {
+    n := len(heights)
+    s := &Stack{
+        top: -1,
+        arr: make([]int, n),
+    }
+
+    i, area := 0, 0
+    for i<n{ // do while flow for extra i=n iteration
+        for !s.IsEmpty() && heights[s.Top()] >= heights[i]{
+            area = max(area, s.CalculateArea(i,heights))
+        }
+        s.Push(i)
+        i++
+    }
+
+    for !s.IsEmpty(){
+        area = max(area, s.CalculateArea(i,heights))
+    }
+
+    return area
+}
+
+func(s *Stack)CalculateArea(rs int,heights []int)int{
+    area := 0
+    height := heights[s.Pop()]
+    if s.IsEmpty(){
+        area = rs * height
+    }else{
+        area = (rs-s.Top()-1)*height
+    }
+    return area
+}
+
+type Stack struct{
+    top int
+    arr []int
+}
+
+func(s * Stack)Push(v int){
+    s.top++
+    s.arr[s.top] = v
+}
+
+func(s * Stack)Pop()int{
+    x := s.Top()
+    s.top -= 1
+    return x
+}
+
+func(s * Stack)Top() int{
+    if s.IsEmpty() {
+        return -1
+    }
+    return s.arr[s.top]
+}
+
+func(s * Stack)IsEmpty()bool{
+    return s.top == -1
+}
