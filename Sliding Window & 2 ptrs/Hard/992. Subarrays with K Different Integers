@@ -1,0 +1,23 @@
+func subarraysWithKDistinct(nums []int, k int) int {
+    return atMost(nums,k) - atMost(nums,k-1)
+}
+
+// ref for atmost https://youtu.be/yOB-hF7l8qQ?t=1076
+func atMost(nums []int, k int)int{
+    h := make(map[int]int)
+    var l, r, res int
+    n := len(nums)
+    for r<n{
+        h[nums[r]]++
+        for len(h) > k && l<=r{
+            h[nums[l]] -= 1
+            if h[nums[l]] == 0{
+                delete(h, nums[l])
+            }
+            l++
+        }
+        res += r-l+1
+        r++
+    }
+    return res
+}
