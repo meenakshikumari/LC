@@ -1,0 +1,40 @@
+func numSubarrayProductLessThanK(nums []int, k int) int {
+    // tc: O(n) sp: O(1) 
+    // using sliding window
+    if k <= 1 {return 0}
+    var l, r, cnt int
+    n := len(nums)
+    p := 1
+    for r < n{
+        p *= nums[r]
+        for p >= k{
+            p /= nums[l]
+            l++
+        }
+        cnt += (r-l+1)
+        r++
+    }
+    return cnt
+}
+    // TC: O(n^2) sp: O(1)
+   
+    // for i:=0;i<n-1;i++{
+    //     if nums[i] >= k{
+    //         continue
+    //     }
+    //     cnt++
+    //     pr := nums[i]
+    //     for j:=i+1;j<n;j++{
+    //         if pr*nums[j] >= k{
+    //             break
+    //         }
+    //         cnt++
+    //         pr *= nums[j]
+    //     }
+    // }
+
+    // if nums[n-1] < k{
+    //     cnt++
+    // }
+//     return cnt
+// }
