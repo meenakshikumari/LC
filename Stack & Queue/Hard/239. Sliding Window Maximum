@@ -1,0 +1,61 @@
+func maxSlidingWindow(nums []int, k int) []int {
+    var res []int
+    var q MonotonicQueue
+
+    var cnt int
+    for i, v := range nums{
+        cnt++
+        start := cnt - k
+        for start > 0 && q.length() > 0 && q.front() < start{
+            q.pop(q.front())
+        }
+
+        for q.length() > 0 && nums[q.back()] <= v{
+            // remove last element from the q
+            q.popBack()
+        }
+
+        q.push(i)
+        if start >= 0{
+            res = append(res, nums[q.front()])
+        }
+    }
+    return res
+}
+
+type MonotonicQueue []int
+
+func (m *MonotonicQueue) length() int {
+    return len(*m)
+}
+
+func (m *MonotonicQueue) push(item int) {
+    *m = append(*m, item)
+}
+
+func (m *MonotonicQueue) pop(item int) {
+	if m.length() > 0{
+		*m = (*m)[1:]
+	}
+}
+
+func (m *MonotonicQueue) front() int {
+	if m.length() == 0 {
+		panic("empty queue")
+	}
+	return (*m)[0]
+}
+
+func (m *MonotonicQueue) back() int {
+	if m.length() == 0 {
+		panic("empty queue")
+	}
+	return (*m)[len(*m)-1]
+}
+
+func (m *MonotonicQueue) popBack() {
+    if m.length() > 0{
+        *m = (*m)[:m.length()-1]
+    }
+    return
+}
