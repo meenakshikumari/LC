@@ -1,0 +1,28 @@
+func longestOnes(nums []int, k int) int {
+    var r, res, cnt, l int
+    for r < len(nums){
+        if nums[r] == 0 {
+            cnt++
+            // for cnt > k && l <=r{ // tc: O(2n)
+            //     if nums[l] == 0{
+            //         cnt -= 1
+            //     }
+            //     l++
+            // }
+        }
+        if cnt > k{
+            if nums[l] == 0{
+                cnt -= 1
+            }
+            l++
+        }
+
+        if cnt <= k{
+            res = max(res, r-l+1)
+        }
+
+        // res = max(res, r-l+1)
+        r++
+    }
+    return res
+}
