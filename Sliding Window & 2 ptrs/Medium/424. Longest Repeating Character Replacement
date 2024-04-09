@@ -1,0 +1,27 @@
+func characterReplacement(s string, k int) int {
+    var l, r, res, maxF int
+    h := make(map[byte]int) // key will be char and val will be freq
+
+    for r < len(s){
+        h[s[r]-'A']++
+        maxF = max(maxF, h[s[r]-'A'])
+
+        //TC: O(2n)
+        // for (r-l+1)-maxF > k{ // len-maxF > k slide
+        //     h[s[l]-'A'] -= 1
+        //     l++
+        // }
+
+        // TC: O(n)
+        if (r-l+1)-maxF > k{ // len-maxF > k slide
+            h[s[l]-'A'] -= 1
+            l++
+        }
+
+        if (r-l+1)-maxF <= k{// len-maxF <= k get the max val
+            res = max(res, r-l+1)
+        }
+        r++
+    }
+    return res
+}
