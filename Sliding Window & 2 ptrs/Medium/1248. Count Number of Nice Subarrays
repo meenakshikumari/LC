@@ -1,0 +1,25 @@
+func numberOfSubarrays(nums []int, k int) int {
+    // atmost(goal) - atmost(goal-1)
+    // tc: O(2n) sp: O(1)
+    return numSubarraysWithOddNumAtmostK(nums, k) - numSubarraysWithOddNumAtmostK(nums, k-1)
+}
+
+func numSubarraysWithOddNumAtmostK(nums []int, goal int) int {
+    var r, l, res, cnt int
+    for r < len(nums){
+        if nums[r] % 2 != 0{
+            cnt++
+        }
+        for cnt > goal{
+            if nums[l] % 2 != 0{
+                cnt -= 1
+            }
+            l++
+        }
+        if cnt <= goal{
+            res += r-l+1 // imp as we need to add the len of the subarray
+        }
+        r++
+    }
+    return res
+}
