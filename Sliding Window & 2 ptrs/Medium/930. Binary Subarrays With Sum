@@ -1,0 +1,24 @@
+func numSubarraysWithSum(nums []int, goal int) int {
+    // atmost(goal) - atmost(goal-1)
+    // tc: O(2n) sp: O(1)
+    return numSubarraysWithAtmostSum(nums, goal) - numSubarraysWithAtmostSum(nums, goal-1)
+}
+
+func numSubarraysWithAtmostSum(nums []int, goal int) int {
+    if goal < 0{
+        return 0
+    }
+    var r, l, res, sum int
+    for r < len(nums){
+        sum += nums[r]
+        for sum > goal{
+            sum -= nums[l]
+            l++
+        }
+        if sum <= goal{
+            res += r-l+1 // imp as we need to add the len of the subarray
+        }
+        r++
+    }
+    return res
+}
