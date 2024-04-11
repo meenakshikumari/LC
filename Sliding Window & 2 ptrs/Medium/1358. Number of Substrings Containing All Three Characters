@@ -1,0 +1,22 @@
+func numberOfSubstrings(s string) int {
+    // tc: O(n)+O(3) sp: O(3)
+    arr := []int{-1,-1,-1}
+    var res int
+    n := len(s)
+    for i, v := range s{
+        arr[v-'a'] = i
+        mIN := getMin(arr, n)
+        if mIN >= 0{
+            res += mIN+1
+        }
+    }
+    return res
+}
+
+func getMin(arr []int, n int)int{
+    m := n
+    for _, v := range arr{
+        m = min(m,v)
+    }
+    return m
+}
