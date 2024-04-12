@@ -1,0 +1,20 @@
+func lengthOfLongestSubstringKDistinct(s string, k int) int {
+    // tc: O(n) sp: O(1)
+    var l, r, res int
+    h := make(map[byte]int)
+    for r<len(s){
+        h[s[r]]++
+        if len(h) > k{
+            h[s[l]] -= 1
+            if h[s[l]] == 0{
+                delete(h, s[l])
+            }
+            l++
+        }
+        if len(h) <= k{
+            res = max(res, r-l+1)
+        }
+        r++
+    }
+    return res
+}
