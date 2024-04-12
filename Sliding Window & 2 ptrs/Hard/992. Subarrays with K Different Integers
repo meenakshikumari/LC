@@ -16,7 +16,9 @@ func atMost(nums []int, k int)int{
             }
             l++
         }
-        res += r-l+1
+        if len(h) <= k{
+            res += r-l+1
+        }
         r++
     }
     return res
