@@ -27,6 +27,38 @@
 //     return 
 // }
 
+func generateParenthesis(n int) []string {
+    var openC, closeC int
+    var res []string
+    paren(&res, "", openC, closeC, n)
+    return res
+}
+
+func paren(res *[]string, ans string, openC, closeC, n int){
+    if openC + closeC == 2*n{
+        *res = append(*res, ans)
+        // fmt.Println(ans)
+        return 
+    }
+
+    if openC < n {
+        ans += "("
+        openC++
+        paren(res, ans, openC, closeC, n)
+        ans = ans[:len(ans)-1]
+        openC -= 1
+    }
+
+    if closeC < openC{
+        ans += ")"
+        closeC++
+        paren(res, ans, openC, closeC, n)
+        ans = ans[:len(ans)-1]
+        closeC -= 1
+    }
+    return 
+}
+
 // Catalan Numbers variation: https://www.youtube.com/watch?v=3L_hgnFY47Q
 func generateParenthesis(n int) []string {
     return catalanNumVariation(n)
