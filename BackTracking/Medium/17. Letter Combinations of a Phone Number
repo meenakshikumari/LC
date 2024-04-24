@@ -1,0 +1,36 @@
+func letterCombinations(digits string) []string {
+    h := []string {"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"}
+    // h := map[string][]string {
+    //     "2": {"a", "b", "c"},
+    //     "3": {"d", "e", "f"},
+    //     "4": {"g", "h", "i"},
+    //     "5": {"j", "k", "l"},
+    //     "6": {"m", "n", "o"},
+    //     "7": {"p", "q", "r", "s"},
+    //     "8": {"t", "u", "v"},
+    //     "9": {"w", "x", "y", "z"},
+    // }
+    n := len(digits)
+    var res []string
+    if n==0{
+        return res
+    }
+    // var s strings.Builder
+    backTrack(digits,"",&res, 0,n, h)
+    return res
+}
+
+func backTrack(digits, ans string, res *[]string, i, n int, h []string){
+    if i== n{
+        // fmt.Println(ans)
+        *res = append(*res, ans)
+        return
+    }
+
+    a := strings.Split(h[digits[i]-48], "")
+    for _, v := range a{
+        ans += v
+        backTrack(digits,ans,res, i+1,n, h)
+        ans = ans[:len(ans)-1]
+    }
+}
