@@ -1,0 +1,30 @@
+func combinationSum2(candidates []int, target int) [][]int {
+    var res [][]int
+    var arr []int
+    sort.Ints(candidates)
+    backTrack(candidates, arr, 0, target, &res)
+    return res
+}
+
+func backTrack(ip, arr []int, idx, target int, res *[][]int){
+    if target == 0{
+        temp := make([]int, len(arr))
+        copy(temp, arr)
+        *res = append(*res, temp)
+        return
+    }
+
+    for i:= idx; i<len(ip);i++{
+        if i > idx && ip[i] == ip[i-1]{// take only first occurance
+            continue
+        }
+        if ip[i] > target {
+            break
+        }
+        arr = append(arr, ip[i])
+        backTrack(ip, arr, i+1, target-ip[i], res)
+        arr = arr[:len(arr)-1]
+    }
+   
+    return
+}
