@@ -1,0 +1,30 @@
+func exist(board [][]byte, word string) bool {
+    for i, v := range board{
+        for j, val := range v{
+            if val == word[0] && backT(board, word, i, j, 0) == true{
+                return true
+            }
+        }
+    }
+    return false
+}
+
+func backT(ip [][]byte, word string, i, j, idx int) bool {
+    if idx == len(word){
+        return true
+    }
+
+    if i < 0 || i >= len(ip) || j < 0 || j >= len(ip[0]) || ip[i][j] != word[idx]{
+        return false
+    }
+
+    ip[i][j] = '*'
+    up := backT(ip, word, i-1, j, idx+1)
+    down := backT(ip, word, i+1, j, idx+1)
+
+    left := backT(ip, word, i, j-1, idx+1)
+    right := backT(ip, word, i, j+1, idx+1)
+    ip[i][j] = word[idx]
+
+    return up || down || left || right
+}
