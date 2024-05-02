@@ -1,0 +1,21 @@
+func subsetsWithDup(nums []int) [][]int {
+   res := make([][]int, 1)
+   backT(0, nums,nil, &res) 
+   return res
+}
+
+func backT(idx int, nums, arr []int, res *[][]int){
+    for i:=idx; i<len(nums);i++{
+        if i>idx && nums[i] == nums[i-1]{
+            continue
+        }
+        s := make([]int, len(arr))
+        copy(s, arr)
+        s = append(s, nums[i])
+        sort.Ints(s)
+        *res = append(*res, s)
+        backT(i+1, nums, s, res)
+        arr = arr[:len(s)-1]
+    }
+    return
+}
