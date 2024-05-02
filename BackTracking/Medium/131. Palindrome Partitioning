@@ -1,0 +1,39 @@
+func partition(s string) [][]string {
+    var res [][]string
+    var arr []string
+    backT(s, 1, arr, &res)
+    return res
+}
+
+func backT(s string, idx int, arr []string, res *[][]string){
+    if idx == len(s)+1{
+        t := make([]string, len(arr))
+        copy(t, arr)
+        *res = append(*res, t)
+        return
+    }
+
+    for i:=idx; i<=len(s);i++{
+        str := string(s[idx-1:i])
+        if isPalindrome(str){
+            arr = append(arr, str)
+            backT(s, i+1, arr, res)
+            arr = arr[:len(arr)-1]
+        }
+    }
+    return
+}
+
+func isPalindrome(s string)bool{
+    // n := len(s)
+    i := 0
+    j := len(s)-1
+    for i<j{
+        if s[i] != s[j]{
+            return false
+        }
+        i++
+        j -= 1
+    }
+    return true
+}
