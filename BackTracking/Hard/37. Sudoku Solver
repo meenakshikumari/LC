@@ -1,0 +1,38 @@
+func solveSudoku(board [][]byte) {
+    sudoku(board)
+}
+func sudoku(board [][]byte)  bool{
+    for i:=0;i<9;i++{
+        for j:=0;j<9;j++{
+            if board[i][j] == '.' {
+                for k:=byte(1);k<10;k++{
+                    if isValid(board, i, j, k+48){
+                        board[i][j] = k+48
+                        if sudoku(board){
+                            return true
+                        }else{
+                            board[i][j] = '.'
+                        }
+                    }
+                }
+                return false
+            }
+        }
+    }
+    return true
+}
+
+func isValid(board [][]byte, r, c int, ch byte)bool{
+    for i:=0;i<9;i++{
+        if board[r][i] == ch{
+            return false
+        }
+        if board[i][c] == ch{
+            return false
+        }
+        if board[3*(r/3)+i/3][3*(c/3)+i%3] == ch{
+            return false
+        }
+    }
+    return true
+}
