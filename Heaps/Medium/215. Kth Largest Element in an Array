@@ -1,0 +1,41 @@
+//     //create the max heap
+//     // pick one element and add it to the last leaf node
+//     //and then move it to correct place
+//     // delete till kth element
+
+// int heap is copied from the official go lang 
+// https://pkg.go.dev/container/heap
+type IntHeap []int
+
+func (h IntHeap) Len() int           { return len(h) }
+func (h IntHeap) Less(i, j int) bool { return h[i] > h[j] }
+func (h IntHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *IntHeap) Push(x any) {
+	// Push and Pop use pointer receivers because they modify the slice's length,
+	// not just its contents.
+	*h = append(*h, x.(int))
+}
+
+func (h *IntHeap) Pop() any {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
+
+func findKthLargest(nums []int, k int) int {
+    h := &IntHeap{}
+	heap.Init(h)
+
+    for _, num := range nums {
+        heap.Push(h, num)
+    }
+
+    for i:=0;i<k-1;i++{
+        heap.Pop(h)
+    }
+
+    return (*h)[0]
+}
