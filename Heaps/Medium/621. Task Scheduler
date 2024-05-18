@@ -1,0 +1,59 @@
+import "container/heap"
+
+type task struct{
+    val byte
+    cnt int
+}
+type MaxHeap []task
+
+func (h MaxHeap)Less(i, j int)bool{ return h[i].cnt > h[j].cnt}
+func (h MaxHeap)Swap(i, j int){  h[i], h[j] = h[j], h[i]}
+func (h MaxHeap)Len()int{ return len(h) }
+
+func (h *MaxHeap)Push(x interface{}){ *h = append(*h, x.(task))}
+func (h *MaxHeap)Pop()interface{}{
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[:n-1]
+    return x
+}
+
+func leastInterval(tasks []byte, n int) int {
+    h := make(map[byte]int)
+
+    for _, v := range tasks{
+        h[v-'A']++
+    }
+
+    var coolDown, minInterval int
+
+    for len(h) > 0{
+        //create maxHeap
+        hp := &MaxHeap{}
+        heap.Init(hp)
+
+        for k,v := range h{
+            heap.Push(hp, task{val: k, cnt: v})
+        }
+
+        coolDown = n+1
+        for hp.Len() > 0 && coolDown > 0{
+            x := heap.Pop(hp).(task)
+            h[x.val]--
+            if h[x.val] == 0{
+                delete(h,x.val)
+            }
+
+            coolDown--
+            minInterval++
+        }
+
+        if len(h) > 0 && coolDown > 0{
+            minInterval += coolDown
+        }
+    }
+
+    return minInterval
+}
+
