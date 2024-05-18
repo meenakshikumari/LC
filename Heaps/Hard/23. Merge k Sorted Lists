@@ -1,0 +1,64 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+
+type q struct{
+    val int
+    node *ListNode
+} 
+
+func mergeKLists(lists []*ListNode) *ListNode {
+    var head, curr *ListNode
+
+    // if len(lists) < 1{
+    //     return head
+    // }
+    var queue []*q
+    for _, l := range lists{
+        if l != nil{ // for [[]]
+            queue = append(queue, &q{val: l.Val, node: l})
+        }
+    }
+
+    for len(queue) > 0{
+        node := &ListNode{
+            Val: getMinInPriorityNode(queue),
+            Next: nil,
+        }
+        if head == nil{
+            head = node
+        }else{
+            curr.Next = node
+        }
+        curr = node
+
+        // we need to fix the priority queue
+        for i, qu := range queue{
+            if qu.val == node.Val {
+                if qu.node.Next != nil{
+                    qu.node = qu.node.Next
+                    qu.val = qu.node.Val
+                }else{
+                    queue = append(queue[:i], queue[i+1:]...)
+                }
+                break
+            }
+        }
+    }
+    return head
+}
+
+func getMinInPriorityNode(queue []*q)int{
+    m := math.MaxInt32
+    // var r int
+    for _, qu := range queue{
+        if m > qu.val{
+            m = qu.val
+        }
+    }
+    return m
+}
