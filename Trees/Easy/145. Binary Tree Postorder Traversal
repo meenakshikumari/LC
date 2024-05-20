@@ -49,3 +49,37 @@ func traceTreeNode(root *TreeNode, ans *[]int){
     *ans = append(*ans, root.Val)
     return 
 }
+
+ //https://www.youtube.com/watch?v=NzIGLLwZBS8 
+ // using 1 stack
+func postorderTraversal(root *TreeNode) []int {
+    var ans []int
+    if root == nil {
+        return ans
+    }
+
+    var s1 []*TreeNode
+    curr := root
+
+    for  curr != nil || len(s1) > 0{
+        if curr != nil{
+            s1 = append(s1, curr)
+            curr = curr.Left
+        }else{
+            temp := s1[len(s1)-1].Right
+            if temp == nil{
+                temp = s1[len(s1)-1] // get the top
+                s1 = s1[:len(s1)-1]// pop the top
+                ans = append(ans, temp.Val)
+                for len(s1) > 0 && temp == s1[len(s1)-1].Right{
+                    temp = s1[len(s1)-1] // get the top
+                    s1 = s1[:len(s1)-1]// pop the top
+                    ans = append(ans, temp.Val)
+                }
+            }else{
+                curr = temp
+            }
+        }
+    }
+    return ans
+}
