@@ -1,0 +1,52 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+type qNode struct{
+    node *TreeNode
+    level int
+}
+func levelOrder(root *TreeNode) [][]int {
+    var res [][]int
+    if root == nil{
+        return res
+    }
+
+    var q []qNode
+    res = append(res, []int{root.Val})
+    q = append(q, qNode{node: root, level: 0})
+
+    for len(q) > 0{
+        n := q[0]
+        level := n.level+1
+        q = q[1:]
+
+        var a []int
+        if len(res) > level {
+            a = res[level]
+        }
+
+        if n.node.Left != nil{
+            q = append(q, qNode{node: n.node.Left, level: level})
+            a = append(a, n.node.Left.Val)
+        }
+
+        if n.node.Right != nil{
+            q = append(q, qNode{node: n.node.Right, level: level})
+            a = append(a, n.node.Right.Val)
+        }
+
+        if len(res) > level{
+            res[level] = a
+        }else if len(a) > 0{
+            res = append(res, a)
+        }
+    }
+
+    return res
+}
