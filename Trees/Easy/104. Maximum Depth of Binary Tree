@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+type qNode struct{
+    node *TreeNode
+    level int
+}
+func maxDepth(root *TreeNode) int {
+    var maxLevel int
+    if root == nil{
+        return maxLevel
+    }
+
+    var q []qNode
+    q = append(q, qNode{node: root, level: 0})
+
+    for len(q) > 0{
+        n := q[0]
+        level := n.level+1
+        maxLevel = max(maxLevel, level)
+        q = q[1:]
+
+        if n.node.Left != nil{
+            q = append(q, qNode{node: n.node.Left, level: level})
+        }
+
+        if n.node.Right != nil{
+            q = append(q, qNode{node: n.node.Right, level: level})
+        }
+
+    }
+
+    return maxLevel
+}
