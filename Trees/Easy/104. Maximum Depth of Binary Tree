@@ -40,12 +40,9 @@ func maxDepth(root *TreeNode) int {
 
 //recursive
 func maxDepth(root *TreeNode) int {
-    return recTraversal(root, 0)
-}
-
-func recTraversal(node *TreeNode, depth int)int{
-    if node == nil{
-        return depth
+    func maxDepth(root *TreeNode) int {
+    if root == nil{
+        return 0
     }
-    return max(recTraversal(node.Left, depth+1),recTraversal(node.Right, depth+1))
+    return max(maxDepth(root.Left), maxDepth(root.Right))+1
 }
