@@ -37,3 +37,15 @@ func maxDepth(root *TreeNode) int {
 
     return maxLevel
 }
+
+//recursive
+func maxDepth(root *TreeNode) int {
+    return recTraversal(root, 0)
+}
+
+func recTraversal(node *TreeNode, depth int)int{
+    if node == nil{
+        return depth
+    }
+    return max(recTraversal(node.Left, depth+1),recTraversal(node.Right, depth+1))
+}
