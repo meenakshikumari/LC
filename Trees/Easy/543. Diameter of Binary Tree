@@ -1,0 +1,25 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+var maxD int
+func diameterOfBinaryTree(root *TreeNode) int {
+    maxD = math.MinInt32
+    _ = height(root)
+    return maxD
+}
+
+func height(node *TreeNode) int{
+    if node == nil{
+        return 0
+    }
+    lh := height(node.Left)
+    rh := height(node.Right)
+
+    maxD = max(maxD, lh+rh)
+    return max(lh, rh)+1
+}
