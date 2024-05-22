@@ -1,0 +1,24 @@
+func pathSum(root *TreeNode, targetSum int) [][]int {
+    var a []int
+    var res [][]int
+    getSum(root, a,targetSum, &res)
+    return res
+}
+
+func getSum(root *TreeNode, a []int, targetSum int, res *[][]int){
+    // fmt.Println(res)
+    if root == nil{
+        return
+    }
+    if root.Left == nil && root.Right == nil{
+        if root.Val == targetSum{
+            temp := make([]int, len(a))
+            copy(temp, a)
+            *res = append(*res, append(temp, root.Val))
+        }
+        return
+    }
+    getSum(root.Left, append(a, root.Val),targetSum-root.Val, res)
+    getSum(root.Right, append(a, root.Val),targetSum-root.Val, res)
+    return
+}
