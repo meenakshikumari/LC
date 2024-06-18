@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func pathSum(root *TreeNode, targetSum int) int { // TC: O(n*n) sp: O(H)
+    var total int
+    if root == nil {
+        return 0
+    }
+    total += cntPathSum(root, targetSum, root.Val)
+    if root.Left != nil{
+        total += pathSum(root.Left, targetSum)
+    }
+    if root.Right != nil{
+        total += pathSum(root.Right, targetSum)
+    }
+    return total
+}
+
+func cntPathSum(root *TreeNode, targetSum, currSum int)int{
+    if root == nil {
+        return 0
+    }
+    var total int
+
+    if targetSum == currSum {
+        total++
+    }
+    if root.Left != nil{
+        total += cntPathSum(root.Left, targetSum, currSum+root.Left.Val)
+    }
+    if root.Right != nil{
+        total += cntPathSum(root.Right, targetSum, currSum+root.Right.Val)
+    }
+    return total
+}
