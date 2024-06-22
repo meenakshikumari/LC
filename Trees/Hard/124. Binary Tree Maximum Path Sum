@@ -1,0 +1,27 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+var maxPathS int
+
+func maxPathSum(root *TreeNode) int {
+    maxPathS = math.MinInt32
+    _ = maxVal(root)
+    return maxPathS
+}
+
+func maxVal(node *TreeNode)int{
+    if node == nil{
+        return 0
+    }
+    // don't consider the -ve lh or rh for max sum
+    lh := max(0,maxVal(node.Left))
+    rh := max(0,maxVal(node.Right))
+    maxH := max(lh, rh)
+    maxPathS = max(maxPathS, lh+rh+node.Val)
+    return maxH+node.Val
+}
