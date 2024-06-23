@@ -1,0 +1,96 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func zigzagLevelOrder(root *TreeNode) [][]int {
+    var res [][]int
+    if root == nil{
+        return res
+    }
+    // using queue and flag
+    flag := 0
+    var queue []*TreeNode
+    queue = append(queue, root)
+    
+    for len(queue) > 0{
+        var a []int
+        l := len(queue)
+        for i:=0;i<l;i++{
+            node := queue[0]
+            if node.Left != nil{
+                queue = append(queue, node.Left)
+            }
+            if node.Right != nil{
+                queue = append(queue, node.Right)
+            }
+            a = append(a, node.Val)
+            queue = queue[1:]
+        }
+        if flag == 1{
+            // reverse the a
+            a = reverseArr(a)
+        }
+        res = append(res, a)
+        flag ^= 1
+    }
+
+    return res
+}
+
+func reverseArr(arr []int)[]int{
+    for i, j:=0,len(arr)-1;i<j; i, j = i+1,j-1{
+        arr[i], arr[j] = arr[j], arr[i]
+    }
+    return arr
+}
+//     arrNode := zigZagLevelOrderNodes(root)
+//     // fmt.Println(arrNode)
+//     // loop and make res
+//     for _, nodeA := range arrNode{
+//         var a []int
+//         for _, node := range nodeA{
+//             a = append(a, node.Val)
+//         }
+//         res = append(res, a)
+//     }
+//     return res
+// }
+
+// func zigZagLevelOrderNodes(root *TreeNode) [][]*TreeNode{
+//     var arr [][]*TreeNode
+//     arr = append(arr, []*TreeNode{root})
+//     for {
+//         arrLen := len(arr)
+//         var arrNode []*TreeNode
+//         last := arr[arrLen-1]
+//         if arrLen % 2 > 0{//odd len
+//             for i:=len(last)-1; i>=0;i--{
+//                 if last[i].Right != nil{
+//                     arrNode = append(arrNode, last[i].Right)
+//                 }
+//                 if last[i].Left != nil{
+//                     arrNode = append(arrNode, last[i].Left)
+//                 }
+//             }
+//         }else{
+//             for i:=len(last)-1; i>=0;i--{
+//                 if last[i].Left != nil{
+//                     arrNode = append(arrNode, last[i].Left)
+//                 }
+//                 if last[i].Right != nil{
+//                     arrNode = append(arrNode, last[i].Right)
+//                 }
+//             }
+//         }
+
+//         if len(arrNode) == 0{
+//             break
+//         }
+//         arr = append(arr, arrNode)
+//     }
+//     return arr
+// }
