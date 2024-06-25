@@ -1,0 +1,86 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func boundaryOfBinaryTree(root *TreeNode) []int {
+    var res []int
+    res = append(res, root.Val)
+
+    if root.Left == nil && root.Right == nil{
+        return res
+    }
+    var lb *[]int
+    var rb *[]int
+    var leaf *[]int
+
+    // get the LB arr
+    if root.Left != nil && (root.Left.Left != nil || root.Left.Right!=nil){
+        lb = leftB(root.Left,&[]int{})
+        for _, v := range *lb{
+            res = append(res, v)
+        }
+    }
+    
+    leaf = getLeaves(root, &[]int{})
+    for _, v := range *leaf{
+        res = append(res, v)
+    }
+
+    // get the RB arr
+    if root.Right != nil && (root.Right.Left != nil || root.Right.Right!=nil){
+        rb = rightB(root.Right,&[]int{})
+        var Rb = *rb
+        for i:=len(Rb)-1;i>=0;i--{
+            res = append(res, Rb[i])
+        }
+    }
+    
+    return res
+}
+
+func getLeaves(node *TreeNode, leaf *[]int)*[]int{
+    if node == nil{
+        return leaf
+    }
+    if node.Left == nil&&node.Right == nil{
+        *leaf = append(*leaf, node.Val)
+        return leaf
+    }
+
+    getLeaves(node.Left, leaf)
+    getLeaves(node.Right, leaf)
+
+    return leaf
+}
+
+func leftB(node *TreeNode, lb *[]int)*[]int{
+    *lb = append(*lb, node.Val)
+    if node.Left != nil {
+        if (node.Left.Left == nil && node.Left.Right ==nil){
+            return lb
+        }else{
+            leftB(node.Left, lb)
+        }
+    }else if node.Right!= nil && (node.Right.Left != nil || node.Right.Right!=nil){
+        leftB(node.Right, lb)
+    }
+    return lb
+}
+
+func rightB(node *TreeNode, rb *[]int)*[]int{
+    *rb = append(*rb, node.Val)
+    if node.Right!= nil {
+        if node.Right.Left == nil && node.Right.Right ==nil {
+            return rb
+        }else{
+            rightB(node.Right, rb)
+        }
+    }else if node.Left != nil && (node.Left.Left != nil || node.Left.Right!=nil){
+        rightB(node.Left, rb)
+    }
+    return rb
+}
