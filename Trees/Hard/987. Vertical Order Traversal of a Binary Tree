@@ -1,0 +1,61 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+import "sort"
+var hash map[int]map[int][]int
+func verticalTraversal(root *TreeNode) [][]int {
+    hash = make(map[int]map[int][]int) // TC: O(N)+O(NlogN) = O(NlogN)
+    iterate(root, 0,0)
+    // fmt.Println(hash)
+
+    res := make([][]int, len(hash))
+    var keys []int//:= make([]int, len(hash))
+    for key := range hash{
+        keys = append(keys, key)
+    }
+    sort.Ints(keys)
+
+    for i, k := range keys{
+        var ks []int
+        // fmt.Println(hash[k])
+        for key := range hash[k]{
+            ks = append(ks, key)
+        }
+        sort.Ints(ks)
+        
+        for _, v := range ks{
+            sort.Ints(hash[k][v])
+            res[i] = append(res[i], hash[k][v]...)
+        }
+    }
+
+    return res
+}
+
+func iterate(node *TreeNode, row, col int){
+    if node == nil{
+        return 
+    }
+    h := make(map[int][]int)
+    v, ok := hash[col]
+    if !ok{
+        h[row] = []int{node.Val}
+        hash[col] = h
+    }else{//col val is present
+        val, ok1 := v[row]
+        if !ok1{
+            hash[col][row] = []int{node.Val}
+        }else{
+            val = append(val,node.Val)
+            hash[col][row] = val
+        }
+    }
+    iterate(node.Left, row+1, col-1)
+    iterate(node.Right, row+1, col+1)
+    return
+}
