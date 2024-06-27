@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isSymmetric(root *TreeNode) bool {
+    // from root treat them like two tree and check if they are same
+    l := root.Left
+    r := root.Right
+    if l == nil && r == nil{
+        return true
+    }
+    
+    return isTreeSymmetric(l, r)
+}
+
+func isTreeSymmetric(leftT, rightT *TreeNode)bool{
+    if (leftT == nil && rightT != nil) || (leftT != nil && rightT ==nil) || (leftT != nil && rightT != nil && leftT.Val != rightT.Val){
+        return false
+    }
+    if leftT == nil && rightT == nil{
+        return true
+    }
+    return isTreeSymmetric(leftT.Left, rightT.Right) && isTreeSymmetric(leftT.Right, rightT.Left)
+}
