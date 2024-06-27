@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+import "sort"
+var h map[int]int
+func rightSideView(root *TreeNode) []int {
+    // parent (r,c) -> left(r+1, c-1) & right(r+1,c+1)
+    // eg: root(0,0): left(1,-1) & right(1,1)
+    var res,keys []int
+    h = make(map[int]int)
+    iterate(root, 0,0)
+    for k := range h{
+        keys = append(keys, k)
+    }
+    sort.Ints(keys)
+
+    for _, v := range keys{
+        res = append(res, h[v])
+    }
+    return res
+}
+
+func iterate(node *TreeNode, r, c int){
+    if node == nil{
+        return
+    }
+    h[r] = node.Val
+    // for left side view := if their is already value for h[r] then do nothing
+    iterate(node.Left,r+1,c-1)
+    iterate(node.Right,r+1,c+1)
+    return
+}
+
