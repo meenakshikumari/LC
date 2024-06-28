@@ -1,0 +1,22 @@
+var res []int
+func leftSideView(root *TreeNode) []int {
+    levelLeftTraverse(root, 0)
+    defer func(){
+        res = nil
+    }()
+    fmt.Println(res)
+    return res
+}
+
+func levelLeftTraverse(node *TreeNode, level int){ // for lefttView preorder
+    // Left Right Root
+    if node == nil {
+        return
+    }
+
+    if len(res) == level{
+        res = append(res, node.Val)
+    }
+    levelTraverse(node.Left, level+1)
+    levelTraverse(node.Right, level+1)
+}
