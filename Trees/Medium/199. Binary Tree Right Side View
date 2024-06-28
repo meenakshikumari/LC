@@ -6,6 +6,39 @@
  *     Right *TreeNode
  * }
  */
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+var res []int
+func rightSideView(root *TreeNode) []int {
+    levelTraverse(root, 0)
+    defer func(){
+        res = nil
+    }()
+    return res
+}
+
+func levelTraverse(node *TreeNode, level int){ // for rightView reverse preorder
+    //Root Right Left
+    if node == nil {
+        return
+    }
+
+    if len(res) == level{
+        res = append(res, node.Val)
+    }
+    levelTraverse(node.Right, level+1)
+    levelTraverse(node.Left, level+1)
+
+}
+
 import "sort"
 var h map[int]int
 func rightSideView(root *TreeNode) []int {
