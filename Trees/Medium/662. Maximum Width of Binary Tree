@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+type StackNode struct{
+    node *TreeNode
+    level int
+    idx int
+}
+
+type MaxMinIdx struct{
+    maxIdx int
+    minIdx int
+}
+func widthOfBinaryTree(root *TreeNode) int {
+    // level order traversal
+
+    var stack []StackNode
+    maxWidth := 1
+    h := make(map[int]MaxMinIdx)
+    stack = append(stack, StackNode{node: root, level: 1, idx: 1})
+
+    for len(stack) > 0{
+        nodeVal := stack[len(stack)-1]
+        stack = stack[:len(stack)-1]
+        
+        //add to hash
+        v, ok:= h[nodeVal.level]
+        if !ok {
+            h[nodeVal.level] = MaxMinIdx{minIdx: nodeVal.idx}
+        }else{
+            h[nodeVal.level] = MaxMinIdx{minIdx: v.minIdx, maxIdx: nodeVal.idx}
+            
+        }
+        if h[nodeVal.level].maxIdx > h[nodeVal.level].minIdx{
+            maxWidth = max(maxWidth, (h[nodeVal.level].maxIdx-h[nodeVal.level].minIdx)+1)
+        }
+
+        //to prevent overflow
+        nodeIdx := nodeVal.idx - h[nodeVal.level].minIdx
+        
+        if nodeVal.node.Right != nil{
+            stack = append(stack, StackNode{node: nodeVal.node.Right, level: nodeVal.level+1, idx: 2*(nodeIdx)+1})
+        }
+
+        if nodeVal.node.Left != nil{
+            stack = append(stack, StackNode{node: nodeVal.node.Left, level: nodeVal.level+1, idx: 2*(nodeIdx)})
+        }
+    }
+    return maxWidth
+}
