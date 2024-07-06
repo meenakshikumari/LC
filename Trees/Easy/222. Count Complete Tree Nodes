@@ -1,0 +1,45 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func countNodes(root *TreeNode) int {
+    if root == nil{
+        return 0
+    }
+
+    lh := findHeightLeft(root) // O(logN)
+    rh := findHeightRight(root) // O(logN)
+
+    if lh==rh {
+        return (1<<lh)-1 // its full BT 2^h-1
+    }
+    return 1+countNodes(root.Left)+countNodes(root.Right)
+}
+
+func findHeightLeft(root *TreeNode)int{
+    if root == nil{
+        return 0
+    }
+    var height int
+    for root != nil{
+        height++
+        root = root.Left
+    }
+    return height
+}
+
+func findHeightRight(root *TreeNode)int{
+    if root == nil{
+        return 0
+    }
+    var height int
+    for root != nil{
+        height++
+        root = root.Right
+    }
+    return height
+}
