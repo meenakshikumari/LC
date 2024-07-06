@@ -1,0 +1,75 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+type NodeDetails struct{
+    Parent *TreeNode
+    // Node *TreeNode
+    Visited bool
+}
+
+var h map[*TreeNode]NodeDetails
+func distanceK(root *TreeNode, target *TreeNode, k int) []int {
+    h = make(map[*TreeNode]NodeDetails)
+    fillNodeDetails(root, nil)
+
+    var q []*TreeNode
+    var res []int
+    var dist int
+
+    if v, ok := h[target]; ok{
+        h[target] = NodeDetails{Parent: v.Parent, Visited: true}
+    }
+    q = append(q, target)
+    if k == 0{
+        return []int{target.Val}
+    }
+    for len(q) > 0{
+        size := len(q)
+        for i:=0;i<size;i++ {
+            node := q[0]
+            q = q[1:]
+            if node.Left != nil && h[node.Left].Visited != true{
+                q = append(q, node.Left)
+                if v, ok := h[node.Left]; ok{
+                    h[node.Left] = NodeDetails{Parent: v.Parent, Visited: true}
+                }
+            }
+            if node.Right != nil && h[node.Right].Visited != true{
+                q = append(q, node.Right)
+                if v, ok := h[node.Right]; ok{
+                    h[node.Right] = NodeDetails{Parent: v.Parent, Visited: true}
+                }
+            }
+            if h[node].Parent != nil && h[h[node].Parent].Visited != true{
+                q = append(q, h[node].Parent)
+                if v, ok := h[h[node].Parent]; ok{
+                    h[h[node].Parent] = NodeDetails{Parent: v.Parent, Visited: true}
+                }
+            }
+        }
+        dist++
+        if dist == k{
+            for _, v := range q{
+                res = append(res, v.Val)
+            }
+            return res
+        }
+    }
+    
+    return res
+}
+
+func fillNodeDetails(node, parent *TreeNode){
+    if node == nil{
+        return
+    }
+    h[node] = NodeDetails{Parent: parent}
+    fillNodeDetails(node.Left, node)
+    fillNodeDetails(node.Right, node)
+    return
+}
