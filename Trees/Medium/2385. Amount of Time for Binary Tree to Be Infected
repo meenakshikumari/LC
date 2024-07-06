@@ -1,0 +1,68 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+type NodeDetails struct{
+    Parent *TreeNode
+    Node *TreeNode
+    Visited bool
+}
+
+var h map[int]NodeDetails
+func amountOfTime(root *TreeNode, start int) int {
+    h = make(map[int]NodeDetails)
+    fillNodeDetails(root, nil)
+    // fmt.Println(h)
+
+    var q []int
+    var time int
+
+    if v, ok := h[start]; ok{
+        h[start] = NodeDetails{Parent: v.Parent, Node: v.Node, Visited: true}
+    }
+    q = append(q, start)
+   
+    for len(q) > 0{
+        // fmt.Println(q,h)
+        size := len(q)
+        for i:=0;i<size;i++ {
+            node := h[q[0]].Node
+            q = q[1:]
+            if node.Left != nil && h[node.Left.Val].Visited != true{
+                q = append(q, node.Left.Val)
+                if v, ok := h[node.Left.Val]; ok{
+                    h[node.Left.Val] = NodeDetails{Parent: v.Parent, Node: v.Node, Visited: true}
+                }
+            }
+            if node.Right != nil && h[node.Right.Val].Visited != true{
+                q = append(q, node.Right.Val)
+                if v, ok := h[node.Right.Val]; ok{
+                    h[node.Right.Val] = NodeDetails{Parent: v.Parent, Node: v.Node, Visited: true}
+                }
+            }
+            if h[node.Val].Parent != nil && h[h[node.Val].Parent.Val].Visited != true{
+                q = append(q, h[node.Val].Parent.Val)
+                if v, ok := h[h[node.Val].Parent.Val]; ok{
+                    h[h[node.Val].Parent.Val] = NodeDetails{Parent: v.Parent, Node: v.Node, Visited: true}
+                }
+            }
+        }
+        time++
+    }
+    
+    return time-1
+}
+
+func fillNodeDetails(node, parent *TreeNode){
+    if node == nil{
+        return
+    }
+    h[node.Val] = NodeDetails{Parent: parent, Node: node}
+    fillNodeDetails(node.Left, node)
+    fillNodeDetails(node.Right, node)
+    return
+}
