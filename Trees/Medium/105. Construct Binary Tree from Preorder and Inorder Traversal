@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func buildTree(preorder []int, inorder []int) *TreeNode {
+    if len(inorder) == 0{
+        return nil
+    }
+    root := &TreeNode{Val: preorder[0]}
+    // find the index for root in inorder list
+    var i int
+    for idx, v := range inorder{
+        if v == preorder[0]{
+            i = idx
+            break
+        }
+    }
+    // preorder is root left right
+    // inorder is left root right
+    // 1 to i nums will be all for right subtree
+    leftPreorder := preorder[1:i+1]
+    // all the elements after root will be right in the inorder tree 
+    // therefore no of elements after root idx will be right  element it will be all for right subtree
+    rightPreorder := preorder[i+1:]
+    root.Left = buildTree(leftPreorder,inorder[0:i])
+    root.Right = buildTree(rightPreorder,inorder[i+1:])
+    return root
+}
