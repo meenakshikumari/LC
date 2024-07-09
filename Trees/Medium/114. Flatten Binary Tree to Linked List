@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func flatten(root *TreeNode)  {
+    // using Morris preoder traversal
+    curr := root
+    for curr != nil{
+        if curr.Left == nil{
+            curr = curr.Right
+        }else{
+            prev := curr.Left
+            for prev.Right != nil && prev.Right != curr{
+                prev = prev.Right
+            }
+            if prev.Right == nil{
+                prev.Right = curr
+                curr = curr.Left
+            }else{
+                prev.Right = curr.Right
+                curr.Right = curr.Left
+                curr.Left = nil
+                curr = prev.Right
+            }
+        }
+        // fmt.Println(root)
+    }
+    return 
+}
