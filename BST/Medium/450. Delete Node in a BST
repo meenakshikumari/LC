@@ -1,0 +1,30 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func insertIntoBST(root *TreeNode, val int) *TreeNode {
+    node := &TreeNode{Val: val}
+    if root == nil{
+        return node
+    }
+    var prev *TreeNode
+    curr := root
+    for root != nil{
+        prev = root
+        if root.Val > val{
+            root = root.Left
+        }else{
+            root = root.Right
+        }
+    }
+    if prev.Val > val{
+        prev.Left = node
+    }else{
+        prev.Right = node
+    }
+    return curr
+}
