@@ -6,25 +6,55 @@
  *     Right *TreeNode
  * }
  */
-func insertIntoBST(root *TreeNode, val int) *TreeNode {
-    node := &TreeNode{Val: val}
-    if root == nil{
-        return node
-    }
-    var prev *TreeNode
+func deleteNode(root *TreeNode, key int) *TreeNode {
     curr := root
-    for root != nil{
-        prev = root
-        if root.Val > val{
-            root = root.Left
+    var prev *TreeNode
+    for curr != nil{
+        if curr.Val == key{
+            if prev == nil{ // root node delete
+                if curr.Left == nil{
+                    return curr.Right
+                }
+                node := curr.Left
+                root = node
+                for node.Right != nil{
+                    node = node.Right
+                }
+                node.Right = curr.Right
+                return root
+            }else if prev.Val < key{
+                if curr.Right != nil{
+                    prev.Right = curr.Right
+                    node := prev.Right
+                    for node.Left != nil{
+                        node = node.Left
+                    }
+                    node.Left = curr.Left
+                }else{
+                    prev.Right = curr.Left
+                }
+            }else{ //left SB
+                if curr.Left != nil{
+                    prev.Left = curr.Left
+                    node := prev.Left
+                    for node.Right != nil{
+                        node = node.Right
+                    }
+                    node.Right = curr.Right
+                }else{
+                    prev.Left = curr.Right
+                }
+            }
+            curr.Left = nil
+            curr.Right = nil
+            return root
+        }
+        prev = curr
+        if curr.Val > key{
+            curr = curr.Left
         }else{
-            root = root.Right
+            curr = curr.Right
         }
     }
-    if prev.Val > val{
-        prev.Left = node
-    }else{
-        prev.Right = node
-    }
-    return curr
+    return root
 }
