@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+var ansNode *TreeNode
+func kthSmallest(root *TreeNode, k int) int {
+    var cnt int
+    findElement(root, k, &cnt)
+    return ansNode.Val
+}
+
+func findElement(root *TreeNode, k int, cnt *int){
+    if root == nil || *cnt >= k{
+        return
+    }
+    findElement(root.Left, k, cnt)
+    *cnt++
+    if *cnt == k{
+        ansNode = root
+        return
+    }
+    findElement(root.Right, k, cnt)
+    return
+}
