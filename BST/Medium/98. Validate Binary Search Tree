@@ -1,0 +1,25 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+import "math"
+//every node should be in the mentioned range [low, high]
+func isValidBST(root *TreeNode) bool {
+    return preorder(root, math.MinInt32-1, math.MaxInt32+1)
+    //math.MinInt32-1 to handle the -2^31, math.MaxInt32+1 is to handle 2^31 case
+}
+
+func preorder(root *TreeNode, low, high int)bool{
+    if (root == nil) {
+        return true
+    }
+
+    if !(low < root.Val &&  root.Val < high){
+        return false
+    }
+    return preorder(root.Left, low, root.Val) && preorder(root.Right, root.Val, high)
+}
