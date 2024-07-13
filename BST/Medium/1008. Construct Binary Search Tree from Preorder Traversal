@@ -1,0 +1,29 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func bstFromPreorder(preorder []int) *TreeNode {
+    if len(preorder) == 0 {
+        return nil
+    }
+    root := &TreeNode{Val: preorder[0]}
+
+    i := 1
+    for i < len(preorder){
+        if preorder[i] > root.Val{
+            break
+        }
+        i++
+    }
+    if i > 1{
+        root.Left = bstFromPreorder(preorder[1:i])
+    }else{
+        root.Left = nil
+    }
+    root.Right = bstFromPreorder(preorder[i:])
+    return root
+}
