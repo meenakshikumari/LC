@@ -6,6 +6,36 @@
  *     Right *TreeNode
  * }
  */
+
+
+
+
+import "math"
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func bstFromPreorder(preorder []int) *TreeNode {
+    var i int
+    return build(preorder, &i, math.MaxInt32)
+}
+
+func build(preorder []int, i *int, upperBound int)*TreeNode{
+    if *i == len(preorder) || preorder[*i] > upperBound{
+        return nil
+    }
+    root := &TreeNode{Val: preorder[*i]}
+    *i++
+    root.Left = build(preorder, i, root.Val)
+    root.Right = build(preorder, i, upperBound)
+    return root
+}
+
+
 func bstFromPreorder(preorder []int) *TreeNode {
     if len(preorder) == 0 {
         return nil
