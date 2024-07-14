@@ -1,0 +1,52 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+type BSTIterator struct {
+    root *TreeNode
+    ptr int
+    list []*TreeNode
+}
+
+
+func Constructor(root *TreeNode) BSTIterator {
+    var list []*TreeNode
+    inorder(root, &list)//O(N) sp: O(N)
+    return BSTIterator{root: root, ptr: -1, list: list}
+}
+
+
+func (this *BSTIterator) Next() int {
+    this.ptr++
+    return this.list[this.ptr].Val
+}
+
+
+func (this *BSTIterator) HasNext() bool {
+    if this.ptr+1 == len(this.list){
+        return false
+    }
+    return true
+}
+
+func inorder(root *TreeNode, list *[]*TreeNode){
+    if root == nil{
+        return
+    }
+    inorder(root.Left, list)
+    *list = append(*list, root)
+    inorder(root.Right, list)
+    return
+}
+
+
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * obj := Constructor(root);
+ * param_1 := obj.Next();
+ * param_2 := obj.HasNext();
+ */
