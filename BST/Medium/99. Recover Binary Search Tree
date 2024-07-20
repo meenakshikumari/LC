@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+var first, mid, last, prevNode *TreeNode
+func recoverTree(root *TreeNode)  {
+    traverse(root)
+    defer func(){
+        first = nil
+        last = nil
+        mid = nil
+        prevNode = nil
+    }()
+    // swap elements
+    var temp int
+    if last != nil{
+        temp = last.Val
+        last.Val = first.Val
+        first.Val = temp
+    }else{
+        temp = first.Val
+        first.Val = mid.Val
+        mid.Val = temp
+    }
+    return
+}
+
+func traverse(root *TreeNode){
+    if root == nil{
+        return
+    }
+
+    //inorder traverse
+    traverse(root.Left)
+    if prevNode != nil && root.Val < prevNode.Val{
+        if first != nil{
+            last = root
+        }else{
+            first = prevNode
+            mid = root
+        }
+    }
+    prevNode = root
+    traverse(root.Right)
+    return
+}
