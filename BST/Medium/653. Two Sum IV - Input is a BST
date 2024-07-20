@@ -1,0 +1,86 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func findTarget(root *TreeNode, k int) bool {
+    bst := Constructor(root)
+    // apply 2Sum apporach over the list
+
+    left := bst.Next()
+    right := bst.Before()
+
+    for left < right{
+        sum := left+right
+        if sum == k {
+            return true
+        }else if sum > k {
+            right = bst.Before()
+        }else{
+            left = bst.Next()
+        }
+    }
+    return false
+}
+
+type BSTIterator struct {
+    stack []*TreeNode
+    descStack []*TreeNode
+}
+
+func Constructor(root *TreeNode) BSTIterator {
+    var stack []*TreeNode
+    var descStack []*TreeNode
+    bst := BSTIterator{stack: stack, descStack: descStack}
+    bst.traverse(root)
+    bst.reverseTraverse(root)
+    return bst
+}
+
+
+func (this *BSTIterator) Next() int {
+    val := this.stack[len(this.stack)-1]
+    this.stack = this.stack[:len(this.stack)-1]
+    if val.Right != nil{
+        this.traverse(val.Right)
+    }
+    return val.Val
+}
+
+func (this *BSTIterator) Before() int {
+    val := this.descStack[len(this.descStack)-1]
+    this.descStack = this.descStack[:len(this.descStack)-1]
+    if val.Left != nil{
+        this.reverseTraverse(val.Left)
+    }
+    return val.Val
+}
+
+
+func (this *BSTIterator) HasNext() bool {
+    if len(this.stack) > 0{
+        return true
+    }
+    return false
+}
+
+func (this *BSTIterator) traverse(root *TreeNode) {
+    //Left Root Right asc sorted inorder
+    for root != nil{
+        this.stack = append(this.stack, root)
+        root = root.Left
+    }
+    return
+}
+
+func (this *BSTIterator) reverseTraverse(root *TreeNode) {
+    //Right Root Left desc sorted inorder
+    for root != nil{
+        this.descStack = append(this.descStack, root)
+        root = root.Right
+    }
+    return
+}
