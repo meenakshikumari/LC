@@ -1,0 +1,43 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func largestBSTSubtree(root *TreeNode) int {
+    var maxL int
+    traverse(root, &maxL) // O(N^2) + 
+    return maxL
+}
+
+func traverse(root *TreeNode, maxL *int){ // preorder // O(N)
+    if root == nil{
+        return
+    }
+    if validateBST(root, math.MinInt32-1, math.MaxInt32+1){ // O(N)
+        *maxL = max(*maxL, countNode(root))
+    }
+    traverse(root.Left, maxL)
+    traverse(root.Right, maxL)
+    return
+}
+
+func countNode(root *TreeNode)int{
+    if root == nil{
+        return 0
+    }
+    return 1+countNode(root.Left)+countNode(root.Right)
+}
+
+func validateBST(root *TreeNode, low, high int)bool{ // O(N)
+    if (root == nil) {
+        return true
+    }
+
+    if !(low < root.Val &&  root.Val < high){
+        return false
+    }
+    return validateBST(root.Left, low, root.Val) && validateBST(root.Right, root.Val, high)
+}
