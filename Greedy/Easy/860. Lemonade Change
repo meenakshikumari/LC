@@ -1,0 +1,26 @@
+func lemonadeChange(bills []int) bool {
+    var cnt5, cnt10 int
+    for _, v := range bills{
+        switch v{
+            case 5: cnt5++
+            case 10: if cnt5 == 0{
+                        return false
+                    }
+                    cnt5--
+                    cnt10++
+            case 20: if cnt5 > 0{
+                        if cnt10 > 0{
+                            cnt5--
+                            cnt10--
+                        }else if cnt5 >= 3{
+                            cnt5 -= 3
+                        }else{
+                            return false
+                        }
+                    }else{  
+                        return false
+                    }
+        }
+    }
+    return true
+}
