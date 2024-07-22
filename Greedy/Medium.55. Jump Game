@@ -1,0 +1,11 @@
+func canJump(nums []int) bool {
+    var maxIdx int
+    for i, v := range nums{
+        if i > maxIdx{
+            return false
+        }
+        maxIdx = max(maxIdx, i+v)
+    }
+    return true
+}
+tc: O(n) sp: O(1)
