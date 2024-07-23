@@ -1,0 +1,14 @@
+func jump(nums []int) int {
+    var startIdx, endIdx, jumps int
+    n := len(nums)
+    for endIdx < n-1{
+        farthest := 0
+        for i:=startIdx; i<=endIdx;i++{
+            farthest = max(farthest, nums[i]+i)
+        }
+        startIdx = endIdx+1
+        jumps++
+        endIdx = farthest
+    }
+    return jumps
+}
