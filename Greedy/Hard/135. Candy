@@ -1,3 +1,42 @@
+
+func candy(ratings []int) int {
+    //SLOPE APPROACH https://youtu.be/IIqVFvKE6RY?t=930
+    sum := 1
+    n := len(ratings)
+
+    i := 1
+    for i< n{
+        // for flat surface
+        if ratings[i] == ratings[i-1]{
+            sum++
+            i++
+            continue
+        }
+
+        // handle the slopes
+        //increasing slope
+        peak := 1 // as our intial i is at 1 and sum is also 1
+        for i<n && ratings[i] > ratings[i-1]{
+            peak++
+            sum += peak
+            i++
+        }
+
+        // decreasing slope
+        down := 1
+        for i<n && ratings[i] < ratings[i-1]{
+            sum += down
+            down++
+            i++
+        }
+
+        if down > peak{
+            sum += (down-peak)
+        }
+    }
+    return sum
+}
+
 func candy(ratings []int) int {
     n := len(ratings)
     candy := 0
