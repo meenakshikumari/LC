@@ -1,0 +1,56 @@
+func floodFill(image [][]int, sr int, sc int, color int) [][]int {
+    n := len(image)
+    m := len(image[0])
+
+    var que [][2]int
+    val := image[sr][sc]
+
+    if val == color{
+        return image
+    }
+    image[sr][sc] = color
+
+    var q [2]int
+    q[0]=sr
+    q[1]=sc
+    que = append(que, q)
+
+    for len(que) > 0{
+        i := que[0][0]
+        j := que[0][1]
+        que = que[1:]
+        
+        if i+1<n && image[i+1][j] == val{
+            var q [2]int
+            q[0]=i+1
+            q[1]=j
+            que = append(que, q)
+            image[i+1][j] = color
+        }
+
+        if j+1<m && image[i][j+1] == val{
+            var q [2]int
+            q[0]=i
+            q[1]=j+1
+            que = append(que, q)
+            image[i][j+1] = color
+        }
+        if i-1>=0 && image[i-1][j] == val{
+            var q [2]int
+            q[0]=i-1
+            q[1]=j
+            que = append(que, q)
+            image[i-1][j] = color
+        }
+
+        if j-1>=0 && image[i][j-1] == val{
+            var q [2]int
+            q[0]=i
+            q[1]=j-1
+            que = append(que, q)
+            image[i][j-1] = color
+        }
+    }
+
+    return image
+}
