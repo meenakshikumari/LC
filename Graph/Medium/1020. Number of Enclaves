@@ -1,0 +1,64 @@
+func numEnclaves(board [][]int) int {
+    var cnt int
+    n := len(board)
+    m := len(board[0])
+    visited := make([][]int, n)
+    for i := range visited {
+        visited[i] = make([]int, m)
+    }
+
+    for i:=0;i<n;i++{
+        //check the first col
+        if visited[i][0] == 0 && board[i][0] == 1{
+            dfs(i,0,visited, board)
+        }
+
+        //check the second col
+        if visited[i][m-1] == 0 && board[i][m-1] == 1{
+            dfs(i,m-1,visited, board)
+        }
+    }
+
+
+    for j:=0;j<m;j++{
+        //check the first row
+        if visited[0][j] == 0 && board[0][j] == 1{
+            dfs(0,j,visited, board)
+        }
+
+        //check the second col
+        if visited[n-1][j] == 0 && board[n-1][j] == 1{
+            dfs(n-1,j,visited, board)
+        }
+    }
+
+    for i:=0;i<n;i++{
+        for j:=0;j<m;j++{
+            if board[i][j] == 1 && visited[i][j] == 0{
+                cnt++
+            }
+        }
+    }
+    return cnt
+}
+
+func dfs(r, c int, visited [][]int, board [][]int){
+    visited[r][c] = 1
+    
+    n := len(board)
+    m := len(board[0])
+
+    delrow := []int{-1, 0, +1, 0}
+    delcol := []int{0, 1, 0, -1}
+
+    for i:=0;i<4;i++{
+        row := r + delrow[i]
+        col := c + delcol[i]
+
+        if row >= 0 && row < n && col >=0 && col < m &&
+        board[row][col] == 1 && visited[row][col] == 0 {
+            dfs(row, col, visited, board)
+        }
+    }
+    
+}
