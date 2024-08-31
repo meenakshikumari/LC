@@ -1,0 +1,35 @@
+func isBipartite(graph [][]int) bool {
+    //convert to adjacency List
+    n := len(graph)
+    adjL := make(map[int][]int, n)
+
+    colour := make([]int, n)
+    for i:=0;i<n;i++{
+        adjL[i] = graph[i]
+        colour[i] = -1
+    }
+
+    for i:=0;i<n;i++{
+        if colour[i] == -1{
+            if dfs(i,0,colour,graph, adjL) == false{
+                return false
+            }
+        }
+    }
+    return true   
+}
+
+func dfs(node, col int, colour []int, graph [][]int, adjL map[int][]int)bool{
+    colour[node] = col
+
+    for _, n := range adjL[node]{
+        if colour[n] == -1{
+            if dfs(n, col^1, colour, graph, adjL) == false{
+                return false
+            }
+        }else if colour[n] == col{
+            return false
+        }
+    }
+    return true
+}
