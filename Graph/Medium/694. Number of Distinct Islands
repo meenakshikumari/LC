@@ -1,0 +1,60 @@
+func toKey(slice [][2]int) string {
+    key := ""
+    for _, arr := range slice {
+        key += fmt.Sprintf("%v", arr)
+    }
+    return key
+}
+
+func numDistinctIslands(grid [][]int) int {
+    n := len(grid)
+    m := len(grid[0])
+    setIsland := make(map[string]bool)
+    // m := make(map[[2]int]bool)
+    visited := make([][]int, n)
+    for i:=0;i<n;i++{
+        visited[i] = make([]int, m)
+    }
+
+    for i:=0;i<n;i++{
+        for j:=0;j<m;j++{
+            if grid[i][j] == 1 && visited[i][j] != 1{
+                var island [][2]int
+                traverse(visited, grid,i,j,&island)
+                setIsland[toKey(island)] = true
+            }
+        }
+    }
+    return len(setIsland)
+}
+
+func traverse(visited [][]int, grid [][]int, r, c int,island *[][2]int){ // bfs
+    visited[r][c] = 1
+    n := len(grid)
+    m := len(grid[0])
+
+    var q [][2]int
+    q = append(q, [2]int{r,c})
+    
+    *island = append(*island, [2]int{0,0})
+
+    rL := []int{-1,0,1,0}
+    cL := []int{0,-1,0,1}
+
+    for len(q) > 0{
+        nRow := q[0][0]
+        nCol := q[0][1]
+        q = q[1:]
+
+        //traverse in all possible direction
+        for i:=0;i<4;i++{
+            row := nRow+rL[i]
+            col := nCol+cL[i]
+            if (row >= 0 && row < n) && (col >=0 && col < m) && (grid[row][col] == 1) && (visited[row][col] == 0){
+                visited[row][col] = 1
+                q = append(q, [2]int{row,col})
+                *island = append(*island, [2]int{row-r,col-c})
+            }
+        }
+    }
+}
