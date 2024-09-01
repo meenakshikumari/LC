@@ -1,0 +1,42 @@
+func eventualSafeNodes(graph [][]int) []int {
+    //cycle detection using Kahn's Algo
+    // return the topo sort via bfs 
+
+    numCourses := len(graph)
+    //create rev graph and it's adjacency List
+    var topoSort []int
+    adjL := make(map[int][]int, numCourses)
+    indegree := make([]int, numCourses)
+
+
+    for i, v := range graph{
+        for _, n := range v{
+            adjL[n] = append(adjL[n], i)
+            indegree[i]++
+        }
+    }
+
+    var q []int
+    for i, node := range indegree {
+        if node == 0{
+            q = append(q, i)
+        }
+    }
+
+    // var cnt int
+    for len(q) > 0{
+        node := q[0]
+        q = q[1:]
+        topoSort = append(topoSort, node)
+
+        for _, n := range adjL[node]{
+            indegree[n]--
+            if indegree[n] == 0{
+                q = append(q, n)
+            }
+        }
+    }
+
+    sort.Ints(topoSort)
+    return topoSort
+}
