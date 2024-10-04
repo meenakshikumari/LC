@@ -1,0 +1,50 @@
+func updateMatrix(mat [][]int) [][]int {
+    n := len(mat)
+    m := len(mat[0])
+
+    visitedArray := make([][]int, n)
+    for i:=0;i<n;i++{
+        visitedArray[i] = make([]int, m)
+    }
+
+    var q [][3]int
+
+    for i:=0;i<n;i++{
+        for j:=0;j<m;j++{
+            if mat[i][j] == 0{
+                var queue [3]int
+                queue[0] = i
+                queue[1] = j
+                queue[2] = 0
+                q = append(q, queue)
+                visitedArray[i][j] = 0
+            }
+        }
+    }
+
+    row := []int{-1,0,1,0}
+    col := []int{0,-1,0,1}
+
+    for len(q) > 0{
+        r := q[0][0]
+        c := q[0][1]
+        dist := q[0][2]
+        q = q[1:]
+
+        for k:=0;k<4;k++{
+            i := r + row[k]
+            j := c + col[k]
+
+            if i>=0 && i<n && j>=0 && j<m && mat[i][j] != 0 && visitedArray[i][j] == 0{
+                visitedArray[i][j] = dist + 1
+                var queue [3]int
+                queue[0] = i
+                queue[1] = j
+                queue[2] = dist + 1
+                q = append(q, queue)
+            }
+        }
+    }
+
+    return visitedArray
+}
