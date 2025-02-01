@@ -1,0 +1,32 @@
+import "math"
+func minSubArrayLen(target int, nums []int) int {
+	n := len(nums)
+    var rem, sum, res int
+    res = math.MaxInt32
+    for i:=0;i<n;i++{
+        sum += nums[i] 
+        rem = sum - target 
+        if rem >= 0 {
+            idx := search(0, i-1, rem, nums)
+            res = min(res, i-idx+1)
+        }
+        nums[i] = sum
+    }
+	
+    if res == math.MaxInt32{
+        return 0
+    }
+	return res
+}
+
+func search(low, high, rem int, nums []int)int{
+    for(low <= high){
+        mid := (low+high)/2
+        if nums[mid] <= rem {
+            low = mid+1
+        }else{
+            high = mid-1
+        }
+    }
+    return low
+}
