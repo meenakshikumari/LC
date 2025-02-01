@@ -1,1 +1,14 @@
-//TODO Add
+func subarraySum(nums []int, k int) int {
+    sumFreqMap := map[int]int{}
+    sum := 0
+    sumFreqMap[0] = 1
+    ans := 0
+    for _, num := range nums {
+        sum += num
+        if count, exists := sumFreqMap[sum-k]; exists {
+            ans += count
+        }
+        sumFreqMap[sum]++
+    }
+    return ans
+}
