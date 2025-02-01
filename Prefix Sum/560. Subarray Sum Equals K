@@ -1,11 +1,13 @@
 func subarraySum(nums []int, k int) int {
+    // Time complexitiy: O(n) spce : O(n)
     var res, sum, i int
     h := make(map[int]int)
+    h[0] = 1
     for i<len(nums){
         sum += nums[i]
-        if sum == k{
-            res++
-        }
+        //if sum == k{
+          //  res++
+        //}
 
         rem := sum - k
         res += h[rem]
