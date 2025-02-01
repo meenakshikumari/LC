@@ -1,14 +1,16 @@
 func subarraySum(nums []int, k int) int {
-    sumFreqMap := map[int]int{}
-    sum := 0
-    sumFreqMap[0] = 1
-    ans := 0
-    for _, num := range nums {
-        sum += num
-        if count, exists := sumFreqMap[sum-k]; exists {
-            ans += count
+    var res, sum, i int
+    h := make(map[int]int)
+    for i<len(nums){
+        sum += nums[i]
+        if sum == k{
+            res++
         }
-        sumFreqMap[sum]++
+
+        rem := sum - k
+        res += h[rem]
+        h[sum]++
+        i++
     }
-    return ans
+    return res
 }
