@@ -1,0 +1,21 @@
+func subarraysDivByK(nums []int, k int) int {
+    var sum, cnt int
+    h := make(map[int]int)
+    h[0] = 1
+    for i:=0;i<len(nums);i++{
+        sum += nums[i]
+        rem := sum % k
+        // kabhi bhi rem - aaye to usko + bna le
+        // kn - y = kn - y + k - k
+        //        = k(n-1)+(k-y)
+        // therefore rem
+        if rem < 0{
+            rem = k + rem //https://youtu.be/QM0klnvTQzk?t=432
+        }
+        if v, ok := h[rem]; ok{
+            cnt += v
+        }
+        h[rem]++
+    }
+    return cnt
+}
