@@ -1,0 +1,36 @@
+func canAttendMeetings(intervals [][]int) bool {
+    n := len(intervals)
+    if n < 2{
+        return true
+    }
+    d := make([]interval, n)
+    for i, v := range intervals{
+        d[i].start, d[i].end, d[i].pos = v[0], v[1],i
+    }
+
+    //sort the d as per the end time
+    sort.Slice(d, func(i, j int)bool{
+        return d[i].end < d[j].end
+    })
+
+    cnt := 1
+    endTime := d[0].end
+    var seqOfMeets [][]int
+    seqOfMeets = append(seqOfMeets, intervals[d[0].pos])
+    for i:=1;i<n;i++{
+        if d[i].start >= endTime{
+            cnt++
+            endTime = d[i].end
+            seqOfMeets = append(seqOfMeets, intervals[d[i].pos])
+        }
+    }
+    fmt.Println(seqOfMeets)
+    if cnt == n {
+        return true
+    }
+    return false
+}
+
+type interval struct{
+    start, end, pos int
+}
