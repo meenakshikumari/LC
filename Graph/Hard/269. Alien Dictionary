@@ -1,0 +1,47 @@
+func alienOrder(words []string) string {
+    adjL := make(map[int][]int)
+    indegree := make([]int, 26)
+    present := make([]int, 26)
+
+    var q []int
+    for i:=0;i<len(words)-1;i++{
+        first := words[i]
+        second := words[i+1]
+        l := min(len(first), len(second))
+        for j:=0;j<l;j++ {
+            if first[j] != second[j] {
+                f := int(first[j]-'a')
+                s := int(second[j]-'a')
+                adjL[f] = append(adjL[f], s)
+                indegree[s]++
+                present[f] = 1
+                present[s] = 1
+                break
+            }
+        }
+    }
+
+    for i, _ := range present {
+        if present[i] == 0 && indegree[i] == 0{
+            indegree[i] = -1
+        }else if present[i] == 1 && indegree[i] == 0{
+            q = append(q, i)
+        }
+    }
+    fmt.Println(adjL, indegree,q)
+    var ans []string
+    for len(q) > 0{
+        node := q[0]
+        q = q[1:]
+
+        ans = append(ans, string(node+'a'))
+        for _, v := range adjL[node]{
+            indegree[v] -= 1
+            if indegree[v] == 0{
+                q = append(q, v)
+            }
+        }
+    }
+    
+    return strings.Join(ans,"")
+}
