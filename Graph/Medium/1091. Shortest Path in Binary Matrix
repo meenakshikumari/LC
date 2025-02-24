@@ -1,0 +1,47 @@
+func shortestPathBinaryMatrix(grid [][]int) int {
+    var q [][]int
+
+    n := len(grid)
+    m := len(grid[0])
+
+    
+    if grid[0][0] == 1 || grid[n-1][m-1] == 1{
+        return -1
+    }
+
+    visited := make([][]int, n)
+    for i:=0;i<n;i++{
+        visited[i] = make([]int, m)
+    }
+
+    q = append(q, []int{0,0,1})
+    visited[0][0] = 1
+
+    // level := -1
+
+    for len(q) > 0{
+        row := q[0][0]
+        col := q[0][1]
+        level := q[0][2]
+
+        if row == n-1 && col == m-1{
+            return level
+        }
+        q = q[1:]
+
+        ///traverse all 8 directions
+        r := []int{-1,-1,-1,0,0,1,1,1}
+        c := []int{-1,0,1,-1,1,-1,0,1}
+
+        for k:=0;k<8;k++{
+            ro := row+r[k]
+            co := col+c[k]
+
+            if ro>-1 && ro<n && co>-1 && co<m && grid[ro][co]==0 && visited[ro][co] == 0{
+                visited[ro][co] = 1
+                q = append(q,[]int{ro,co,level+1})
+            }
+        }
+    }
+    return -1
+}
