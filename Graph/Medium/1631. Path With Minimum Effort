@@ -1,0 +1,64 @@
+import "math"
+func minimumEffortPath(heights [][]int) int {
+    h := &IntHeap{}
+    heap.Init(h)
+
+    n := len(heights)
+    m := len(heights[0])
+
+    distArr := make([][]int, n)
+    for i:=0;i<n;i++{
+        distArr[i] = make([]int, m)
+        for j := range distArr[i] {
+			distArr[i][j] = math.MaxInt32
+		}
+    }
+
+    distArr[0][0] = 0
+    h.Push(MinHeap{0,0,0})
+
+    for h.Len() > 0{
+        elem := h.Pop().(MinHeap)
+        row, col, dist := elem.x,elem.y,elem.maxD
+
+        r := []int{-1,0,1,0}
+        c := []int{0,-1,0,1}
+
+        for k := range 4{
+            ro := row + r[k]
+            co := col + c[k]
+
+            if ro >-1 && ro < n && co > -1 && co < m {
+                d := max(dist, int(math.Abs(float64(heights[ro][co]-heights[row][col]))))
+                if distArr[ro][co] > d{
+                    distArr[ro][co] = d
+                    h.Push(MinHeap{ro,co,d})
+                }
+            }
+        }
+    }
+
+    return distArr[n-1][m-1]
+}
+
+type MinHeap struct{
+    x, y, maxD int
+}
+
+type IntHeap []MinHeap
+
+func (h IntHeap) Len() int           { return len(h) }
+func (h IntHeap) Less(i, j int) bool { return h[i].maxD < h[j].maxD }
+func (h IntHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *IntHeap) Push(x interface{}) {
+	*h = append(*h, x.(MinHeap))
+}
+
+func (h *IntHeap) Pop() interface{} {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
