@@ -1,0 +1,55 @@
+import "math"
+func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
+    // h := &IntHeap{}
+    // heap.Init(h)
+    var queue []MinHeap // normal queue
+
+    distArr := make([]int, n)
+    for i:=0;i<n;i++{
+        distArr[i] = math.MaxInt32
+    }
+
+    adjL := make(map[int][][2]int)
+    for _, flight := range flights{
+        adjL[flight[0]] = append(adjL[flight[0]], [2]int{flight[1],flight[2]}) 
+    }
+
+    fmt.Println(adjL)
+
+    distArr[src] = 0
+    // h.Push(MinHeap{src,0,0})
+    queue = append(queue, MinHeap{src,0,0})
+
+    for len(queue) > 0{
+        // fmt.Println(distArr)
+        // elem := h.Pop().(MinHeap)
+        elem := queue[0]
+        queue = queue[1:]
+        node, dist, level := elem.node,elem.dist,elem.level
+
+        // node, dist, level := elem[0],elem[1],elem[2]
+
+        if level > k{
+            continue
+        }
+        for _, v := range adjL[node]{
+            if level <= k && dist+v[1] < distArr[v[0]]{
+                if level == k && v[0] != dst{
+                    continue
+                }
+                distArr[v[0]]= dist+v[1]
+                queue = append(queue, MinHeap{v[0],dist+v[1],level+1})
+                // h.Push(MinHeap{v[0],dist+v[1],level+1})
+            }
+        }
+    }
+
+    if distArr[dst] == math.MaxInt32{
+        return -1
+    }
+    return distArr[dst]
+}
+
+type MinHeap struct{
+    node, dist, level int
+}
