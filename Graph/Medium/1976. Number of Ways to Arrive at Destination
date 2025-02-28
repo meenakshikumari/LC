@@ -1,0 +1,64 @@
+import (
+    "container/heap"
+    "math"
+)
+func countPaths(n int, roads [][]int) int {
+    pq := &IntHeap{}
+    heap.Init(pq)
+
+    ways := make([]int, n)
+    distArr:= make([]int, n)
+    for v := range n{
+        distArr[v] = math.MaxInt32
+    }
+
+    adjL := make(map[int][][2]int, n)
+    for _, road := range roads{
+        adjL[road[0]] = append(adjL[road[0]], [2]int{road[1],road[2]})
+        adjL[road[1]] = append(adjL[road[1]], [2]int{road[0],road[2]})
+    }
+
+    distArr[0] = 1
+    ways[0] = 1
+    heap.Push(pq, MinHeap{0,0})
+
+    const MOD = 1_000_000_007
+
+    for pq.Len() > 0{
+        elem := heap.Pop(pq).(MinHeap)
+        node := elem.node
+        time := elem.time
+
+        for _, v := range adjL[node]{
+            d := time + v[1]
+            if d <= distArr[v[0]]{
+                ways[v[0]] = (ways[v[0]] + ways[node])%MOD
+                if d != distArr[v[0]]{
+                    heap.Push(pq, MinHeap{v[0],d})
+                    distArr[v[0]] = d
+                }
+            }
+        }
+    }
+    return ways[n-1]
+
+}
+
+type MinHeap struct{
+    node, time int
+}
+
+type IntHeap []MinHeap
+
+func (h IntHeap)Len()int{return len(h)}
+func (h IntHeap)Less(i,j int)bool{return h[i].time < h[j].time}
+func (h IntHeap)Swap(i,j int){h[i], h[j] = h[j], h[i]}
+
+func (h *IntHeap)Push(x interface{}){*h = append(*h, x.(MinHeap))}
+func (h *IntHeap)Pop()interface{}{
+    old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[:n-1]
+    return x
+}
