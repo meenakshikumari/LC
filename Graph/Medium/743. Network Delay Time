@@ -1,0 +1,62 @@
+import "math"
+func networkDelayTime(times [][]int, n int, k int) int {
+    adjL := make(map[int][][2]int,n+1)
+    for _, v := range times{
+        adjL[v[0]] = append(adjL[v[0]], [2]int{v[1], v[2]})
+    }
+    fmt.Println(adjL)
+
+    distArr := make([]int, n+1)
+    for i:=1;i<=n;i++{
+        distArr[i] = math.MaxInt32
+    }
+
+    //put src to the minheap queue
+    h := &IntHeap{}
+    heap.Init(h)
+    h.Push(Item{k, 0})
+    distArr[k] = 0
+    minD := 0
+
+    for h.Len() > 0 {
+        elem := h.Pop().(Item)
+        node := elem.node
+        time := elem.time
+
+        for _, v := range adjL[node]{
+            d := time+v[1]
+            if d < distArr[v[0]] {
+                // minD = max(minD, d)
+                h.Push(Item{v[0], d})
+                distArr[v[0]] = d
+            }
+        }
+    }
+    for _,v := range distArr{
+        if v == math.MaxInt32{
+            return -1
+        }
+        minD = max(minD, v)
+    }
+    return minD
+}
+
+type Item struct{
+    node, time int
+}
+
+type IntHeap []Item
+
+func (h IntHeap)Len()int{return len(h)}
+func (h IntHeap)Less(i,j int)bool{return h[i].time < h[j].time}
+func (h IntHeap)Swap(i,j int){ h[j],h[i] = h[j],h[i]}
+func (h *IntHeap)Push(x interface{}){
+    *h = append(*h, x.(Item))
+}
+func (h *IntHeap)Pop() interface{}{
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[:n-1]
+    return x
+}
