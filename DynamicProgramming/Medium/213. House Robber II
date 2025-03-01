@@ -1,0 +1,31 @@
+func rob(nums []int) int {
+    //we can extend the House Robber problem.
+    // get max ( 0 to n-2 , 1 to n-1) as first and last are adjacent
+    n := len(nums)
+    if n == 1{
+        return nums[0]
+    }
+    return max(robN(nums[:n-1]),robN(nums[1:]))   
+}
+
+func robN(nums []int) int {
+    n := len(nums)
+
+    prev2 := 0 // dp[i-2]
+    prev := nums[0] //dp[i-1]
+    
+    var curr int
+    for i := 1;i<n;i++ {
+        pick := nums[i]
+        // if idx = 1 then pick = nums[i]+0 therefore below
+        if i > 1{
+            pick = prev2+pick
+        }
+        notPick := prev
+        curr = max(pick, notPick)
+        
+        prev2 = prev
+        prev = curr
+    }
+    return prev
+}
