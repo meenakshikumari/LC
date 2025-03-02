@@ -1,4 +1,19 @@
 func uniquePaths(m int, n int) int {
+    col := make([]int, n)
+
+    for i := range n{
+        col[i] = 1
+    }
+
+    for j:=1;j<m;j++{
+        for i:=1;i<n;i++{
+            col[i] += col[i-1]
+        }
+    }
+
+    return col[n-1]
+}
+func uniquePaths(m int, n int) int {
     // // 1 way to iterate when on first row and one first column
     // if m == 1 || n == 1 {
     //     return 1
