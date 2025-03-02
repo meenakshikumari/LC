@@ -1,0 +1,30 @@
+func uniquePathsWithObstacles(obstacleGrid [][]int) int {
+    if obstacleGrid[0][0] == 1{
+        return 0
+    }
+    m := len(obstacleGrid)
+    n := len(obstacleGrid[0])
+
+    col := make([]int, n)
+
+    for i := range n{
+        if obstacleGrid[0][i] == 1{
+            break
+        }
+        col[i] = 1
+    }
+
+    for j:=1;j<m;j++{
+        for i:=0;i<n;i++{
+            if obstacleGrid[j][i] == 1{
+                col[i] = 0
+                continue
+            }
+            if i > 0{
+                col[i] += col[i-1]
+            }
+        }
+    }
+
+    return col[n-1]
+}
