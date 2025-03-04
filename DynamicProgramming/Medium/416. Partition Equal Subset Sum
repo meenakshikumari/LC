@@ -1,0 +1,58 @@
+func canPartition(nums []int) bool {
+    n := len(nums)
+    var targetSum int
+    for _, v := range nums{
+        targetSum +=  v
+    }
+
+    if targetSum % 2 != 0{
+        return false
+    }
+
+    prev := make([]bool, targetSum+1)
+    // as when target == 0 
+    prev[0] = true
+    // when idx = 0 & nums[0] == target
+    prev[nums[0]] = true
+
+    // dp := make([][]bool, n)
+    // for i := range n{
+    //     dp[i] = make([]bool, targetSum+1)
+    // }
+
+    targetSum /= 2
+    for i:=1;i<n;i++{
+        curr := make([]bool, targetSum+1)
+        curr[0] = true
+
+        for j:=1;j<=targetSum;j++{
+            nt := prev[j]
+            t := false
+            if j >= nums[i]{
+                t = prev[j-nums[i]]
+            }
+            curr[j] = nt || t
+        }
+        
+        prev = curr
+    }
+    return prev[targetSum]
+
+    // if targetSum == 0 then mark it as 1
+    // for i := range n{ // if target = 0
+    //     dp[i][0] = true
+    // }
+    // dp[0][nums[0]] = true // if idx =0 and target == nums[0]
+
+    // for i:=1;i<n;i++{
+    //     for j:=1;j<=targetSum;j++{
+    //         nt := dp[i-1][j]
+    //         t := false
+    //         if j >= nums[i]{
+    //             t = dp[i-1][j-nums[i]]
+    //         }
+    //         dp[i][j] = nt || t
+    //     }
+    // }
+    // return dp[n-1][targetSum]
+}
