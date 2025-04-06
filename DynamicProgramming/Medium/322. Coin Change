@@ -1,0 +1,59 @@
+func coinChange(coins []int, amount int) int {
+    n := len(coins)
+    prev := make([]int, amount+1)
+
+    for t:=0;t<=amount;t++{
+        if t % coins[0] == 0 {
+            prev[t] = t/coins[0]
+        }else{
+            prev[t] = math.MaxInt32
+        }
+    }
+
+    for i:=1;i<n;i++{
+        curr := make([]int, amount+1)
+        for t:=0;t<=amount;t++{
+            notTake := prev[t]
+            take := math.MaxInt32
+            if coins[i] <= t {
+                take = 1 + curr[t-coins[i]]
+            }
+            curr[t] = min(take, notTake)
+        }
+        prev = curr
+    }
+
+    if prev[amount] == math.MaxInt32{
+        return -1
+    }
+    return prev[amount]
+
+    // m := recursion(coins, n-1, amount, dp)
+    // if m == math.MaxInt32{
+    //     m = -1
+    // }
+    // return m
+}
+
+func recursion(coins []int, idx, amount int, dp [][]int) int{
+    
+    if idx == 0{
+        if amount % coins[0] == 0{
+            return amount / coins[0]
+        }else{
+            return math.MaxInt32
+        }
+    }
+
+    if dp[idx][amount] != -1{
+        return dp[idx][amount]
+    }
+    notTake := recursion(coins, idx-1, amount, dp)
+    take := math.MaxInt32
+    if coins[idx] <= amount {
+        take = 1 + recursion(coins, idx, amount-coins[idx], dp)
+    }
+
+    dp[idx][amount] = min(notTake, take)
+    return dp[idx][amount]
+}
